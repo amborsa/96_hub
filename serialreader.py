@@ -1,4 +1,4 @@
-import serial
+from serial import Serial
 import datetime
 import zmq
 import time
@@ -16,11 +16,13 @@ def main():
 
 	while True:
 		if int(sys.argv[1]) == 0:
-			ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
-			ser.flushInput()
-			serial_data = ser.readline()
-			serial_string = serial_data.decode("utf-8")
-			print(serial_data)
+			exp_str = ""
+			while len(exp_str) < 26:
+				ser = Serial('/dev/ttyACM0', 9600, timeout=1)
+				ser.flushInput()
+				serial_data = ser.readline()
+				serial_string = serial_data.decode("utf-8")
+				exp_str = serial_string
 		elif int(sys.argv[1]) == 1:
 			# serial simulation
 			serial_array = [random.randint(1,4), random.uniform(1000,10000), random.uniform(50,100), random.uniform(12,15), \
@@ -36,8 +38,8 @@ def main():
 		socket = context.socket(zmq.REQ)
 		socket.connect("tcp://localhost:5556")
 
-		sent_data = serial
-		socket.send_string(serial)
+		sent_data = exp_str
+		socket.send_string(sent_data)
 		print(sent_data)
 		received_data = socket.recv_string()
 		print(received_data)
