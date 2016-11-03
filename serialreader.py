@@ -17,12 +17,17 @@ def main():
 	while True:
 		if int(sys.argv[1]) == 0:
 			exp_str = ""
-			while len(exp_str) < 26:
+			while True:
 				ser = Serial('/dev/ttyACM0', 9600, timeout=1)
 				ser.flushInput()
 				serial_data = ser.readline()
 				serial_string = serial_data.decode("utf-8")
-				exp_str = serial_string
+				exp_str = serial_string.replace("\n", "")
+				exp_str = exp_str.replace("\r", "")
+				# we need to further ensure we have what we want --> specify the length of this string
+				if len(exp_str) >= 26:
+					print(len(exp_str))
+					break
 		elif int(sys.argv[1]) == 1:
 			# serial simulation
 			serial_array = [random.randint(1,4), random.uniform(1000,10000), random.uniform(50,100), random.uniform(12,15), \
