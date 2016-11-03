@@ -45,12 +45,11 @@ def main():
 
 		sent_data = exp_str
 		socket.send_string(sent_data)
-		print(sent_data)
 		received_data = socket.recv_string()
 		print(received_data)
 
-		if int(sys.argv[1]) == 0:
-			ser.write(received_data)
+		# if int(sys.argv[1]) == 0:
+		# 	ser.write(received_data)
 
 		time.sleep(10)
 
