@@ -9,6 +9,9 @@ from pytz import timezone
 # Import math python libraries
 import numpy as np
 import matplotlib.pyplot as plt
+    # N = 8
+    # x = np.linspace(0,100,N)
+    # plt.plot(x, 2*x, 'o')
 
 from helpers import login_required, apology
 
@@ -40,9 +43,6 @@ def index():
     temp = vitals[0]["temp"]
     rr = vitals[0]["rr"]
     current_vital = [hr, temp, rr]
-    N = 8
-    x = np.linspace(0,100,N)
-    plt.plot(x, 2*x, 'o')
     return render_template("index.html", vital = current_vital)
 
 @app.route("/patientgraphs")
