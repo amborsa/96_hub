@@ -2,3 +2,7 @@ header .welcomeheader
 {
     font-family: Impact, Charcoal, sans-serif;
 }
+
+.row {
+  max-width: 100%
+}
