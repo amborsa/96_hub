@@ -3,7 +3,6 @@
 {% block main %}
     <div class="container.fluid">
         <div class="row top-buffer">
-            <!-- {% set col_num = 6 %} -->
             {% for device in devices %}
             <div class="col">
               Device ID: {{ device.id }}<br>
@@ -14,14 +13,6 @@
                 {% if loop.index is divisibleby (6) and not loop.last %}
                 </div><div class="row top-buffer">
                 {% endif %}
-
-                <!-- {% if loop.last %}
-                  {% set remaining=col_num-(loop.index % col_num)}
-
-                  {% for i in range(remaining) %}
-                    <div class="col"></div>
-                  {% endfor %}
-                {% endif %} -->
 
             {% endfor %}
         </div>
