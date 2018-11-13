@@ -1,0 +1,12 @@
+header .welcomeheader
+{
+	font-family: Impact, Charcoal, sans-serif;
+}
+
+.row {
+	max-width: 100%;
+}
+
+.row .top-buffer { 
+	margin-top: 50px;
+}
