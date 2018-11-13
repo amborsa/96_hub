@@ -25,7 +25,7 @@ def main():
     "John", "Jim"]
     devices = []
     for i in range(len(ids)):
-        new_dict = {id: ids[i], name: names[i]}
+        new_dict = {'id': ids[i], 'name': names[i]}
         devices.append(new_dict)
 
     return render_template("main.html", devices=devices)
