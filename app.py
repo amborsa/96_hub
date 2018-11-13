@@ -1,3 +1,6 @@
+''' GENERAL NOTES '''
+''' check for tab issues with python -m tabnanny yourfile.py '''
+
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from tempfile import gettempdir
 
