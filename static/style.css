@@ -8,5 +8,9 @@ header .welcomeheader
 }
 
 .row .top-buffer { 
-	margin-top: 50px;
+	margin-top: 500px;
+}
+
+.p {
+	color: blue;
 }
