@@ -6,3 +6,7 @@ header .welcomeheader
 .row {
   max-width: 100%
 }
+
+.top-buffer { 
+	margin-top:20px; 
+}
