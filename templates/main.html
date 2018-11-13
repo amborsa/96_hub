@@ -4,7 +4,7 @@
     <div class="container.fluid">
         <div class="row top-buffer">
             {% for id in ids %}
-            <div class="col">{{ item }}</div>
+            <div class="col">{{ id }}</div>
 
                 <!-- if last column in row -->
                 {% if forloop.counter | divisibleby:"4" and not forloop.last %}
