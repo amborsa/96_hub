@@ -16,6 +16,14 @@
                 </div><div class="row top-buffer">
                 {% endif %}
 
+                {% if loop.last %}
+                  {% set remaining=col_num - (loop.index % col_num) %}
+
+                  {% for i in range(remaining) %}
+                    <div class="col"></div>
+                  {% endfor %}
+                {% endif %}
+
             {% endfor %}
         </div>
     </div>
