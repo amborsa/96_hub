@@ -3,10 +3,12 @@
 {% block main %}
     <div class="container.fluid">
         <div class="row top-buffer">
+            {% set col_num = 6 %}
             {% for device in devices %}
             <div class="col">
               Device ID: {{ device.id }}<br>
-              Name: {{ device.name }}
+              Name: {{ device.name }}<br>
+              {{ col_num }}
             </div>
 
                 <!-- if last column in row -->
