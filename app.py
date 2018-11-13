@@ -15,9 +15,12 @@ if app.config["DEBUG"]:
 @app.route('/')
 def main():
 	"""Show main page"""
-	"""At the very least, we will need to pass device ID,
-	patient information for every device."""
-	return render_template("main.html")
+	
+    # this array should be selected from the database
+    ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, \
+    13, 14, 15, 17, 18, 19]
+
+	return render_template("main.html", ids=ids)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

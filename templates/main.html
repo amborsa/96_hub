@@ -3,34 +3,16 @@
 {% block main %}
     <div class="container.fluid">
         <div class="row top-buffer">
-          <div class="col">
-              Device ID: {dynamic}<br>
-              Patient: {dynamic}<br>
-              T: {vital0}<br>
-              HR: {vital1}<br>
-              RR: {vital2}<br>
-	      <p>this should be blue</p>
-          </div>
-          <div class="col">.col-md-1</div>
-          <div class="col">.col-md-1</div>
-          <div class="col">.col-md-1</div>
-          <div class="col">.col-md-1</div>
-          <div class="col">.col-md-1</div>
-        </div>
+            {% for id in ids %}
+            <div class="col">{{ item }}</div>
 
-        <div class="row top-buffer">
-          <div class="col">
-              Device ID: {dynamic}<br>
-              Patient: {dynamic}<br>
-              T: {dynamic}<br>
-              HR: {dynamic}<br>
-              RR: {dynamic}<br>
-          </div>
-          <div class="col">.col-md-1</div>
-          <div class="col">.col-md-1</div>
-          <div class="col">test</div>
-          <div class="col">.col-md-1</div>
-          <div class="col">.col-md-1</div>
+                <!-- if last column in row -->
+                {% if forloop.counter | divisibleby:"4" and not forloop.last %}
+                </div><div class="row top-buffer">
+                {% endif %}
+
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}
