@@ -12,7 +12,6 @@ if app.config["DEBUG"]:
         return response
 
 @app.route('/')
-@nocache
 def main():
 	"""Show main page"""
 	"""At the very least, we will need to pass device ID,
