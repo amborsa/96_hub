@@ -7,10 +7,10 @@ header .welcomeheader
 	max-width: 100%;
 }
 
-.row .top-buffer { 
-	margin-top: 100px;
+.row.top-buffer { 
+	margin-top: 15px;
 }
 
-.p {
-	color: blue;
+p {
+	color: red;
 }
