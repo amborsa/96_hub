@@ -17,7 +17,7 @@ def main():
 	"""Show main page"""
 	"""At the very least, we will need to pass device ID,
 	patient information for every device."""
-    return render_template("main.html")
+	return render_template("main.html")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
