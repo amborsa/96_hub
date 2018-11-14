@@ -17,6 +17,7 @@
 				},
 				data: [{
 					type: "line",
+					// dataPoints:{{HeartRate}}
 					dataPoints: [
 						{ y: 450 },
 						{ y: 414},
@@ -44,9 +45,12 @@
 				axisY:{
 					includeZero: false
 				},
+				// Data is entered only for y values, x values are automatic
 				data: [{
 					type: "line",
-					dataPoints: [
+					// dataPoints: {{RespiratoryRate}}
+					dataPoints:
+					[
 						{ y: 450 },
 						{ y: 414},
 						{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
@@ -75,7 +79,9 @@
 				},
 				data: [{
 					type: "line",
-					dataPoints: [
+					// dataPoints: {{Temperature}}
+					dataPoints:
+					[
 						{ y: 450 },
 						{ y: 414},
 						{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
@@ -102,7 +108,7 @@
 			<div id="RespiratoryRate" style="height: 300px; width: 100%;"></div>
 			<br>
 			<div id="Temperature" style="height: 300px; width: 100%;"></div>
-			<script src="/static/js/canvasjs.min.js"></script>
+			<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 		</body>
 	</head>
 {% endblock %}
