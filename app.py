@@ -20,9 +20,9 @@ def main():
     """Show main page"""
 
     # this array should be selected from the database
-    ids=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19]
+    ids=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 19]
     names=["John", "Jim", "Jade", "John", "Jim", "Jade", "John", "Jim", "Jade", "John", "Jim", "Jade", "John", "Jim", "Jade", \
-    "John", "Jim"]
+    "John"]
     devices = []
     for i in range(len(ids)):
         new_dict = {'id': ids[i], 'name': names[i]}

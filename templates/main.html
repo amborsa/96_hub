@@ -2,24 +2,47 @@
 
 {% block main %}
     <div class="container.fluid">
-        <div class="row top-buffer">
+        <div class="row buffer">
             {% set col_num = 6 %}
             {% for device in devices %}
-            <div class="col">
-              Device ID: {{ device.id }}<br>
-              Name: {{ device.name }}<br>
-            </div>
+
+            {% if loop.index % col_num == 1%}
+              <div class="col solid left-most" align="center">
+              Device ID:<br>
+              {{ device.id }}<br><br>
+              Name: <br>
+              {{ device.name }}<br><br>
+              </div>
+            {% elif loop.index % col_num == 0 %}
+              <div class="col solid right-most" align="center">
+                Device ID:<br>
+                {{ device.id }}<br><br>
+                Name: <br>
+                {{ device.name }}<br><br>
+              </div>
+            {% else %}
+              <div class="col solid" align="center">
+                Device ID:<br>
+                {{ device.id }}<br><br>
+                Name: <br>
+                {{ device.name }}<br><br>
+              </div>
+            {% endif %}  
 
                 <!-- if last column in row -->
                 {% if loop.index is divisibleby (col_num) and not loop.last %}
-                </div><div class="row top-buffer">
+                </div><div class="row buffer">
                 {% endif %}
 
                 {% if loop.last %}
                   {% set remaining=col_num - (loop.index % col_num) %}
 
                   {% for i in range(remaining) %}
-                    <div class="col"></div>
+                    {% if i==remaining - 1 %}
+                      <div class="col clear right-most"></div>
+                    {% else %}
+                      <div class="col clear"></div>
+                    {% endif %}
                   {% endfor %}
                 {% endif %}
 
