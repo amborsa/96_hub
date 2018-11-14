@@ -8,24 +8,24 @@
 
             {% if loop.index % col_num == 1%}
               <div class="col solid left-most" align="center">
-              Device ID:<br>
-              {{ device.id }}<br><br>
-              Name: <br>
-              {{ device.name }}<br><br>
+                <div>Device ID:</div>
+                <div id="{{ device.id }}">{{ device.id }}</div><br>
+                <div>Name:</div>
+                <a href="{{ url_for('input', id=device.id) }}">{{ device.name }}</a><br><br>
               </div>
             {% elif loop.index % col_num == 0 %}
               <div class="col solid right-most" align="center">
-                Device ID:<br>
-                {{ device.id }}<br><br>
-                Name: <br>
-                {{ device.name }}<br><br>
+                <div>Device ID:</div>
+                <div id="{{ device.id }}">{{ device.id }}</div><br>
+                <div>Name:</div>
+                <a href="{{ url_for('input', id=device.id) }}">{{ device.name }}</a><br><br>
               </div>
             {% else %}
               <div class="col solid" align="center">
-                Device ID:<br>
-                {{ device.id }}<br><br>
-                Name: <br>
-                {{ device.name }}<br><br>
+                <div>Device ID:</div>
+                <div id="{{ device.id }}">{{ device.id }}</div><br>
+                <div>Name:</div>
+                <a href="{{ url_for('input', id=device.id) }}">{{ device.name }}</a><br><br>
               </div>
             {% endif %}  
 

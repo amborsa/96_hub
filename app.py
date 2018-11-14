@@ -30,6 +30,15 @@ def main():
 
     return render_template("main.html", devices=devices)
 
+@app.route('/input/<id>', methods=["GET", "POST"])
+def input(id):
+    if request.method == "GET":
+        return render_template("input.html", id=id)
+
+@app.route('/patient/<id>', methods=["GET"])
+def patient(id):
+    return render_template("patient.html", id=id)
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
 
