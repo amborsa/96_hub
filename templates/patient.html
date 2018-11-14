@@ -1,5 +1,108 @@
 {% extends "layout.html" %}
 
 {% block main %}
-	<div>Patient {{ id }}</div>
+	<!-- This {{id}} is the one that you clicked on -->
+	<head>
+		<script>
+			window.onload = function () {
+
+			var chart = new CanvasJS.Chart("HeartRate", {
+				animationEnabled: true,
+				theme: "light2",
+				title:{
+					text: "Heart Rate"
+				},
+				axisY:{
+					includeZero: false
+				},
+				data: [{
+					type: "line",
+					dataPoints: [
+						{ y: 450 },
+						{ y: 414},
+						{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
+						{ y: 460 },
+						{ y: 450 },
+						{ y: 500 },
+						{ y: 480 },
+						{ y: 480 },
+						{ y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+						{ y: 500 },
+						{ y: 480 },
+						{ y: 510 }
+					]
+				}]
+			});
+			chart.render();
+
+			var chart = new CanvasJS.Chart("RespiratoryRate", {
+				animationEnabled: true,
+				theme: "light2",
+				title:{
+					text: "Respiratory Rate"
+				},
+				axisY:{
+					includeZero: false
+				},
+				data: [{
+					type: "line",
+					dataPoints: [
+						{ y: 450 },
+						{ y: 414},
+						{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
+						{ y: 460 },
+						{ y: 450 },
+						{ y: 500 },
+						{ y: 480 },
+						{ y: 480 },
+						{ y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+						{ y: 500 },
+						{ y: 480 },
+						{ y: 510 }
+					]
+				}]
+			});
+			chart.render();
+
+			var chart = new CanvasJS.Chart("Temperature", {
+				animationEnabled: true,
+				theme: "light2",
+				title:{
+					text: "Temperature"
+				},
+				axisY:{
+					includeZero: false
+				},
+				data: [{
+					type: "line",
+					dataPoints: [
+						{ y: 450 },
+						{ y: 414},
+						{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
+						{ y: 460 },
+						{ y: 450 },
+						{ y: 500 },
+						{ y: 480 },
+						{ y: 480 },
+						{ y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+						{ y: 500 },
+						{ y: 480 },
+						{ y: 510 }
+					]
+				}]
+			});
+			chart.render();
+
+			}
+		</script>
+		<div>Patient {{ id }}</div>
+		<body>
+			<div id="HeartRate" style="height: 300px; width: 100%;"></div>
+			<br>
+			<div id="RespiratoryRate" style="height: 300px; width: 100%;"></div>
+			<br>
+			<div id="Temperature" style="height: 300px; width: 100%;"></div>
+			<script src="/static/js/canvasjs.min.js"></script>
+		</body>
+	</head>
 {% endblock %}
