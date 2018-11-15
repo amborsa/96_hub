@@ -1,5 +1,5 @@
 # importing Python package dependencies
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 
@@ -62,17 +62,18 @@ def main():
         ids.append(query.id)
         names.append(query.name)
         alarm_states.append(query.alarm_state)
-        print(query.alarm_state)
     devices = []
     for i in range(len(ids)):
         new_dict = {'id': ids[i], 'name': names[i], 'alarm_state': \
-        alarm_states[i]}
+            alarm_states[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
 
+    print(jsonify(devices))
+
     return render_template("main.html", devices=devices)
 
-@app.route('/update_main')
+@app.route('/update_main', methods=["POST"])
 def update_main():
     ''' grabs and organizes database:input data --> let's make this a function later '''
     ids = []
@@ -87,7 +88,7 @@ def update_main():
     devices = []
     for i in range(len(ids)):
         new_dict = {'id': ids[i], 'name': names[i], 'alarm_state': \
-        alarm_states[i]}
+            alarm_states[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
 
