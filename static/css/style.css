@@ -3,7 +3,7 @@ header .welcomeheader
 	font-family: Impact, Charcoal, sans-serif;
 }
 
-/*makes row whole width of browser*/
+/*makes row whole width of browser window*/
 .row {
 	max-width: 100%;
 }
@@ -79,4 +79,23 @@ a:active {
     color: black;
     background-color: transparent;
     text-decoration: underline;
+}
+
+/*positioning the hyperlinks on main.html*/
+.bottom-right {
+	right: 1px;
+	bottom: 0;
+	position: absolute;
+	border-style: solid none none solid;
+	border-width: 1px;
+	margin-right: -1px;
+}
+
+.bottom-left {
+	left: 1px;
+	bottom: 0;
+	position: absolute;
+	border-style: solid solid none none;
+	border-width: 1px;
+	margin-left: -1px;
 }
