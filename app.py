@@ -1,5 +1,3 @@
-
-
 # importing Python package dependencies
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -50,18 +48,23 @@ class Input(db.Model):
 ''' Done Defining Database Objects '''
 
 
+
 @app.route('/')
 def main():
     """Show main page"""
 
-    # this array should be selected from the database
-    ids=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 19]
-    names=["John", "Jim", "Jade", "John", "Jim", "Jade", "John", "Jim", "Jade", "John", "Jim", "Jade", "John", "Jim", "Jade", \
-    "John"]
+    ''' grabs and organizes database:input data '''
+    ids = []
+    names = []
+    full_query = Input.query.all()
+    for query in full_query:
+        ids.append(query.id)
+        names.append(query.name)
     devices = []
     for i in range(len(ids)):
         new_dict = {'id': ids[i], 'name': names[i]}
         devices.append(new_dict)
+    ''' done grabbing and organizing database:input data '''
 
     return render_template("main.html", devices=devices)
 

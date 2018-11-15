@@ -1,5 +1,6 @@
 '''This is not a file for the final web application.'''
 '''The purpose of this file is to populate the databases with dummy values.'''
+'''This should not be run if there are pre-existing, populated databases.'''
 
 # importing Python package dependencies
 from flask import Flask, flash, redirect, render_template, request, session, url_for
