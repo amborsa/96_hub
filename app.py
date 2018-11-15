@@ -44,7 +44,7 @@ class Input(db.Model):
     hr_thresh = db.Column('hr_thresh', db.Float, unique=False)
     rr_thresh = db.Column('rr_thresh', db.Float, unique=False)
     temp_thresh = db.Column('temp_thresh', db.Float, unique=False)
-    alarm_state = db.Column('alarm_state', db.Binary, unique=False)
+    alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
 ''' Done Defining Database Objects '''
 
 
@@ -53,20 +53,45 @@ class Input(db.Model):
 def main():
     """Show main page"""
 
-    ''' grabs and organizes database:input data '''
+    ''' grabs and organizes database:input data --> let's make this a function later '''
     ids = []
     names = []
+    alarm_states = []
     full_query = Input.query.all()
     for query in full_query:
         ids.append(query.id)
         names.append(query.name)
+        alarm_states.append(query.alarm_state)
+        print(query.alarm_state)
     devices = []
     for i in range(len(ids)):
-        new_dict = {'id': ids[i], 'name': names[i]}
+        new_dict = {'id': ids[i], 'name': names[i], 'alarm_state': \
+        alarm_states[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
 
     return render_template("main.html", devices=devices)
+
+@app.route('/update_main')
+def update_main():
+    ''' grabs and organizes database:input data --> let's make this a function later '''
+    ids = []
+    names = []
+    alarm_states = []
+    full_query = Input.query.all()
+    for query in full_query:
+        ids.append(query.id)
+        names.append(query.name)
+        alarm_states.append(query.alarm_state)
+        print(query.alarm_state)
+    devices = []
+    for i in range(len(ids)):
+        new_dict = {'id': ids[i], 'name': names[i], 'alarm_state': \
+        alarm_states[i]}
+        devices.append(new_dict)
+    ''' done grabbing and organizing database:input data '''
+
+
 
 @app.route('/input/<id>', methods=["GET", "POST"])
 def input(id):

@@ -7,7 +7,7 @@
             {% for device in devices %}
 
             {% if loop.index % col_num == 1%}
-              <div class="col solid left-most" align="center">
+              <div id="alarm_state{{ device.id }}" class="col solid left-most" align="center">
                 <div>Device ID:</div>
                 <div id="{{ device.id }}">{{ device.id }}</div><br>
                 <div>Name:</div>
@@ -16,7 +16,7 @@
                 <a class="bottom-right" href="{{ url_for('patient', id=device.id) }}">data</a>
               </div>
             {% elif loop.index % col_num == 0 %}
-              <div class="col solid right-most" align="center">
+              <div id="alarm_state{{ device.id }}" class="col solid right-most" align="center">
                 <div>Device ID:</div>
                 <div id="{{ device.id }}">{{ device.id }}</div><br>
                 <div>Name:</div>
@@ -25,7 +25,7 @@
                 <a class="bottom-right" href="{{ url_for('patient', id=device.id) }}">data</a>
               </div>
             {% else %}
-              <div class="col solid" align="center">
+              <div id="alarm_state{{ device.id }}" class="col solid" align="center">
                 <div>Device ID:</div>
                 <div id="{{ device.id }}">{{ device.id }}</div><br>
                 <div>Name:</div>
