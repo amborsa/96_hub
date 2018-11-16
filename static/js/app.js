@@ -1,22 +1,32 @@
+$(document).onopen(function() {
+	js_update()
+});
+
+
+// set to update every 5 seconds
 var var_update = setInterval(js_update, 5000);
 
+// function which calls for an update of alarm state
 function js_update() {
+	// sends request to /update_main
 	req = $.ajax({
             url : '/update_main',
             type : 'POST'
         });
 
+	// receives response from /update_main
 	req.done(function(data) {
-			$('#1').fadeOut(1000).fadeIn(1000);
-			$('#2').fadeOut(1000).fadeIn(1000);
-        });
-
+			var i;
+			for (i=0; i < data.length; i++) {
+				if (data[i].alarm_state == true) {
+					$('#alarm_state' + data[i].id).css({
+						backgroundColor: '#d62728'
+					});
+				} else {
+					$('#alarm_state' + data[i].id).css({
+						backgroundColor: 'white'
+					});
+				}
+			}
+        })
 }
-
-// var myVar = setInterval(myTimer, 1000);
-
-// function myTimer() {
-//     var d = new Date();
-//     // document.getElementById("1").innerHTML = d.toLocaleTimeString();
-//     document.getElementById("1").innerHTML = "live";
-// }
