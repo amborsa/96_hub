@@ -2,6 +2,7 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
+import random
 
 ''' Initializing App and Database '''
 app = Flask(__name__)
@@ -73,7 +74,21 @@ def main():
 
 @app.route('/update_main', methods=["POST"])
 def update_main():
-    ''' grabs and organizes database:input data '''
+
+    ''' this just edits alarm states in input.db --> 
+    this will eventually need to be replaced by the script that
+    actually analyzes data from vitals.db and gives an alarm-state
+    output '''
+    guess = random.randint(1,20)
+    row = Input.query.filter(Input.id==guess).first()
+    if row.alarm_state==True:
+        row.alarm_state = False
+    else:
+        row.alarm_state = True
+    db.session.commit()
+
+
+    ''' grabs and organizes input.db data '''
     ids = []
     alarm_states = []
     full_query = Input.query.all()

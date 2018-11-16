@@ -8,8 +8,9 @@ $(document).ready(function() {
 var var_update = setInterval(js_update, 1000); 
 
 // function which calls for an update of alarm state
+// IT WOULD BE GREAT IF WE COULD REQUEST ONLY WHEN THE USER IS ON "/" -- IS THIS POSSIBLE?
 function js_update() {
-	
+
 	// sends request to /update_main
 	req = $.ajax({
             url : '/update_main',
