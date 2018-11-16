@@ -1,7 +1,6 @@
+// update upon starting the page
 $(document).ready(function() {
-
     js_update()
-
 });
 
 

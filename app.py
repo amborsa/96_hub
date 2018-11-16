@@ -87,8 +87,6 @@ def update_main():
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
 
-    print("success?")
-
     return jsonify(devices)
 
 
