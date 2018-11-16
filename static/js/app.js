@@ -1,5 +1,7 @@
-$(document).onopen(function() {
-	js_update()
+$(document).ready(function() {
+
+    js_update()
+
 });
 
 
