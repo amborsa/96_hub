@@ -4,8 +4,8 @@ $(document).ready(function() {
 });
 
 
-// set to update every 5 seconds
-var var_update = setInterval(js_update, 5000);
+// set to update every 1 second
+var var_update = setInterval(js_update, 1000);
 
 // function which calls for an update of alarm state
 function js_update() {

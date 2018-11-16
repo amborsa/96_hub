@@ -16,7 +16,7 @@ header .welcomeheader
 
 /*https://www.w3schools.com/css/css_border.asp*/
 .col.solid {
-	background-color: white;
+	background-color: green;
 	border-style: solid;
 	border-color: black;
 	border-width: 1px;
@@ -24,7 +24,7 @@ header .welcomeheader
 	margin-right: 5px;
 }
 .col.solid.left-most {
-	background-color: white;
+	background-color: green;
 	border-style: solid;
 	border-color: black;
 	border-width: 1px;
