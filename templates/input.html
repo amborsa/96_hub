@@ -2,7 +2,9 @@
 
 {% block main %}
 
-<div class="p-5 bg-success">I have a padding on all sides (3rem = 48px)</div>
+<html>
+<div class="m-5 bg-success"></div>
+<body bgcolor="#99ddff">
 
 <form>
   <div class="form-row">
@@ -16,19 +18,21 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="inputAddress">Respiratory Rate</label>
+    <label for="inputAddress">Respiratory Rate (breaths per minute)</label>
     <input type="number" class="form-control" id="inputRR" placeholder="13">
   </div>
   <div class="form-group">
-    <label for="inputAddress">Heart Rate</label>
+    <label for="inputAddress">Heart Rate (beats per minute)</label>
     <input type="number" class="form-control" id="inputHR" placeholder="90">
   </div>
   <div class="form-group">
-    <label for="inputAddress">Temperature</label>
+    <label for="inputAddress">Temperature (&#8451)</label>
     <input type="number" class="form-control" id="inputTemp" placeholder="37.5">
   </div>
 
+
 </form>
+
 
 {% endblock %}
 
