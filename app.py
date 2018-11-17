@@ -75,7 +75,7 @@ def main():
 @app.route('/update_main', methods=["POST"])
 def update_main():
 
-    ''' this just edits alarm states in input.db --> 
+    ''' this just edits alarm states in input.db -->
     this will eventually need to be replaced by the script that
     actually analyzes data from vitals.db and gives an alarm-state
     output '''
@@ -114,25 +114,18 @@ def input(id):
 def patient(id):
     # In this function, we need to get an list of dictionaries that has the data
     # # ex: temp = [{t:98},{t:99}, ...]
-    # temp = db.execute("SELECT temp FROM THE_TABLE_WE_NEED_TO_CHANGE WHERE id = :id", id = id)
-    # temp_list = []
-    # for i in range(len(temp)):
-    #     temp_value = temp[i]
-    #     temp_list.append(temp_value)
-    # HeartRate = db.execute("SELECT HeartRate FROM THE_TABLE_WE_NEED_TO_CHANGE WHERE id = :id", id = id)
-    # hr_list = []
-    # for i in range(len(HeartRate)):
-    #     temp_value = Heart[i]
-    #     hr_list.append(temp_value)
-    # RR = db.execute("SELECT RR FROM THE_TABLE_WE_NEED_TO_CHANGE WHERE id = :id", id = id)
+    temp = db.execute("SELECT temp,time FROM Vital WHERE id = :id", id = id)
+    HeartRate = db.execute("SELECT hr,time FROM Vital WHERE id = :id", id = id)
+    RR = db.execute("SELECT rr,time FROM Vital WHERE id = :id", id = id)
+    # Make sure it works for just one case first
+    # :id", id = id
     # RR_list = []
     # for i in range(len(RR)):
     #     RR_value = RR[i]
     #     RR_list.append(RR_value)
-
     # Put this following comment into render.template
     # , Temperature=temp_list,HeartRate=hr_list, RespiratoryRate=RR_list
-    return render_template("patient.html", id=id)
+    return render_template("patient.html", id=id, Temperature=temp_list,HeartRate=hr_list, RespiratoryRate=RR_list)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
