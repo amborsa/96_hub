@@ -82,13 +82,24 @@ def update_main():
     this will eventually need to be replaced by the script that
     actually analyzes data from vitals.db and gives an alarm-state
     output '''
-    guess = random.randint(1,20)
-    row = Input.query.filter(Input.id==guess).first()
-    if row.alarm_state==True:
-        row.alarm_state = False
-    else:
-        row.alarm_state = True
-    db.session.commit()
+
+    # guess = random.randint(1,20)
+    # row = Input.query.filter(Input.id==guess).first()
+    # if row.alarm_state==True:
+    #     row.alarm_state = False
+    # else:
+    #     row.alarm_state = True
+    # db.session.commit()
+
+    # ids = []
+    # for query in Input.query.all()
+    #     ids.append(query.id)
+
+    # for id in ids: 
+
+    # patient1_hr = Vital.query.filter(Vital.id==1).order_by(Vital.time)
+    # for row in patient1_hr:
+    #     x = row.time
 
 
     ''' grabs and organizes input.db data '''
