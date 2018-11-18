@@ -42,9 +42,12 @@ class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(30), unique=False)
-    hr_thresh = db.Column('hr_thresh', db.Float, unique=False)
-    rr_thresh = db.Column('rr_thresh', db.Float, unique=False)
-    temp_thresh = db.Column('temp_thresh', db.Float, unique=False)
+    hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
+    rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
+    temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
+    hr_thresh_low = db.Column('hr_thresh_low', db.Float, unique=False)
+    rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
+    temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
     alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
 ''' Done Defining Database Objects '''
 
