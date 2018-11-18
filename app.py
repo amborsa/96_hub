@@ -78,28 +78,46 @@ def main():
 @app.route('/update_main', methods=["POST"])
 def update_main():
 
-    ''' this just edits alarm states in input.db -->
-    this will eventually need to be replaced by the script that
-    actually analyzes data from vitals.db and gives an alarm-state
-    output '''
+    input_query_all = Input.query.all()
 
-    # guess = random.randint(1,20)
-    # row = Input.query.filter(Input.id==guess).first()
-    # if row.alarm_state==True:
-    #     row.alarm_state = False
-    # else:
-    #     row.alarm_state = True
-    # db.session.commit()
+    ids = []
+    for query in input_query_all:
+        ids.append(query.id)
 
-    # ids = []
-    # for query in Input.query.all()
-    #     ids.append(query.id)
+    for id in ids:
+        # id specific queries
+        vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.time)
+        input_query_id = Input.query.filter(Input.id==id).first()
 
-    # for id in ids: 
+        # thresholds
+        hr_low = input_query_id.hr_thresh_low
+        hr_high = input_query_id.hr_thresh_high
+        rr_low = input_query_id.rr_thresh_low
+        rr_high = input_query_id.rr_thresh_high
+        temp_low = input_query_id.temp_thresh_low
+        temp_high = input_query_id.temp_thresh_high
 
-    # patient1_hr = Vital.query.filter(Vital.id==1).order_by(Vital.time)
-    # for row in patient1_hr:
-    #     x = row.time
+        # vitals and time into arrays
+        hrs = []
+        rrs = []
+        temps = []
+        time = []
+        for row in vital_query:
+            hrs.append(row.hr)
+            rrs.append(row.rr)
+            temps.append(row.temp)
+            time.append(row.time)
+
+        # analyzing the vitals to determine alarm state
+        if max(hrs[-5:]) >= hr_high or min(hrs[-5:]) <= hr_low or max(rrs[-5:]) >= rr_high or min(rrs[-5:]) <= rr_low or \
+        max(temps[-5:]) >= temp_high or min(temps[-5:]) <= temp_low:
+            alarm_state = True
+        else:
+            alarm_state = False
+
+        # commit to database
+        input_query_id.alarm_state = alarm_state
+        db.session.commit()
 
 
     ''' grabs and organizes input.db data '''

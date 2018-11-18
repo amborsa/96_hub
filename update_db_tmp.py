@@ -1,5 +1,5 @@
 '''This is not a file for the final web application.'''
-'''The purpose of this file is to randomly change alarm states.'''
+'''The purpose of this file is to test the Flask application.'''
 
 # importing Python package dependencies
 from flask import Flask, flash, redirect, render_template, request, session, url_for
@@ -46,20 +46,32 @@ class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(30), unique=False)
-    hr_thresh = db.Column('hr_thresh', db.Float, unique=False)
-    rr_thresh = db.Column('rr_thresh', db.Float, unique=False)
-    temp_thresh = db.Column('temp_thresh', db.Float, unique=False)
+    hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
+    rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
+    temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
+    hr_thresh_low = db.Column('hr_thresh_low', db.Float, unique=False)
+    rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
+    temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
     alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
 ''' Done Defining Database Objects '''
 
 # making continuous and random changes to database:input
-while True:
-    time.sleep(random.randint(1,10))
-    guess = random.randint(1,20)
-    print(guess)
-    row = Input.query.filter(Input.id==guess).first()
-    if row.alarm_state==True:
-        row.alarm_state = False
-    else:
-        row.alarm_state = True
-    db.session.commit()
+# while True:
+#     time.sleep(random.randint(1,10))
+#     guess = random.randint(1,20)
+#     print(guess)
+#     row = Input.query.filter(Input.id==guess).first()
+#     if row.alarm_state==True:
+#         row.alarm_state = False
+#     else:
+#         row.alarm_state = True
+#     db.session.commit()
+
+input_query_id = Input.query.filter(Input.id==3).first()
+input_query_id.hr_thresh_high = 160.0
+input_query_id.hr_thresh_low = 0.0
+input_query_id.rr_thresh_high = 100.0
+input_query_id.rr_thresh_low = 0.0
+input_query_id.temp_thresh_low = 20.0
+input_query_id.temp_thresh_high = 50.0
+db.session.commit()
