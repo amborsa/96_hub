@@ -1,5 +1,5 @@
 # importing Python package dependencies
-from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify,json
+from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify,json,Markup
 from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 import random
@@ -149,46 +149,20 @@ def patient(id):
     temp = []
     hr = []
     rr = []
+    time = []
     # Acesses the entire table, each row is an Objects
     # ex: full_query(0) = the title of categories row
 
-    full_query = Vital.query.all()
+    full_query = Vital.query.filter(Vital.id==id)
 
     # NUMBER.columnname will access a cell in the table
     for query in full_query:
-        temp_value = {
-            "y": query.temp,
-            "x": query.time
-        }
-        hr_value = {
-            "y": query.hr,
-            "x": query.time
-        }
-        rr_value = {
-            "y": query.rr
-        }
-        temp.append(temp_value)
-        hr.append(hr_value)
-        rr.append(rr_value)
-    hr_json = json.dumps(hr)
-    # for query in full_query:
-    #     temp.append(query.temp)
-    #     hr.append(query.hr)
-    #     rr.append(query.rr)
-    # Make this into a dictionary [{},{},{}...]
-    # temp = db.execute("SELECT temp,time FROM Vital WHERE id = :id", id = 1)
-    # HeartRate = db.execute("SELECT hr,time FROM Vital WHERE id = :id", id = 1)
-    # RR = db.execute("SELECT rr,time FROM Vital WHERE id = :id", id = 1)
-    # Make sure it works for just one case first
-    # :id", id = id
-    # RR_list = []
-    # for i in range(len(RR)):
-    #     RR_value = RR[i]
-    #     RR_list.append(RR_value)
-    # Put this following comment into render.template
-    # , Temperature=temp_list,HeartRate=hr_list, RespiratoryRate=RR_list, id=id
-    # data=map(json.dumps, data)
-    return render_template("patient.html", hr=hr_json)
+        hr.append(query.hr)
+        temp.append(query.temp)
+        rr.append(query.rr)
+        time.append(query.time)
+    return render_template("patient.html", title1="Patient Vitals",title2="Patient",values1 = hr, labels = time, max1 = 250, values2 = temp, max2 = 50)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

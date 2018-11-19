@@ -33,7 +33,7 @@
                 <a class="bottom-left" href="{{ url_for('input', id=device.id) }}">edit</a>
                 <a class="bottom-right" href="{{ url_for('patient', id=device.id) }}">data</a>
               </div>
-            {% endif %}  
+            {% endif %}
 
                 <!-- if last column in row -->
                 {% if loop.index is divisibleby (col_num) and not loop.last %}

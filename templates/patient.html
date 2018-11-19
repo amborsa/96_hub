@@ -2,88 +2,119 @@
 
 {% block main %}
 	<!-- This {{id}} is the one that you clicked on -->
-	<head>
-		<!-- <script type="text/javascript">
-    function test(HeartRate) {
-        console.log(HeartRate);
-    }
-    test({{ HeartRate|safe }})
-		</script> -->
-		<script>
-			// // window.onload = function plot(HeartRate) {
-			//
-			// var chart = new CanvasJS.Chart("HeartRate", {
-			// 	animationEnabled: true,
-			// 	theme: "light2",
-			// 	title:{
-			// 		text: "Heart Rate"
-			// 	},
-			// 	axisY:{
-			// 		includeZero: false
-			// 	},
-			// 	data: [{
-			// 		type: "line",
-			// 		dataPoints: HeartRate
-			// 		// dataPoints: [
-			// 		// 	{ 'y': 450 },
-			// 		// 	{ 'y': 414},
-			// 		// 	{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-			// 		// 	{ y: 460 },
-			// 		// 	{ y: 450 },
-			// 		// 	{ y: 500 },
-			// 		// 	{ y: 480 },
-			// 		// 	{ y: 480 },
-			// 		// 	{ y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-			// 		// 	{ y: 500 },
-			// 		// 	{ y: 480 },
-			// 		// 	{ y: 510 }
-			// 		// ]
-			// 	}]
-			// });
-			// chart.render();
-			// }
-			// plot({{ HeartRate|safe }})
-			window.onload = function () {
+	<body>
+	  <center>
+	    <h1>{{ title1 }}</h1>
 
-			var chart = new CanvasJS.Chart("HeartRate", {
-				animationEnabled: true,
-				theme: "light2",
-				title:{
-					text: "Heart Rate"
-				},
-				axisY:{
-					includeZero: false
-				},
-				data: [{
-					type: "line",
-					dataPoints: [
-						{ 'y': 450 },
-						{ 'y': 414},
-						{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-						{ y: 460 },
-						{ y: 450 },
-						{ y: 500 },
-						{ y: 480 },
-						{ y: 480 },
-						{ y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-						{ y: 500 },
-						{ y: 480 },
-						{ y: 510 }
-					]
-				}]
-			});
-			chart.render();
-			}
-		</script>
-		<div>Patient {{ id }}</div>
-		<body>
-			<div id="HeartRate" style="height: 300px; width: 100%;"></div>
-			<br>
-			<div id="RespiratoryRate" style="height: 300px; width: 100%;"></div>
-			<br>
-			<div id="Temperature" style="height: 300px; width: 100%;"></div>
-			<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
-			<!-- <script type="text/javascript" src="/static/js/canvasjs.min.js"></script> -->
-		<!-- </body>
-	</head>
+	    <canvas id="chart" width="1000" height="400"></canvas>
+	    <script>
+	      // bar chart data
+	      var barData = {
+	        labels : [
+	          {% for item in labels %}
+	            "{{ item }}",
+	          {% endfor %}
+	        ],
+	        datasets : [{
+						// pointHoverRadius: 1,
+						// pointRadius: 100,
+	          fillColor: "rgba(151,187,205,0.2)",
+	          strokeColor: "rgba(151,187,205,1)",
+	          pointColor: "rgba(151,187,205,1)",
+	          pointStrokeColor: "#fff",
+	          pointHighlightFill: "#fff",
+	          pointHighlightStroke: "rgba(151,187,205,1)",
+	          bezierCurve : false,
+	          data : [
+		    		{% for item in values1 %}
+	          	{{ item }},
+	          {% endfor %}]
+	          }
+		]
+	      }
+	      Chart.defaults.global.animationSteps = 50;
+	      Chart.defaults.global.tooltipYPadding = 1;
+	      Chart.defaults.global.tooltipCornerRadius = 0;
+	      Chart.defaults.global.tooltipTitleFontStyle = "normal";
+	      Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+	      Chart.defaults.global.animationEasing = "easeOutBounce";
+	      Chart.defaults.global.responsive = false;
+	      Chart.defaults.global.scaleLineColor = "black";
+	      Chart.defaults.global.scaleFontSize = 16;
+	      // get bar chart canvas
+	      var mychart = document.getElementById("chart").getContext("2d");
+	      steps = 10
+	      max = {{ max1 }}
+	      // draw bar chart
+	      var LineChartDemo = new Chart(mychart).Line(barData, {
+	        scaleOverride: true,
+	        scaleSteps: steps,
+	        scaleStepWidth: Math.ceil(max / steps),
+	        scaleStartValue: 0,
+	        scaleShowVerticalLines: true,
+	        scaleShowGridLines : true,
+	        barShowStroke : true,
+	        scaleShowLabels: true,
+	        bezierCurve: false,
+	      });
+	    </script>
+	  </center>
+		<br>
+		<center>
+	    <h1>{{ title2 }}</h1>
+
+	    <canvas id="chart" width="1000" height="400"></canvas>
+	    <script>
+	      // bar chart data
+	      var barData = {
+	        labels : [
+	          {% for item in labels %}
+	            "{{ item }}",
+	          {% endfor %}
+	        ],
+	        datasets : [{
+						// pointHoverRadius: 1,
+						// pointRadius: 100,
+	          fillColor: "rgba(151,187,205,0.2)",
+	          strokeColor: "rgba(151,187,205,1)",
+	          pointColor: "rgba(151,187,205,1)",
+	          pointStrokeColor: "#fff",
+	          pointHighlightFill: "#fff",
+	          pointHighlightStroke: "rgba(151,187,205,1)",
+	          bezierCurve : false,
+	          data : [
+		    		{% for item in values2 %}
+	          	{{ item }},
+	          {% endfor %}]
+	          }
+		]
+	      }
+	      Chart.defaults.global.animationSteps = 50;
+	      Chart.defaults.global.tooltipYPadding = 1;
+	      Chart.defaults.global.tooltipCornerRadius = 0;
+	      Chart.defaults.global.tooltipTitleFontStyle = "normal";
+	      Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+	      Chart.defaults.global.animationEasing = "easeOutBounce";
+	      Chart.defaults.global.responsive = false;
+	      Chart.defaults.global.scaleLineColor = "black";
+	      Chart.defaults.global.scaleFontSize = 16;
+	      // get bar chart canvas
+	      var mychart = document.getElementById("chart").getContext("2d");
+	      steps = 10
+	      max = {{ max2 }}
+	      // draw bar chart
+	      var LineChartDemo = new Chart(mychart).Line(barData, {
+	        scaleOverride: true,
+	        scaleSteps: steps,
+	        scaleStepWidth: Math.ceil(max / steps),
+	        scaleStartValue: 0,
+	        scaleShowVerticalLines: true,
+	        scaleShowGridLines : true,
+	        barShowStroke : true,
+	        scaleShowLabels: true,
+	        bezierCurve: false,
+	      });
+	    </script>
+	  </center>
+	</body>
 {% endblock %}
