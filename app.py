@@ -149,20 +149,24 @@ def patient(id):
     temp = []
     hr = []
     rr = []
+    time = []
     # Acesses the entire table, each row is an Objects
     # ex: full_query(0) = the title of categories row
 
     full_query = Vital.query.all()
 
     # NUMBER.columnname will access a cell in the table
+    # for query in full_query:
+    #     hr.append(query.hr)
+    #     temp.append(query.temp)
+    #     rr.append(query.rr)
+    #     time.append(query.time)
     for query in full_query:
         temp_value = {
-            "y": query.temp,
-            "x": query.time
+            "y": query.temp
         }
         hr_value = {
-            "y": query.hr,
-            "x": query.time
+            "y": query.hr
         }
         rr_value = {
             "y": query.rr
@@ -170,7 +174,7 @@ def patient(id):
         temp.append(temp_value)
         hr.append(hr_value)
         rr.append(rr_value)
-    hr_json = json.dumps(hr)
+    hr_json = jsonify(hr)
     # for query in full_query:
     #     temp.append(query.temp)
     #     hr.append(query.hr)
@@ -188,7 +192,7 @@ def patient(id):
     # Put this following comment into render.template
     # , Temperature=temp_list,HeartRate=hr_list, RespiratoryRate=RR_list, id=id
     # data=map(json.dumps, data)
-    return render_template("patient.html", hr=hr_json)
+    return render_template("patient.html", hr = hr_json)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
