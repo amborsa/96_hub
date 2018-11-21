@@ -161,7 +161,7 @@ def patient(id):
         temp.append(query.temp)
         rr.append(query.rr)
         time.append(query.time)
-    return render_template("patient.html", title1="Patient Vitals",title2="Patient",values1 = hr, labels = time, max1 = 250, values2 = temp, max2 = 50)
+    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate",values1 = hr, labels = time, max1 = 250, values2 = temp, max2 = 50, values3 = rr, max3 = 50)
 
 
 if __name__ == "__main__":
