@@ -3,62 +3,75 @@
 {% block main %}
 
 <html>
+<!--  button to return to home page -->
+<button onclick="location.href = '/';"type="button">RETURN TO MAIN</button>
+
+<!--  create top margin -->
 <div class="m-5 bg-success"></div>
-<body bgcolor="#99ddff">
+
 
 <form>
+<!-- display device id (Read Only)-->
+
+  <div class="form-group">
+    <label for="deviceID">Device ID</label>
+    <input type="text" class="form-control" id="inputDeviceID" value="{{id}}" readonly="readonly">
+  </div>
 
 <!-- first name -->
-  <div class="form-row">
-    <div class="form-group">
-      <label for="inputFirstName">First Name</label>
-      <input type="FirstName" class="form-control" id="inputFirstName" placeholder="Cindy">
-    </div>
+  <div class="form-group">
+    <label for="inputFirstName">First Name</label>
+    <input type="text" class="form-control" id="inputFirstName" value="{{name}}">
+  </div>
 
-    <!-- last name -->
- <!--    <div class="form-group col-md-6">
-      <label for="inputLastName">Last Name</label>
-      <input type="password" class="form-control" id="inputLastName" placeholder="Walker">
-    </div> -->
-
-
-<!-- Respiratory Rate Thresholds -->
+ <!-- Respiratory Rate Thresholds -->
   </div>
   <div class="form-group">
     <label for="RRlower">Respiratory Rate Lower (breaths per minute)</label>
-    <input type="number" class="form-control" id="inputRRlower" placeholder="{{rr_low| round(1)}}">
+    <input type="number" class="form-control" id="inputRRlower" value="{{rr_low| round(1)}}">
   </div>
   </div>
   <div class="form-group">
     <label for="RRhigher">Respiratory Rate Upper (breaths per minute)</label>
-    <input type="number" class="form-control" id="inputRRupper" placeholder="{{rr_high| round(1)}}">
+    <input type="number" class="form-control" id="inputRRupper" value="{{rr_high| round(1)}}">
   </div>
 
 
 <!-- Heart rate thresholds -->
   <div class="form-group">
     <label for="HRlower">Heart Rate Lower (beats per minute)</label>
-    <input type="number" class="form-control" id="inputHRlower" placeholder="{{hr_low |round(1)}}">
+    <input type="number" class="form-control" id="inputHRlower" value="{{hr_low |round(1)}}">
   </div>
   <div class="form-group">
     <label for="HRupper">Heart Rate Upper (beats per minute)</label>
-    <input type="number" class="form-control" id="inputHRupper" placeholder="{{hr_high| round(1)}}">
+    <input type="number" class="form-control" id="inputHRupper" value="{{hr_high| round(1)}}">
   </div>
 
 
 <!-- Temperature Thresholds -->
   <div class="form-group">
     <label for="Temp">Temperature Lower (&#8451)</label>
-    <input type="number" class="form-control" id="inputTempLower" placeholder="{{temp_low|round(1)}}">
+    <input type="number" class="form-control" id="inputTempLower" value="{{temp_low|round(1)}}">
   </div>
   <div class="form-group">
     <label for="Temp">Temperature Upper (&#8451)</label>
-    <input type="number" class="form-control" id="inputTempUpper" placeholder="{{temp_high|round(1)}}">
+    <input type="number" class="form-control" id="inputTempUpper" value="{{temp_high|round(1)}}">
   </div>
 
 
 </form>
 
+<!-- Submit Button: write new thresholds to database, bring back to main page-->
+<div> <button onclick="location.href = '/input/{{id}}';"type="button">SUBMIT</button> </div>
+
+<!-- spacing -->
+<div class="m-5 bg-success"></div>
+
+<!-- Reset Button: write default thresholds to database, return to same page -->
+<div> <button onclick="location.href = '/input/{{id}}';"type="button">RESET DEVICE</button> </div>
+
+<!-- spacing -->
+<div class="m-5 bg-success"></div>
 
 {% endblock %}
 

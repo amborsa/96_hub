@@ -49,6 +49,7 @@ class Input(db.Model):
     rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
     temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
     alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
+    
 ''' Done Defining Database Objects '''
 
 
@@ -150,7 +151,8 @@ def input(id):
         rr_high = input_query_id.rr_thresh_high
         temp_low = input_query_id.temp_thresh_low
         temp_high = input_query_id.temp_thresh_high
-        return render_template("input.html", id=id, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, rr_high=rr_high, temp_low=temp_low, temp_high=temp_high)
+        name = input_query_id.name
+        return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, rr_high=rr_high, temp_low=temp_low, temp_high=temp_high)
 
 @app.route('/patient/<id>', methods=["GET"])
 def patient(id):
