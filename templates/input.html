@@ -7,27 +7,53 @@
 <body bgcolor="#99ddff">
 
 <form>
+
+<!-- first name -->
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group">
       <label for="inputFirstName">First Name</label>
       <input type="FirstName" class="form-control" id="inputFirstName" placeholder="Cindy">
     </div>
-    <div class="form-group col-md-6">
+
+    <!-- last name -->
+ <!--    <div class="form-group col-md-6">
       <label for="inputLastName">Last Name</label>
       <input type="password" class="form-control" id="inputLastName" placeholder="Walker">
-    </div>
+    </div> -->
+
+
+<!-- Respiratory Rate Thresholds -->
   </div>
   <div class="form-group">
-    <label for="inputAddress">Respiratory Rate (breaths per minute)</label>
-    <input type="number" class="form-control" id="inputRR" placeholder="13">
+    <label for="RRlower">Respiratory Rate Lower (breaths per minute)</label>
+    <input type="number" class="form-control" id="inputRRlower" placeholder="{{rr_low| round(1)}}">
+  </div>
   </div>
   <div class="form-group">
-    <label for="inputAddress">Heart Rate (beats per minute)</label>
-    <input type="number" class="form-control" id="inputHR" placeholder="90">
+    <label for="RRhigher">Respiratory Rate Upper (breaths per minute)</label>
+    <input type="number" class="form-control" id="inputRRupper" placeholder="{{rr_high| round(1)}}">
+  </div>
+
+
+<!-- Heart rate thresholds -->
+  <div class="form-group">
+    <label for="HRlower">Heart Rate Lower (beats per minute)</label>
+    <input type="number" class="form-control" id="inputHRlower" placeholder="{{hr_low |round(1)}}">
   </div>
   <div class="form-group">
-    <label for="inputAddress">Temperature (&#8451)</label>
-    <input type="number" class="form-control" id="inputTemp" placeholder="37.5">
+    <label for="HRupper">Heart Rate Upper (beats per minute)</label>
+    <input type="number" class="form-control" id="inputHRupper" placeholder="{{hr_high| round(1)}}">
+  </div>
+
+
+<!-- Temperature Thresholds -->
+  <div class="form-group">
+    <label for="Temp">Temperature Lower (&#8451)</label>
+    <input type="number" class="form-control" id="inputTempLower" placeholder="{{temp_low|round(1)}}">
+  </div>
+  <div class="form-group">
+    <label for="Temp">Temperature Upper (&#8451)</label>
+    <input type="number" class="form-control" id="inputTempUpper" placeholder="{{temp_high|round(1)}}">
   </div>
 
 
@@ -36,8 +62,8 @@
 
 {% endblock %}
 
-<!-- 
-input_query_id = Input.query.filter(Input.id==id).first()
+
+<!-- input_query_id = Input.query.filter(Input.id==id).first()
 
         hr_low = input_query_id.hr_thresh_low
         hr_high = input_query_id.hr_thresh_high

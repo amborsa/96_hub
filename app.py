@@ -140,7 +140,17 @@ def update_main():
 @app.route('/input/<id>', methods=["GET", "POST"])
 def input(id):
     if request.method == "GET":
-        return render_template("input.html", id=id)
+        
+        input_query_id = Input.query.filter(Input.id==id).first()
+
+        # for each ID, acquire HR, RR, and temp thresholds
+        hr_low = input_query_id.hr_thresh_low
+        hr_high = input_query_id.hr_thresh_high
+        rr_low = input_query_id.rr_thresh_low
+        rr_high = input_query_id.rr_thresh_high
+        temp_low = input_query_id.temp_thresh_low
+        temp_high = input_query_id.temp_thresh_high
+        return render_template("input.html", id=id, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, rr_high=rr_high, temp_low=temp_low, temp_high=temp_high)
 
 @app.route('/patient/<id>', methods=["GET"])
 def patient(id):
