@@ -157,6 +157,7 @@ def input(id):
 
     if request.method == "POST":
 
+        # populate database with form data
         if request.form['btn_identifier']=="set":
             input_query_id = Input.query.filter(Input.id==id).first()
             input_query_id.name = request.form['inputName']
@@ -168,8 +169,17 @@ def input(id):
             input_query_id.temp_thresh_high = request.form['inputTempupper']
             db.session.commit()
 
+        # populate database with "standard values" -- these values should be researched and updated
         elif request.form['btn_identifier']=="reset":
-            print("this is reset")
+            input_query_id = Input.query.filter(Input.id==id).first()
+            input_query_id.name = ""
+            input_query_id.rr_thresh_low = 20.0
+            input_query_id.rr_thresh_high = 50.0
+            input_query_id.hr_thresh_low = 45.0
+            input_query_id.hr_thresh_high = 110.0
+            input_query_id.temp_thresh_low = 35.0
+            input_query_id.temp_thresh_high = 38.5
+            db.session.commit()
 
 
         return redirect(url_for("main"))
@@ -193,7 +203,8 @@ def patient(id):
         temp.append(query.temp)
         rr.append(query.rr)
         time.append(query.time)
-    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate",values1 = hr, labels = time, max1 = 250, values2 = temp, max2 = 50, values3 = rr, max3 = 50)
+    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate",\
+        values1 = hr, labels = time, max1 = 250, values2 = temp, max2 = 50, values3 = rr, max3 = 50)
 
 
 if __name__ == "__main__":
