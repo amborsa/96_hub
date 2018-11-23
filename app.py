@@ -156,6 +156,22 @@ def input(id):
             rr_high=rr_high, temp_low=temp_low, temp_high=temp_high)
 
     if request.method == "POST":
+
+        if request.form['btn_identifier']=="set":
+            input_query_id = Input.query.filter(Input.id==id).first()
+            input_query_id.name = request.form['inputName']
+            input_query_id.rr_thresh_low = request.form['inputRRlower']
+            input_query_id.rr_thresh_high = request.form['inputRRupper']
+            input_query_id.hr_thresh_low = request.form['inputHRlower']
+            input_query_id.hr_thresh_high = request.form['inputHRupper']
+            input_query_id.temp_thresh_low = request.form['inputTemplower']
+            input_query_id.temp_thresh_high = request.form['inputTempupper']
+            db.session.commit()
+
+        elif request.form['btn_identifier']=="reset":
+            print("this is reset")
+
+
         return redirect(url_for("main"))
 
 @app.route('/patient/<id>', methods=["GET"])
