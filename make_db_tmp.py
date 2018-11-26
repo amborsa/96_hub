@@ -46,6 +46,7 @@ class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(30), unique=False)
+    age = db.Column('age', db.Integer, unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
@@ -53,6 +54,7 @@ class Input(db.Model):
     rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
     temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
     alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
+
 ''' Done Defining Database Objects '''
 
 # this makes the databases (assuming there are no databases to start with)
@@ -62,6 +64,7 @@ db.create_all()
 ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 names = ["Daniel", "Anisha", "Allegra", "Adriano", "Michelle", "Simone", "Jesse", "Tatheer", "Olivia", "Jazmin", "Jason", \
 "Andrew", "Joel", "Nic", "Aileen", "Cathy", "Awnit", "Colin", "Anisha", "Nathan"]
+ages = []
 hr_threshes_high = []
 rr_threshes_high = []
 temp_threshes_high = []
@@ -76,6 +79,7 @@ for i in range(20):
     hr_threshes_low.append(random.uniform(20.0, 30.0))
     rr_threshes_low.append(random.uniform(1.0, 5.0))
     temp_threshes_low.append(random.uniform(34.0, 35.5))
+    ages.append(random.uniform(6, 8))
     if random.randint(0,1)==0:
         alarm_states.append(True)
     else:
@@ -84,7 +88,7 @@ for i in range(20):
 for i in range(len(ids)):
     add_input = Input(id=ids[i], name=names[i], hr_thresh_high=hr_threshes_high[i], rr_thresh_high=rr_threshes_high[i], \
         temp_thresh_high=temp_threshes_high[i], hr_thresh_low=hr_threshes_low[i], rr_thresh_low=rr_threshes_low[i], \
-        temp_thresh_low=temp_threshes_low[i], alarm_state=alarm_states[i])
+        temp_thresh_low=temp_threshes_low[i], alarm_state=alarm_states[i], age=ages[i])
     db.session.add(add_input)
 db.session.commit()
 
