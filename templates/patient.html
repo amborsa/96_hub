@@ -9,19 +9,22 @@
 	  <center>
 	    <h2>{{ title1 }}</h2>
 
-	    <canvas id="chart1" width="1000" height="400"></canvas>
+	    <canvas id="chart1" width="1300" height="400"></canvas>
 	    <script>
 	      // bar chart data
+
+				var options = {
+					pointHitDetectionRadius : 3
+        };
+
 	      var barData = {
 	        labels : [
 	          {% for item in labels %}
-	            "{{ item }}",
+	            "{{ item | round(1) }}",
 	          {% endfor %}
 	        ],
 	        datasets : [{
-						// pointHoverRadius: 1,
-						// pointRadius: 100,
-	          fillColor: "rgba(151,187,205,0.2)",
+	          fillColor: "rgba(255,255,255,0)",
 	          strokeColor: "rgba(151,187,205,1)",
 	          pointColor: "rgba(151,187,205,1)",
 	          pointStrokeColor: "#fff",
@@ -30,16 +33,19 @@
 	          bezierCurve : false,
 	          data : [
 		    		{% for item in values1 %}
-	          	{{ item }},
+	          	{{ item | round(1) }},
 	          {% endfor %}]
 	          }
-		]
+						]
 	      }
 	      Chart.defaults.global.animationSteps = 50;
-	      Chart.defaults.global.tooltipYPadding = 1;
-	      Chart.defaults.global.tooltipCornerRadius = 0;
-	      Chart.defaults.global.tooltipTitleFontStyle = "normal";
-	      Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+				Chart.defaults.global.tooltipsenabled = true;
+	      Chart.defaults.global.tooltipsYPadding = 1;
+				Chart.defaults.global.hoverMode = "index";
+				Chart.defaults.global.hoverintersect = true;
+	      Chart.defaults.global.tooltipsCornerRadius = 1;
+	      Chart.defaults.global.tooltipstitleFontStyle = 'bold';
+	      Chart.defaults.global.tooltipsFillColor = "rgba(0,0,0,0.8)";
 	      Chart.defaults.global.animationEasing = "easeOutBounce";
 	      Chart.defaults.global.responsive = false;
 	      Chart.defaults.global.scaleLineColor = "black";
@@ -50,7 +56,7 @@
 	      max = {{ max1 }}
 	      // draw bar chart
 	      var LineChartDemo = new Chart(mychart).Line(barData, {
-	        scaleOverride: true,
+					scaleOverride: true,
 	        scaleSteps: steps,
 	        scaleStepWidth: Math.ceil(max / steps),
 	        scaleStartValue: 0,
@@ -66,19 +72,19 @@
 		<center>
 	    <h2>{{ title2 }}</h2>
 
-	    <canvas id="chart2" width="1000" height="400"></canvas>
+	    <canvas id="chart2" width="1300" height="400"></canvas>
 	    <script>
 	      // bar chart data
 	      var barData = {
 	        labels : [
 	          {% for item in labels %}
-	            "{{ item }}",
+	            "{{ item | round(1)}}",
 	          {% endfor %}
 	        ],
 	        datasets : [{
 						// pointHoverRadius: 1,
 						// pointRadius: 100,
-	          fillColor: "rgba(151,187,205,0.2)",
+	          fillColor: "rgba(255,255,255,0)",
 	          strokeColor: "rgba(151,187,205,1)",
 	          pointColor: "rgba(151,187,205,1)",
 	          pointStrokeColor: "#fff",
@@ -87,7 +93,7 @@
 	          bezierCurve : false,
 	          data : [
 		    		{% for item in values2 %}
-	          	{{ item }},
+	          	{{ item | round(1)}},
 	          {% endfor %}]
 	          }
 		]
@@ -106,7 +112,7 @@
 	      steps = 10
 	      max = {{ max2 }}
 	      // draw bar chart
-	      var LineChartDemo = new Chart(mychart).Line(barData, {
+	      var LineChartDemo = new Chart(mychart).Line(barData, options,{
 	        scaleOverride: true,
 	        scaleSteps: steps,
 	        scaleStepWidth: Math.ceil(max / steps),
@@ -123,19 +129,19 @@
 		<center>
 	    <h2>{{ title3 }}</h2>
 
-	    <canvas id="chart3" width="1000" height="400"></canvas>
+	    <canvas id="chart3" width="1300" height="400"></canvas>
 	    <script>
 	      // bar chart data
 	      var barData = {
 	        labels : [
 	          {% for item in labels %}
-	            "{{ item }}",
+	            "{{ item | round(1)}}",
 	          {% endfor %}
 	        ],
 	        datasets : [{
 						// pointHoverRadius: 1,
 						// pointRadius: 100,
-	          fillColor: "rgba(151,187,205,0.2)",
+	          fillColor: "rgba(255,255,255,0)",
 	          strokeColor: "rgba(151,187,205,1)",
 	          pointColor: "rgba(151,187,205,1)",
 	          pointStrokeColor: "#fff",
@@ -144,7 +150,7 @@
 	          bezierCurve : false,
 	          data : [
 		    		{% for item in values3 %}
-	          	{{ item }},
+	          	{{ item | round(1)}},
 	          {% endfor %}]
 	          }
 		]

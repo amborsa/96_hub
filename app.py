@@ -49,7 +49,7 @@ class Input(db.Model):
     rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
     temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
     alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
-    
+
 ''' Done Defining Database Objects '''
 
 
@@ -141,7 +141,7 @@ def update_main():
 @app.route('/input/<id>', methods=["GET", "POST"])
 def input(id):
     if request.method == "GET":
-        
+
         input_query_id = Input.query.filter(Input.id==id).first()
 
         # for each ID, acquire HR, RR, and temp thresholds
