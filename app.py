@@ -52,7 +52,7 @@ class Input(db.Model):
     rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
     temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
     alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
-    
+
 ''' Done Defining Database Objects '''
 
 
@@ -151,7 +151,7 @@ def update_main():
 @app.route('/input/<id>', methods=["GET", "POST"])
 def input(id):
     if request.method == "GET":
-        
+
         input_query_id = Input.query.filter(Input.id==id).first()
 
         # for each ID, acquire HR, RR, and temp thresholds
@@ -194,6 +194,31 @@ def input(id):
             input_query_id.temp_thresh_high = 38.5
             db.session.commit()
 
+<<<<<<< HEAD
+            # age = input_query_id.age
+            # hr_low = input_query_id.hr_thresh_low
+            # hr_high = input_query_id.hr_thresh_high
+            # rr_low = input_query_id.rr_thresh_low
+            # rr_high = input_query_id.rr_thresh_high
+            # temp_low = input_query_id.temp_thresh_low
+            # temp_high = input_query_id.temp_thresh_high
+            # name = input_query_id.name
+
+            # def vthresh(age, hr_low, hr_high, rr_low, rr_high, temp_low, temp_high)
+            #     if temp_low < 100
+            #     if temp_low <101
+            #     if temp_low <102
+            #     if temp_low < 103
+            #     if temp_low < 104
+            #     if temp_low < 105
+            #     if temp_ high > 105
+
+
+
+
+
+=======
+>>>>>>> 729bbeca7378c8bfec40bf9ce602a782530baee5
 
         return redirect(url_for("main"))
 
@@ -209,6 +234,7 @@ def patient(id):
     # ex: full_query(0) = the title of categories row
 
     full_query = Vital.query.filter(Vital.id==id)
+    full_query_thresholds = Input.query.filter(Input.id==id)
 
     # NUMBER.columnname will access a cell in the table
     for query in full_query:
@@ -216,8 +242,41 @@ def patient(id):
         temp.append(query.temp)
         rr.append(query.rr)
         time.append(query.time)
-    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate",\
-        values1 = hr, labels = time, max1 = 250, values2 = temp, max2 = 50, values3 = rr, max3 = 50)
+
+    # Make a repeated list of the thresholds for the plotted line
+    hr_high = []
+    hr_low = []
+    rr_high = []
+    rr_low = []
+    temp_high = []
+    temp_low = []
+    for query2 in full_query_thresholds:
+        hr_high.append(query2.hr_thresh_high)
+        hr_low.append(query2.hr_thresh_low)
+        rr_high.append(query2.rr_thresh_high)
+        rr_low.append(query2.rr_thresh_low)
+        temp_high.append(query2.temp_thresh_high)
+        temp_low.append(query2.temp_thresh_low)
+    hr_high = hr_high*len(hr)
+    hr_low = hr_low*len(hr)
+    rr_high = rr_high*len(rr)
+    rr_low = rr_low*len(rr)
+    temp_high = temp_high*len(temp)
+    temp_low = temp_low*len(temp)
+
+    # Set max and min values for graph axes ranges
+    hr_max = max(hr) + 5
+    hr_min = min(hr) - 5
+    rr_max = max(rr) + 5
+    rr_min = min(rr) - 5
+    temp_max = max(temp) + 1
+    temp_min = min(temp) - 1
+    hr_range = round(hr_max) - round(hr_min)
+    temp_range = round(temp_max) - round(temp_min)
+    rr_range = round(rr_max) - round(rr_min)
+    # print(hr_high)
+    # print(hr)
+    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", labels = time, values1 = hr, max1 = hr_max, min1 = hr_min, range1 = hr_range, high1 = hr_high, low1 = hr_low, values2 = temp, max2 = temp_max, min2 = temp_min, range2 = temp_range, values3 = rr, max3 = rr_max, min3 = rr_min, range3 = rr_range)
 
 
 if __name__ == "__main__":
