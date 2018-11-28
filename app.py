@@ -3,6 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 import random
+from helpers import *
 
 ''' Initializing App and Database '''
 app = Flask(__name__)
