@@ -42,6 +42,7 @@ class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(30), unique=False)
+    age = db.Column('age', db.Integer, unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
@@ -145,6 +146,7 @@ def input(id):
         input_query_id = Input.query.filter(Input.id==id).first()
 
         # for each ID, acquire HR, RR, and temp thresholds
+        age = input_query_id.age
         hr_low = input_query_id.hr_thresh_low
         hr_high = input_query_id.hr_thresh_high
         rr_low = input_query_id.rr_thresh_low
@@ -153,7 +155,7 @@ def input(id):
         temp_high = input_query_id.temp_thresh_high
         name = input_query_id.name
         return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, \
-            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high)
+            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, age=age)
 
     if request.method == "POST":
 
@@ -161,6 +163,7 @@ def input(id):
         if request.form['btn_identifier']=="set":
             input_query_id = Input.query.filter(Input.id==id).first()
             input_query_id.name = request.form['inputName']
+            input_query_id.age = request.form['inputAge']
             input_query_id.rr_thresh_low = request.form['inputRRlower']
             input_query_id.rr_thresh_high = request.form['inputRRupper']
             input_query_id.hr_thresh_low = request.form['inputHRlower']
@@ -173,6 +176,7 @@ def input(id):
         elif request.form['btn_identifier']=="reset":
             input_query_id = Input.query.filter(Input.id==id).first()
             input_query_id.name = ""
+            input_query_id.age = ""
             input_query_id.rr_thresh_low = 20.0
             input_query_id.rr_thresh_high = 50.0
             input_query_id.hr_thresh_low = 45.0
@@ -180,6 +184,28 @@ def input(id):
             input_query_id.temp_thresh_low = 35.0
             input_query_id.temp_thresh_high = 38.5
             db.session.commit()
+
+            # age = input_query_id.age
+            # hr_low = input_query_id.hr_thresh_low
+            # hr_high = input_query_id.hr_thresh_high
+            # rr_low = input_query_id.rr_thresh_low
+            # rr_high = input_query_id.rr_thresh_high
+            # temp_low = input_query_id.temp_thresh_low
+            # temp_high = input_query_id.temp_thresh_high
+            # name = input_query_id.name
+
+            # def vthresh(age, hr_low, hr_high, rr_low, rr_high, temp_low, temp_high)
+            #     if temp_low < 100
+            #     if temp_low <101
+            #     if temp_low <102 
+            #     if temp_low < 103
+            #     if temp_low < 104
+            #     if temp_low < 105
+            #     if temp_ high > 105
+
+
+
+
 
 
         return redirect(url_for("main"))
