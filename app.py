@@ -43,7 +43,8 @@ class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(30), unique=False)
-    age = db.Column('age', db.Integer, unique=False)
+    loc = db.Column('loc', db.String(30), unique=False)
+    dob = db.Column('dob', db.String(10), unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
