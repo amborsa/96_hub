@@ -111,11 +111,73 @@ def update_main():
             time.append(row.time)
 
         # analyzing the vitals to determine alarm state
-        if max(hrs[-5:]) >= hr_high or min(hrs[-5:]) <= hr_low or max(rrs[-5:]) >= rr_high or min(rrs[-5:]) <= rr_low or \
-        max(temps[-5:]) >= temp_high or min(temps[-5:]) <= temp_low:
-            alarm_state = True
-        else:
+
+        def vthresh(id, age, hr, rr, temp)
+                vital_query_id = Vital.query.filter(Input.id==id).first()
+                input_query_id = Input.query.filter(Input.id==id).first()
+                age = input_query_id.age
+                hr = vital_query_id.hr
+                rr = vital_query_id.rr
+                temp = vital_query_id.temp
+
+            # set alarm state to be false 
             alarm_state = False
+
+            # HEART RATE ONLY
+            # if age > 0 days and  < 1 week (0.01917808219)
+            if age > 0 and age < 0.01917808219
+                if hr < 100 or hr > 180
+                    alarm_state = True
+            # if age > 1 wk and    < 1 month (0.08219178082)
+            elif age >= 0.01917808219 and age < 0.08219178082
+                if hr < 100 or hr > 180
+                    alarm_state = True
+            # if age > 1 month (0.08219178083) and < 1 year (2)
+            elif age >= 0.08219178082 and age < 2
+                if hr < 90  or hr > 180
+                    alarm_state = True
+            # if age > 2 years (2) and < 5 years (6)
+            elif age >= 2 and age < 6
+                if hr > 140
+                    alarm_state = True
+            # if age > 6 years (6) and < 12 years (13)
+            elif age >= 6  and age < 13 
+                if hr > 130
+                    alarm_state = True
+            # if age > 13 years (13) and < 18 years (19)
+            elif age >= 13 and age < 18
+                if hr > 110
+                    alarm_state = True
+
+            #  TEMPERATURE ONLY
+            # if temp > 101.3 F or  < 96.8 F
+            if temp < 36 or temp > 38.5 
+                alarm_state = True
+
+            # RESPIRATORY RATE ONLY
+            if age < 0.5
+                if rr < 30 or rr > 60
+                    alarm_state = True
+            elif age >= 0.5 or age < 1
+                if rr < 25 or rr > 45
+                    alarm_state = True
+            elif age >= 1 or age < 3
+                if rr < 20 or rr > 30
+                    alarm_state = True
+            elif age >=3 or age < 10
+                if rr < 16 or rr > 24
+                    alarm_state = True
+            elif age >= 10 
+                if rr < 14 or rr > 20
+                    alarm_state = True
+
+            return alarm_state
+            
+        # if max(hrs[-5:]) >= hr_high or min(hrs[-5:]) <= hr_low or max(rrs[-5:]) >= rr_high or min(rrs[-5:]) <= rr_low or \
+        # max(temps[-5:]) >= temp_high or min(temps[-5:]) <= temp_low:
+        #     alarm_state = True
+        # else:
+        #     alarm_state = False
 
         # commit to database
         input_query_id.alarm_state = alarm_state
@@ -184,28 +246,6 @@ def input(id):
             input_query_id.temp_thresh_low = 35.0
             input_query_id.temp_thresh_high = 38.5
             db.session.commit()
-
-            # age = input_query_id.age
-            # hr_low = input_query_id.hr_thresh_low
-            # hr_high = input_query_id.hr_thresh_high
-            # rr_low = input_query_id.rr_thresh_low
-            # rr_high = input_query_id.rr_thresh_high
-            # temp_low = input_query_id.temp_thresh_low
-            # temp_high = input_query_id.temp_thresh_high
-            # name = input_query_id.name
-
-            # def vthresh(age, hr_low, hr_high, rr_low, rr_high, temp_low, temp_high)
-            #     if temp_low < 100
-            #     if temp_low <101
-            #     if temp_low <102 
-            #     if temp_low < 103
-            #     if temp_low < 104
-            #     if temp_low < 105
-            #     if temp_ high > 105
-
-
-
-
 
 
         return redirect(url_for("main"))
