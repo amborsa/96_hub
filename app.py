@@ -194,32 +194,6 @@ def input(id):
             input_query_id.temp_thresh_high = 38.5
             db.session.commit()
 
-<<<<<<< HEAD
-            # age = input_query_id.age
-            # hr_low = input_query_id.hr_thresh_low
-            # hr_high = input_query_id.hr_thresh_high
-            # rr_low = input_query_id.rr_thresh_low
-            # rr_high = input_query_id.rr_thresh_high
-            # temp_low = input_query_id.temp_thresh_low
-            # temp_high = input_query_id.temp_thresh_high
-            # name = input_query_id.name
-
-            # def vthresh(age, hr_low, hr_high, rr_low, rr_high, temp_low, temp_high)
-            #     if temp_low < 100
-            #     if temp_low <101
-            #     if temp_low <102
-            #     if temp_low < 103
-            #     if temp_low < 104
-            #     if temp_low < 105
-            #     if temp_ high > 105
-
-
-
-
-
-=======
->>>>>>> 729bbeca7378c8bfec40bf9ce602a782530baee5
-
         return redirect(url_for("main"))
 
 @app.route('/patient/<id>', methods=["GET"])
