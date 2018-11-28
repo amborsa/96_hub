@@ -121,9 +121,10 @@ def update_main():
         # else:
         #     alarm_state = False
 
-        age = input_query_id.age
+        # CALCULATE AGE
+        age = 14
 
-        vthresh(hrs[-1], rrs[-1], temps[-1])
+        alarm_state = vthresh(age, hrs[-1], rrs[-1], temps[-1])
         
         # commit to database
         input_query_id.alarm_state = alarm_state
@@ -154,7 +155,7 @@ def input(id):
         input_query_id = Input.query.filter(Input.id==id).first()
 
         # for each ID, acquire HR, RR, and temp thresholds
-        age = input_query_id.age
+        # age = input_query_id.age
         hr_low = input_query_id.hr_thresh_low
         hr_high = input_query_id.hr_thresh_high
         rr_low = input_query_id.rr_thresh_low
@@ -163,7 +164,7 @@ def input(id):
         temp_high = input_query_id.temp_thresh_high
         name = input_query_id.name
         return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, \
-            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, age=age)
+            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high)
 
     if request.method == "POST":
 
@@ -171,7 +172,7 @@ def input(id):
         if request.form['btn_identifier']=="set":
             input_query_id = Input.query.filter(Input.id==id).first()
             input_query_id.name = request.form['inputName']
-            input_query_id.age = request.form['inputAge']
+            # input_query_id.age = request.form['inputAge']
             input_query_id.rr_thresh_low = request.form['inputRRlower']
             input_query_id.rr_thresh_high = request.form['inputRRupper']
             input_query_id.hr_thresh_low = request.form['inputHRlower']
@@ -184,7 +185,7 @@ def input(id):
         elif request.form['btn_identifier']=="reset":
             input_query_id = Input.query.filter(Input.id==id).first()
             input_query_id.name = ""
-            input_query_id.age = ""
+            # input_query_id.age = ""
             input_query_id.rr_thresh_low = 20.0
             input_query_id.rr_thresh_high = 50.0
             input_query_id.hr_thresh_low = 45.0

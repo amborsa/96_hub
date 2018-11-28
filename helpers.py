@@ -61,3 +61,6 @@ def vthresh(age, hr, rr, temp):
     elif age >= 10:
         if rr < 14 or rr > 20:
             alarm_state = True
+
+    return alarm_state
+    
