@@ -3,6 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 import random
+from helpers import *
 
 ''' Initializing App and Database '''
 app = Flask(__name__)
@@ -42,7 +43,8 @@ class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(30), unique=False)
-    age = db.Column('age', db.Integer, unique=False)
+    loc = db.Column('loc', db.String(30), unique=False)
+    dob = db.Column('dob', db.String(10), unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
@@ -111,12 +113,18 @@ def update_main():
             time.append(row.time)
 
         # analyzing the vitals to determine alarm state
-        if max(hrs[-5:]) >= hr_high or min(hrs[-5:]) <= hr_low or max(rrs[-5:]) >= rr_high or min(rrs[-5:]) <= rr_low or \
-        max(temps[-5:]) >= temp_high or min(temps[-5:]) <= temp_low:
-            alarm_state = True
-        else:
-            alarm_state = False
 
+
+        # if max(hrs[-5:]) >= hr_high or min(hrs[-5:]) <= hr_low or max(rrs[-5:]) >= rr_high or min(rrs[-5:]) <= rr_low or \
+        # max(temps[-5:]) >= temp_high or min(temps[-5:]) <= temp_low:
+        #     alarm_state = True
+        # else:
+        #     alarm_state = False
+
+        age = input_query_id.age
+
+        vthresh(hrs[-1], rrs[-1], temps[-1])
+        
         # commit to database
         input_query_id.alarm_state = alarm_state
         db.session.commit()
@@ -185,6 +193,7 @@ def input(id):
             input_query_id.temp_thresh_high = 38.5
             db.session.commit()
 
+<<<<<<< HEAD
             # age = input_query_id.age
             # hr_low = input_query_id.hr_thresh_low
             # hr_high = input_query_id.hr_thresh_high
@@ -207,6 +216,8 @@ def input(id):
 
 
 
+=======
+>>>>>>> 729bbeca7378c8bfec40bf9ce602a782530baee5
 
         return redirect(url_for("main"))
 
