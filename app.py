@@ -122,6 +122,7 @@ def update_main():
         #     alarm_state = False
 
         # CALCULATE AGE
+        # dob = input_query_id.dob 
         age = 14
 
         alarm_state = vthresh(age, hrs[-1], rrs[-1], temps[-1])
@@ -193,6 +194,7 @@ def input(id):
             input_query_id.temp_thresh_low = 35.0
             input_query_id.temp_thresh_high = 38.5
             db.session.commit()
+
 
         return redirect(url_for("main"))
 
