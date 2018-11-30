@@ -83,8 +83,8 @@ for i in range(20):
     rr_threshes_low.append(random.uniform(1.0, 5.0))
     temp_threshes_low.append(random.uniform(34.0, 35.5))
     ages.append(random.uniform(6, 8))
-    locs.append("some loc")
-    dobs.append("2007-03-27")
+    locs.append("B" + str(i+1))
+    dobs.append(str(random.randint(2007, 2010)) + "-0" + str(random.randint(1,9)) + "-" + str(random.randint(10,28)))
     if random.randint(0,1)==0:
         alarm_states.append(True)
     else:

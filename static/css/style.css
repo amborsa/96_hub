@@ -99,3 +99,11 @@ a:active {
 	border-width: 1px;
 	margin-left: -1px;
 }
+.top-left {
+	left: 1px;
+	top: 0;
+	position: absolute;
+	border-style: none none none none;
+	border-width: 1px;
+	margin-left: -1px;
+}

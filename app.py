@@ -65,15 +65,19 @@ def main():
     ids = []
     names = []
     alarm_states = []
+    locs = []
+    dobs = []
     full_query = Input.query.all()
     for query in full_query:
         ids.append(query.id)
         names.append(query.name)
+        locs.append(query.loc)
+        dobs.append(query.dob)
         alarm_states.append(query.alarm_state)
     devices = []
     for i in range(len(ids)):
         new_dict = {'id': ids[i], 'name': names[i], 'alarm_state': \
-            alarm_states[i]}
+            alarm_states[i], 'loc': locs[i], 'dob': dobs[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
 
