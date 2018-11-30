@@ -6,7 +6,16 @@
             {% set col_num = 6 %}
             {% for device in devices %}
 
-            {% if loop.index % col_num == 1%}
+            {% if loop.index == 1 %}
+              <div class="col solid left-most gray" align="center">
+                <div class="top-left"> {{device.id}} </div><br>
+                <div>{{ device.name }}</div>
+                <div>{{ device.loc }}</div>
+                <div>{{ device.dob }}</div><br>
+                <a class="bottom-left">edit</a>
+                <a class="bottom-right">data</a>
+              </div>
+            {% elif loop.index % col_num == 1%}
               <div id="alarm_state{{ device.id }}" class="col solid left-most" align="center">
                 <div id="{{ device.id }}" class="top-left">ID: {{device.id}}</div><br>
                 <div id="name{{ device.id }}">{{ device.name }}</div>

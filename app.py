@@ -62,11 +62,11 @@ def main():
     """Show main page"""
 
     ''' grabs and organizes database:input data --> let's make this a function later '''
-    ids = []
-    names = []
-    alarm_states = []
-    locs = []
-    dobs = []
+    ids = ["Device ID"]
+    names = ["Name"]
+    alarm_states = [0]
+    locs = ["Location"]
+    dobs = ["Birth Date"]
     full_query = Input.query.all()
     for query in full_query:
         ids.append(query.id)

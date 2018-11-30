@@ -1,6 +1,6 @@
 ''' This document contains helper functions used by app.py. '''
 
-# this doesne't actually work, but can be useful for debugging
+# this doesn't actually work, but can be useful for debugging
 def random_alarm():
     guess = random.randint(1,20)
     row = Input.query.filter(Input.id==guess).first()
