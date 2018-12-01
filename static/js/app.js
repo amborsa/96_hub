@@ -31,7 +31,7 @@ function js_update() {
 					});
 				}
 			}
-        })
+  })
 }
 
 function plot() {

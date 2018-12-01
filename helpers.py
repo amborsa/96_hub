@@ -15,8 +15,6 @@ def store_vitals(id, ms, hr, rr, temp):
 	# --> (which records the time between a measurement and when the packet is sent)
 
 	add_vital = Vital(id=id, time=ms, hr=hr, rr=rr, temp=temp)
-	db.session.add(add_vital)
-	db.session.commit()
 
 def vthresh(age, hr, rr, temp):
     # set alarm state to be false 
