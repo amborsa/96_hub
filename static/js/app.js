@@ -1,11 +1,11 @@
 // update upon starting the page
 $(document).ready(function() {
-    js_update()
+    js_update(js_update)
 });
 
 
 // set to update every 1 second
-var var_update = setInterval(js_update, 10000);
+// var var_update = setInterval(js_update, 1000);
 
 // function which calls for an update of alarm state
 // IT WOULD BE GREAT IF WE COULD REQUEST ONLY WHEN THE USER IS ON "/" -- IS THIS POSSIBLE?
@@ -19,18 +19,18 @@ function js_update() {
 
 	// receives response from /update_main
 	req.done(function(data) {
-			var i;
-			for (i=0; i < data.length; i++) {
-				if (data[i].alarm_state == true) {
-					$('#alarm_state' + data[i].id).css({
-						backgroundColor: '#d62728'
-					});
-				} else {
-					$('#alarm_state' + data[i].id).css({
-						backgroundColor: 'white'
-					});
-				}
-			}
+		  var i;
+      for (i=0; i < data.length; i++) {
+        if (data[i].alarm_state == true) {
+          $('#alarm_state' + data[i].id).css({
+            backgroundColor: '#d62728'
+          });
+        } else {
+          $('#alarm_state' + data[i].id).css({
+            backgroundColor: 'white'
+          });
+        }
+      }
   })
 }
 

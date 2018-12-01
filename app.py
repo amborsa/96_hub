@@ -5,6 +5,10 @@ from tempfile import gettempdir
 import random
 from helpers import *
 import datetime as datetime
+import threading
+import zmq
+import queue
+import time
 
 ''' Initializing App and Database '''
 app = Flask(__name__)
@@ -24,6 +28,9 @@ app.config['SQLALCHEMY_BINDS'] = {
     'inputs': 'sqlite:///input.db'
 }
 db = SQLAlchemy(app)
+
+
+
 '''Done Initializing App and Database '''
 
 
@@ -89,6 +96,19 @@ def main():
 @app.route('/update_main', methods=["POST"])
 def update_main():
 
+    # initializing socket connection
+    # q = queue.Queue(maxsize=0)
+    # context = zmq.Context()
+    # socket = context.socket(zmq.REP)
+    # print("Collecting key polling data from the server")
+    # socket.bind("tcp://*:5556")
+
+    # com_string = socket.recv_string()
+    # q.put(com_string)
+    # print(q.qsize())
+    # after receiving the com string -- put new vital data into database, drop a row
+    
+
     input_query_all = Input.query.all()
 
     ids = []
@@ -134,7 +154,7 @@ def update_main():
 
         alarm_state = vthresh(age, hrs[-1], rrs[-1], temps[-1])
         
-        # commit to database
+        # commit alarm state to database
         input_query_id.alarm_state = alarm_state
         db.session.commit()
 
@@ -152,6 +172,9 @@ def update_main():
             alarm_states[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
+
+    # sending alarm states to serialreader
+    # socket.send_string(' '.join(str(int(e)) for e in alarm_states))
 
     return jsonify(devices)
 
