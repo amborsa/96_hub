@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 import random
 from helpers import *
+import datetime as datetime
 
 ''' Initializing App and Database '''
 app = Flask(__name__)
@@ -170,8 +171,25 @@ def input(id):
         temp_low = input_query_id.temp_thresh_low
         temp_high = input_query_id.temp_thresh_high
         name = input_query_id.name
-        return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, \
-            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high)
+
+        dob = input_query_id.dob
+        loc = input_query_id.loc
+
+        # current date
+
+        current_date = datetime.datetime.today().strftime('%Y-%m-%d')
+
+        # difference between birthdate (year, month, day) to current date
+        age_year = int(datetime.datetime.today().strftime('%Y')) - int(dob[0:4])
+        age_month = int(datetime.datetime.today().strftime('%m')) - int(dob[5:7])
+        age_day = int(datetime.datetime.today().strftime('%d')) - int(dob[8:10])
+
+        # calculate age 
+        age = age_year + age_month/12 + age_day/365
+
+        return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, 
+            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, age_year=age_year, age_month=age_month, 
+            age_day=age_day, current_date = current_date, dob=dob, loc=loc, age=age)
 
     if request.method == "POST":
 
@@ -186,6 +204,8 @@ def input(id):
             input_query_id.hr_thresh_high = request.form['inputHRupper']
             input_query_id.temp_thresh_low = request.form['inputTemplower']
             input_query_id.temp_thresh_high = request.form['inputTempupper']
+            input_query_id.dob = request.form['inputDOB']
+            input_query_id.loc = request.form['inputloc']
             db.session.commit()
 
         # populate database with "standard values" -- these values should be researched and updated
@@ -199,6 +219,8 @@ def input(id):
             input_query_id.hr_thresh_high = 110.0
             input_query_id.temp_thresh_low = 35.0
             input_query_id.temp_thresh_high = 38.5
+            input_query_id.dob = ""
+            input_query_id.loc = ""
             db.session.commit()
 
 
