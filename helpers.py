@@ -10,6 +10,14 @@ def random_alarm():
         row.alarm_state = True
     db.session.commit()
 
+def store_vitals(id, ms, hr, rr, temp):
+	# the time needs to be calculated here: we can take the current time stamp (with the RPi) and subtract the ms
+	# --> (which records the time between a measurement and when the packet is sent)
+
+	add_vital = Vital(id=id, time=ms, hr=hr, rr=rr, temp=temp)
+	db.session.add(add_vital)
+	db.session.commit()
+
 def vthresh(age, hr, rr, temp):
     # set alarm state to be false 
     alarm_state = False

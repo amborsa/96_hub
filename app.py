@@ -34,6 +34,7 @@ class Vital(db.Model):
     e_id = db.Column('e_id', db.Integer, primary_key=True)
     id = db.Column('id', db.Integer, unique=False)
     time = db.Column('time', db.Float, unique=False)
+    datetime = db.Column('datetime', db.DateTime, unique=False)
     hr = db.Column('hr', db.Float, unique=False)
     rr = db.Column('rr', db.Float, unique=False)
     temp = db.Column('temp', db.Float, unique=False)
@@ -42,6 +43,7 @@ class Vital(db.Model):
 class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
+    node = db.Column('node', db.Integer, unique=False)
     name = db.Column('name', db.String(30), unique=False)
     loc = db.Column('loc', db.String(30), unique=False)
     dob = db.Column('dob', db.String(10), unique=False)

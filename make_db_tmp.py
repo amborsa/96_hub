@@ -7,6 +7,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 import random
+import datetime
 
 ''' Initializing App and Database '''
 app = Flask(__name__)
@@ -37,6 +38,7 @@ class Vital(db.Model):
     e_id = db.Column('e_id', db.Integer, primary_key=True)
     id = db.Column('id', db.Integer, unique=False)
     time = db.Column('time', db.Float, unique=False)
+    datetime = db.Column('datetime', db.DateTime, unique=False)
     hr = db.Column('hr', db.Float, unique=False)
     rr = db.Column('rr', db.Float, unique=False)
     temp = db.Column('temp', db.Float, unique=False)
@@ -45,6 +47,7 @@ class Vital(db.Model):
 class Input(db.Model):
     __bind_key__ = "inputs"
     id = db.Column('id', db.Integer, primary_key=True)
+    node = db.Column('node', db.Integer, unique=False)
     name = db.Column('name', db.String(30), unique=False)
     loc = db.Column('loc', db.String(30), unique=False)
     dob = db.Column('dob', db.String(10), unique=False)
@@ -63,6 +66,7 @@ db.create_all()
 
 # this adds test data to the input database
 ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+nodes = [2, 4, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 names = ["Daniel", "Anisha", "Allegra", "Adriano", "Michelle", "Simone", "Jesse", "Tatheer", "Olivia", "Jazmin", "Jason", \
 "Andrew", "Joel", "Nic", "Aileen", "Cathy", "Awnit", "Colin", "Anisha", "Nathan"]
 ages = []
@@ -93,24 +97,26 @@ for i in range(20):
 for i in range(len(ids)):
     add_input = Input(id=ids[i], name=names[i], hr_thresh_high=hr_threshes_high[i], rr_thresh_high=rr_threshes_high[i], \
         temp_thresh_high=temp_threshes_high[i], hr_thresh_low=hr_threshes_low[i], rr_thresh_low=rr_threshes_low[i], \
-        temp_thresh_low=temp_threshes_low[i], alarm_state=alarm_states[i], dob=dobs[i], loc=locs[i])
+        temp_thresh_low=temp_threshes_low[i], alarm_state=alarm_states[i], dob=dobs[i], loc=locs[i], node=nodes[i])
     db.session.add(add_input)
 db.session.commit()
 
 # this adds test data to the vitals database
 ids = ids
 times = []
+datetimes = []
 ticker = 0.0
 for i in range(72):
-	times.append(ticker)
-	ticker += 1.0
+    times.append(ticker)
+    datetimes.append(datetime.datetime.now()+datetime.timedelta(hours=i, minutes=0))
+    ticker += 1.0
 e_id_ticker = 0
-for time in times:
+for i in range(len(times)):
 	for n_id in ids:
 		hr = random.uniform(50.0, 150.0)
 		rr = random.uniform(8.0, 30.0)
 		temp = random.uniform(34.0, 39.0)
-		add_vital = Vital(e_id=e_id_ticker, id=n_id, time=time, hr=hr, rr=rr, temp=temp)
+		add_vital = Vital(e_id=e_id_ticker, id=n_id, time=times[i], datetime=datetimes[i], hr=hr, rr=rr, temp=temp)
 		db.session.add(add_vital)
 		e_id_ticker += 1
 db.session.commit()
