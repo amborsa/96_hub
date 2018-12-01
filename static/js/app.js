@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 
 // set to update every 1 second
-var var_update = setInterval(js_update, 1000);
+var var_update = setInterval(js_update, 10000);
 
 // function which calls for an update of alarm state
 // IT WOULD BE GREAT IF WE COULD REQUEST ONLY WHEN THE USER IS ON "/" -- IS THIS POSSIBLE?
