@@ -50,7 +50,7 @@ class Input(db.Model):
     node = db.Column('node', db.Integer, unique=False)
     name = db.Column('name', db.String(30), unique=False)
     loc = db.Column('loc', db.String(30), unique=False)
-    dob = db.Column('dob', db.String(10), unique=False)
+    dob = db.Column('dob', db.DateTime, unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
@@ -88,7 +88,7 @@ for i in range(20):
     temp_threshes_low.append(random.uniform(34.0, 35.5))
     ages.append(random.uniform(6, 8))
     locs.append("B" + str(i+1))
-    dobs.append(str(random.randint(2007, 2010)) + "-0" + str(random.randint(1,9)) + "-" + str(random.randint(10,28)))
+    dobs.append(datetime.datetime(2008, 11, 30, hour=0, minute=0, second=0, microsecond=0)) 
     if random.randint(0,1)==0:
         alarm_states.append(True)
     else:

@@ -10,6 +10,14 @@ def random_alarm():
         row.alarm_state = True
     db.session.commit()
 
+def calculate_age_months(dob, now):
+    # difference between birthdate (year, month, day) to current date
+    delta = now - dob
+    days = delta.days
+    months = int(days/30)
+
+    return months
+
 def store_vitals(id, ms, hr, rr, temp):
 	# the time needs to be calculated here: we can take the current time stamp (with the RPi) and subtract the ms
 	# --> (which records the time between a measurement and when the packet is sent)

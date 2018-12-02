@@ -54,7 +54,7 @@ class Input(db.Model):
     node = db.Column('node', db.Integer, unique=False)
     name = db.Column('name', db.String(30), unique=False)
     loc = db.Column('loc', db.String(30), unique=False)
-    dob = db.Column('dob', db.String(10), unique=False)
+    dob = db.Column('dob', db.DateTime, unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
@@ -160,9 +160,15 @@ def serial_listen():
         com_string = socket.recv_string()
         q.put(com_string)
         print(q.get())
-    except zmq.error.Again:
+    # catching zmq.error.Again and other errors
+    except:
         # did not receive string from client
+        socket.close()
+        context.term()
         return ("", 204)
+
+    ## add vital data row into database
+    ## drop row, if necessary
 
     # selecting data
     input_query_all = Input.query.all()
@@ -172,6 +178,7 @@ def serial_listen():
         ids.append(query.id)
 
     alarm_states = []
+    ages = []
     for id in ids:
         # id specific queries
         vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
@@ -201,9 +208,13 @@ def serial_listen():
         # commit alarm state to database
         if input_query_id.alarm_state is not alarm_state:
             input_query_id.alarm_state = alarm_state
+
+        age = calculate_age_months(input_query_id.dob, datetime.datetime.now())
+        ages.append(age)
     
     db.session.commit()
-    socket.send_string(' '.join(str(int(e)) for e in alarm_states))
+
+    socket.send_string(' '.join(str(int(e)) for e in alarm_states) + ' ' + ' '.join(str(int(e)) for e in ages))
     # socket.send_string("success")
     socket.close()
     context.term()
