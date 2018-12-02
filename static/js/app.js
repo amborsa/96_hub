@@ -1,11 +1,11 @@
 // update upon starting the page
 $(document).ready(function() {
-    js_update(js_update)
+    js_update()
 });
 
 
 // set to update every 1 second
-// var var_update = setInterval(js_update, 1000);
+// lkjlkjvar var_update = setInterval(js_update, 1000);
 
 // function which calls for an update of alarm state
 // IT WOULD BE GREAT IF WE COULD REQUEST ONLY WHEN THE USER IS ON "/" -- IS THIS POSSIBLE?
@@ -31,7 +31,20 @@ function js_update() {
           });
         }
       }
-  })
+      console.log('does it get here?')
+  });
+
+
+  console.log('does it get here?')
+  req1 = $.ajax({
+            url : '/serial_listen',
+            type : 'POST'
+        });
+
+  req1.done(function(data) {
+      console.log('serial_listen completed')
+  });
+
 }
 
 function plot() {

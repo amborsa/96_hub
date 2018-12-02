@@ -178,6 +178,12 @@ def update_main():
 
     return jsonify(devices)
 
+@app.route('/serial_listen', methods=["POST"])
+def serial_listen():
+    print("is this up?")
+
+    return "test"
+
 
 @app.route('/input/<id>', methods=["GET", "POST"])
 def input(id):
