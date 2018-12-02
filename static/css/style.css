@@ -9,7 +9,7 @@ header .welcomeheader
 }
 
 /*puts a little space between rows*/
-.row.buffer { 
+.row.buffer {
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
@@ -37,7 +37,7 @@ header .welcomeheader
 	border-color: black;
 	border-width: 1px;
 	margin-left: 25px;
-	margin-right: 5px;	
+	margin-right: 5px;
 }
 .col.solid.right-most {
 	background-color: white;
@@ -66,8 +66,8 @@ header .welcomeheader
 
 /*styling a href links*/
 a:link {
-    color: black; 
-    background-color: transparent; 
+    color: black;
+    background-color: transparent;
     text-decoration: none;
 }
 

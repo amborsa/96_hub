@@ -94,7 +94,7 @@ def main():
     return render_template("main.html", devices=devices)
 
 @app.route('/update_main', methods=["POST"])
-def update_main():    
+def update_main():
 
     input_query_all = Input.query.all()
 
@@ -203,7 +203,7 @@ def serial_listen():
             alarm_state = True
         else:
             alarm_state = False
-        
+
         alarm_states.append(alarm_state)
         # commit alarm state to database
         if input_query_id.alarm_state is not alarm_state:
@@ -211,7 +211,7 @@ def serial_listen():
 
         age = calculate_age_months(input_query_id.dob, datetime.datetime.now())
         ages.append(age)
-    
+
     db.session.commit()
 
     socket.send_string(' '.join(str(int(e)) for e in alarm_states) + ' ' + ' '.join(str(int(e)) for e in ages))
@@ -250,11 +250,11 @@ def input(id):
         age_month = int(datetime.datetime.today().strftime('%m')) - int(dob[5:7])
         age_day = int(datetime.datetime.today().strftime('%d')) - int(dob[8:10])
 
-        # calculate age 
+        # calculate age
         age = age_year + age_month/12 + age_day/365
 
-        return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low, 
-            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, age_year=age_year, age_month=age_month, 
+        return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low,
+            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, age_year=age_year, age_month=age_month,
             age_day=age_day, current_date = current_date, dob=dob, loc=loc, age=age)
 
     if request.method == "POST":
@@ -334,6 +334,7 @@ def patient(id):
     hr = []
     rr = []
     time = []
+    time_longitudinal = []
     # Acesses the entire table, each row is an Objects
     # ex: full_query(0) = the title of categories row
 
@@ -345,7 +346,19 @@ def patient(id):
         hr.append(query.hr)
         temp.append(query.temp)
         rr.append(query.rr)
-        time.append(query.time)
+        time.append(query.datetime)
+
+    # Get only hour and minute for daily graphs (only hour, minute)
+    # STILL NEED TO FIGURE OUT
+    # https://stackoverflow.com/questions/5476065/how-to-truncate-the-time-on-a-datetime-object-in-python
+    for i in range(len(time)):
+        time[i] = time[i].replace(hour=0, minute=0, second=0, microsecond=0)
+    print(time)
+
+    # Get only the date for time stamps for longitudinal graphs (only year, month, day)
+    for i in range(len(time)):
+        time_longitudinal[i] = datetime.date(time[i].year, time[i].month, time[i].day)
+    print(time)
 
     # Make a repeated list of the thresholds for the plotted line
     hr_high = []
@@ -369,18 +382,50 @@ def patient(id):
     temp_low = temp_low*len(temp)
 
     # Set max and min values for graph axes ranges
-    hr_max = max(hr) + 5
-    hr_min = min(hr) - 5
-    rr_max = max(rr) + 5
-    rr_min = min(rr) - 5
-    temp_max = max(temp) + 1
-    temp_min = min(temp) - 1
+    # If the threshold value is less than the lowest data point, then use the threshold value as the lower axis
+    hr_max = max(hr)
+    hr_min = min(hr)
+    rr_max = max(rr)
+    rr_min = min(rr)
+    temp_max = max(temp)
+    temp_min = min(temp)
+    # Compare hr min and maxes to threshold values
+    # hr_upper
+    if hr_max > hr_high[0]:
+        hr_upper = hr_max + 10
+    else:
+        hr_upper = hr_high[0] + 10
+    # hr_lower
+    if hr_min < hr_low[0]:
+        hr_lower = hr_min - 10
+    else:
+        hr_lower = hr_low[0] - 10
+    # Do the same for respiratory rate
+    # rr_upper
+    if rr_max > rr_high[0]:
+        rr_upper = rr_max + 1
+    else:
+        rr_upper = rr_high[0] + 1
+    # rr_lower
+    if rr_min < rr_low[0]:
+        rr_lower = rr_min - 1
+    else:
+        rr_lower = rr_low[0] - 1
+    # Do the same for temperature
+    # temp_upper
+    if temp_max > temp_high[0]:
+        temp_upper = temp_max + 1
+    else:
+        temp_upper = temp_high[0] + 1
+    # temp_lower
+    if temp_min < temp_low[0]:
+        temp_lower = temp_min - 1
+    else:
+        temp_lower = temp_low[0] - 1
     hr_range = round(hr_max) - round(hr_min)
     temp_range = round(temp_max) - round(temp_min)
     rr_range = round(rr_max) - round(rr_min)
-    # print(hr_high)
-    # print(hr)
-    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", labels = time, values1 = hr, max1 = hr_max, min1 = hr_min, range1 = hr_range, high1 = hr_high, low1 = hr_low, values2 = temp, max2 = temp_max, min2 = temp_min, range2 = temp_range, values3 = rr, max3 = rr_max, min3 = rr_min, range3 = rr_range)
+    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", labels = time, values1 = hr, max1 = hr_upper, min1 = hr_lower, range1 = hr_range, high1 = hr_high, low1 = hr_low, values2 = temp, max2 = temp_upper, min2 = temp_lower, range2 = temp_range, high2 = temp_high, low2 = temp_low, values3 = rr, max3 = rr_upper, min3 = rr_lower, range3 = rr_range, high3 = rr_high, low3 = rr_low)
 
 
 if __name__ == "__main__":
