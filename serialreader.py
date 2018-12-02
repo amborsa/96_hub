@@ -2,6 +2,7 @@ import serial
 import datetime
 import zmq
 import time
+import random
 from helpers import *
 
 # code for reading serial
@@ -17,19 +18,24 @@ from helpers import *
 def main():
 	## open up serial connection
 	## open web socket
-	## read/parse serial
+	## read/parse serial --> will be receiving "{node},{delay (ms)},{hr},{rr},{temp}"
 	## send parsed serial data via web socket
 	## receive alarm states, ages via web socket
 	## send alarm states, ages via serial
 	## wait some amount of time -- do it again
 
 	while True:
+		# serial simulation
+		serial_array = [random.randint(1,4), random.uniform(1000,10000), random.uniform(50,100), random.uniform(12,15), \
+		random.uniform(36, 39)]
+		serial = ",".join(str(round(e,1)) for e in serial_array)
+
 		# open zmq port to communication with other programs
 		context = zmq.Context()
 		socket = context.socket(zmq.REQ)
 		socket.connect("tcp://localhost:5556")
 
-		sent_data = "vital data"
+		sent_data = serial
 		socket.send_string("vital data")
 		print(sent_data)
 		received_data = socket.recv_string()
