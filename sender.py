@@ -11,17 +11,14 @@ socket.connect("tcp://localhost:5556")
 def change_this():
     socket.send_string("test")
     print("sent something")
-    # socket.send_string("test2")
-    # socket.send_string("test3")
-    # socket.send_string("test4")
-    # socket.send_string("test5")
     print(socket.recv_string())
 
 print("Beginning keylogging and transmitting data...")  
 
 while True:
 	change_this()
-	time.sleep(5)
+	time.sleep(15)
 
 
+print("Quitting keylogger...")
 print("Quitting keylogger...")

@@ -40,7 +40,8 @@ function js_update() {
       req1.done(function(data) {
           console.log('serial_listen completed')
 
-          setTimeout(js_update, 10000);
+          // setTimeout(js_update, 10000);
+          js_update()
 
       });
 

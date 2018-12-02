@@ -148,17 +148,21 @@ def update_main():
 
 @app.route('/serial_listen', methods=["POST"])
 def serial_listen():
-    print("is this up?")
 
     q = queue.Queue(maxsize=0)
     context = zmq.Context()
     socket = context.socket(zmq.REP)
+    socket.setsockopt(zmq.RCVTIMEO, 1000);
     print("Collecting key polling data from the server")
     socket.bind("tcp://*:5556")
 
-    com_string = socket.recv_string()
-    q.put(com_string)
-    print(q.get())
+    try:
+        com_string = socket.recv_string()
+        q.put(com_string)
+        print(q.get())
+    except zmq.error.Again:
+        # did not receive string from client
+        return ("", 204)
 
     # selecting data
     input_query_all = Input.query.all()
@@ -169,7 +173,7 @@ def serial_listen():
 
     for id in ids:
         # id specific queries
-        vital_query = Vital.query.filter(Vital.id==id).last()
+        vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
         input_query_id = Input.query.filter(Input.id==id).first()
 
         # thresholds
@@ -192,14 +196,17 @@ def serial_listen():
         else:
             alarm_state = False
     
-    # # commit alarm state to database
-    input_query_id.alarm_state = alarm_state
+        # commit alarm state to database
+        if input_query_id.alarm_state is not alarm_state:
+            input_query_id.alarm_state = alarm_state
+    
     db.session.commit()
-
     # socket.send_string(' '.join(str(int(e)) for e in alarm_states))
     socket.send_string("success")
+    socket.close()
+    context.term()
 
-    return "test"
+    return ("", 204)
 
 
 @app.route('/input/<id>', methods=["GET", "POST"])
@@ -241,17 +248,51 @@ def input(id):
 
         # populate database with form data
         if request.form['btn_identifier']=="set":
+            # querying vitals to immediately update alarm state
+            vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
+            hr = vital_query.hr
+            rr = vital_query.rr
+            temp = vital_query.temp
+
+            hr_high = float(request.form['inputHRupper'])
+            hr_low = float(request.form['inputHRlower'])
+            rr_high = float(request.form['inputRRupper'])
+            rr_low = float(request.form['inputRRlower'])
+            temp_high = float(request.form['inputTempupper'])
+            temp_low = float(request.form['inputTemplower'])
+            dob = request.form['inputDOB']
+            loc = request.form['inputloc']
+
+            # updating changed fields in input database
             input_query_id = Input.query.filter(Input.id==id).first()
-            input_query_id.name = request.form['inputName']
+            if input_query_id.name is not request.form['inputName']:
+                input_query_id.name = request.form['inputName']
             # input_query_id.age = request.form['inputAge']
-            input_query_id.rr_thresh_low = request.form['inputRRlower']
-            input_query_id.rr_thresh_high = request.form['inputRRupper']
-            input_query_id.hr_thresh_low = request.form['inputHRlower']
-            input_query_id.hr_thresh_high = request.form['inputHRupper']
-            input_query_id.temp_thresh_low = request.form['inputTemplower']
-            input_query_id.temp_thresh_high = request.form['inputTempupper']
-            input_query_id.dob = request.form['inputDOB']
-            input_query_id.loc = request.form['inputloc']
+            if input_query_id.rr_thresh_low is not rr_low:
+                input_query_id.rr_thresh_low = rr_low
+            if input_query_id.rr_thresh_high is not rr_high:
+                input_query_id.rr_thresh_high = rr_high
+            if input_query_id.hr_thresh_low is not hr_low:
+                input_query_id.hr_thresh_low = hr_low
+            if input_query_id.hr_thresh_high is not hr_high:
+                input_query_id.hr_thresh_high = hr_high
+            if input_query_id.temp_thresh_low is not temp_low:
+                input_query_id.temp_thresh_low = temp_low
+            if input_query_id.temp_thresh_high is not temp_high:
+                input_query_id.temp_thresh_high = temp_high
+            if input_query_id.dob is not dob:
+                input_query_id.dob = dob
+            if input_query_id.loc is not loc:
+                input_query_id.loc = loc
+
+            # calculating and updating alarm state
+            if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
+            temp >= temp_high or temp <= temp_low:
+                alarm_state = True
+            else:
+                alarm_state = False
+            if input_query_id.alarm_state is not alarm_state:
+                input_query_id.alarm_state = alarm_state
             db.session.commit()
 
         # populate database with "standard values" -- these values should be researched and updated
