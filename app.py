@@ -1,5 +1,5 @@
 # importing Python package dependencies
-from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify,json,Markup
+from flask import Flask, flash, redirect, render_template, request, session, url_for, jsonify, json, Markup
 from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 import random
@@ -94,20 +94,7 @@ def main():
     return render_template("main.html", devices=devices)
 
 @app.route('/update_main', methods=["POST"])
-def update_main():
-
-    # initializing socket connection
-    # q = queue.Queue(maxsize=0)
-    # context = zmq.Context()
-    # socket = context.socket(zmq.REP)
-    # print("Collecting key polling data from the server")
-    # socket.bind("tcp://*:5556")
-
-    # com_string = socket.recv_string()
-    # q.put(com_string)
-    # print(q.qsize())
-    # after receiving the com string -- put new vital data into database, drop a row
-    
+def update_main():    
 
     input_query_all = Input.query.all()
 
@@ -139,25 +126,6 @@ def update_main():
             temps.append(row.temp)
             time.append(row.time)
 
-        # analyzing the vitals to determine alarm state
-
-
-        # if max(hrs[-5:]) >= hr_high or min(hrs[-5:]) <= hr_low or max(rrs[-5:]) >= rr_high or min(rrs[-5:]) <= rr_low or \
-        # max(temps[-5:]) >= temp_high or min(temps[-5:]) <= temp_low:
-        #     alarm_state = True
-        # else:
-        #     alarm_state = False
-
-        # CALCULATE AGE
-        # dob = input_query_id.dob 
-        age = 14
-
-        alarm_state = vthresh(age, hrs[-1], rrs[-1], temps[-1])
-        
-        # commit alarm state to database
-        input_query_id.alarm_state = alarm_state
-        db.session.commit()
-
 
     ''' grabs and organizes input.db data '''
     ids = []
@@ -181,6 +149,55 @@ def update_main():
 @app.route('/serial_listen', methods=["POST"])
 def serial_listen():
     print("is this up?")
+
+    q = queue.Queue(maxsize=0)
+    context = zmq.Context()
+    socket = context.socket(zmq.REP)
+    print("Collecting key polling data from the server")
+    socket.bind("tcp://*:5556")
+
+    com_string = socket.recv_string()
+    q.put(com_string)
+    print(q.get())
+
+    # selecting data
+    input_query_all = Input.query.all()
+
+    ids = []
+    for query in input_query_all:
+        ids.append(query.id)
+
+    for id in ids:
+        # id specific queries
+        vital_query = Vital.query.filter(Vital.id==id).last()
+        input_query_id = Input.query.filter(Input.id==id).first()
+
+        # thresholds
+        hr_low = input_query_id.hr_thresh_low
+        hr_high = input_query_id.hr_thresh_high
+        rr_low = input_query_id.rr_thresh_low
+        rr_high = input_query_id.rr_thresh_high
+        temp_low = input_query_id.temp_thresh_low
+        temp_high = input_query_id.temp_thresh_high
+
+        # vals
+        hr = vital_query.hr
+        rr = vital_query.rr
+        temp = vital_query.temp
+
+        # vitals and time into arrays
+        if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
+        temp >= temp_high or temp <= temp_low:
+            alarm_state = True
+        else:
+            alarm_state = False
+    
+    # # commit alarm state to database
+    input_query_id.alarm_state = alarm_state
+    db.session.commit()
+
+    # socket.send_string(' '.join(str(int(e)) for e in alarm_states))
+    socket.send_string("success")
 
     return "test"
 
