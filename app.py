@@ -29,6 +29,8 @@ app.config['SQLALCHEMY_BINDS'] = {
 }
 db = SQLAlchemy(app)
 
+global num_vitals
+num_vitals = 72
 
 
 '''Done Initializing App and Database '''
@@ -159,7 +161,6 @@ def serial_listen():
     try:
         com_string = socket.recv_string()
         q.put(com_string)
-        print(q.get())
     # catching zmq.error.Again and other errors
     except:
         # did not receive string from client
@@ -170,52 +171,49 @@ def serial_listen():
     ## add vital data row into database
     ## drop row, if necessary
 
-    # selecting data
-    input_query_all = Input.query.all()
+    serial = q.get()
+    serial_parsed = serial.split(",")
+    node = int(serial_parsed[0])
+    minute_delay = float(serial_parsed[1])/60000
+    hr = float(serial_parsed[2])
+    rr = float(serial_parsed[3])
+    temp = float(serial_parsed[4])
+    now = datetime.datetime.now()
+    timestamp = now - datetime.timedelta(minutes=minute_delay)
 
-    ids = []
-    for query in input_query_all:
-        ids.append(query.id)
+    input_query = Input.query.filter(Input.node==node).first()
+    patient_id = input_query.id
 
-    alarm_states = []
-    ages = []
-    for id in ids:
-        # id specific queries
-        vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
-        input_query_id = Input.query.filter(Input.id==id).first()
+    age = calculate_age_months(input_query.dob, now)
 
-        # thresholds
-        hr_low = input_query_id.hr_thresh_low
-        hr_high = input_query_id.hr_thresh_high
-        rr_low = input_query_id.rr_thresh_low
-        rr_high = input_query_id.rr_thresh_high
-        temp_low = input_query_id.temp_thresh_low
-        temp_high = input_query_id.temp_thresh_high
+    add_vital = Vital(id=patient_id, time=0, datetime=timestamp, hr=hr, rr=rr, temp=temp)
+    db.session.add(add_vital)
 
-        # vals
-        hr = vital_query.hr
-        rr = vital_query.rr
-        temp = vital_query.temp
+    vital_query = Vital.query.filter(Vital.id==patient_id).order_by(Vital.e_id) # first index is earliest vital
+    if vital_query.count() >= 72:
+        db.session.delete(vital_query.first())
 
-        # vitals and time into arrays
-        if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
-        temp >= temp_high or temp <= temp_low:
-            alarm_state = True
-        else:
-            alarm_state = False
-        
-        alarm_states.append(alarm_state)
-        # commit alarm state to database
-        if input_query_id.alarm_state is not alarm_state:
-            input_query_id.alarm_state = alarm_state
+    hr_low = input_query.hr_thresh_low
+    hr_high = input_query.hr_thresh_high
+    rr_low = input_query.rr_thresh_low
+    rr_high = input_query.rr_thresh_high
+    temp_low = input_query.temp_thresh_low
+    temp_high = input_query.temp_thresh_high
 
-        age = calculate_age_months(input_query_id.dob, datetime.datetime.now())
-        ages.append(age)
-    
+    if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
+    temp >= temp_high or temp <= temp_low:
+        alarm_state = True
+    else:
+        alarm_state = False
+
+    if input_query.alarm_state is not alarm_state:
+        input_query.alarm_state = alarm_state
+
     db.session.commit()
 
-    socket.send_string(' '.join(str(int(e)) for e in alarm_states) + ' ' + ' '.join(str(int(e)) for e in ages))
-    # socket.send_string("success")
+    to_serial = str(age) + "," + str(int(alarm_state))
+
+    socket.send_string(to_serial)
     socket.close()
     context.term()
 

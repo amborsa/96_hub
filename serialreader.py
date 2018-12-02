@@ -36,7 +36,7 @@ def main():
 		socket.connect("tcp://localhost:5556")
 
 		sent_data = serial
-		socket.send_string("vital data")
+		socket.send_string(serial)
 		print(sent_data)
 		received_data = socket.recv_string()
 		print(received_data)
