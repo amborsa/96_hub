@@ -21,4 +21,3 @@ while True:
 
 
 print("Quitting keylogger...")
-print("Quitting keylogger...")

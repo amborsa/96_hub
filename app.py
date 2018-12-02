@@ -171,6 +171,7 @@ def serial_listen():
     for query in input_query_all:
         ids.append(query.id)
 
+    alarm_states = []
     for id in ids:
         # id specific queries
         vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
@@ -195,14 +196,15 @@ def serial_listen():
             alarm_state = True
         else:
             alarm_state = False
-    
+        
+        alarm_states.append(alarm_state)
         # commit alarm state to database
         if input_query_id.alarm_state is not alarm_state:
             input_query_id.alarm_state = alarm_state
     
     db.session.commit()
-    # socket.send_string(' '.join(str(int(e)) for e in alarm_states))
-    socket.send_string("success")
+    socket.send_string(' '.join(str(int(e)) for e in alarm_states))
+    # socket.send_string("success")
     socket.close()
     context.term()
 
