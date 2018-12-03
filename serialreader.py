@@ -3,7 +3,7 @@ import datetime
 import zmq
 import time
 import random
-from helpers import *
+import sys
 
 # code for reading serial
 # while True:
