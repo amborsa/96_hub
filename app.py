@@ -84,7 +84,9 @@ def main():
         ids.append(query.id)
         names.append(query.name)
         locs.append(query.loc)
-        dobs.append(query.dob)
+        dob = query.dob
+        str_dob = dob.strftime('%m-%d-%Y')
+        dobs.append(str_dob)
         alarm_states.append(query.alarm_state)
     devices = []
     for i in range(len(ids)):
