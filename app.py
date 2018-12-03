@@ -209,21 +209,6 @@ def serial_listen():
     if input_query.alarm_state is not alarm_state:
         input_query.alarm_state = alarm_state
 
-        # vitals and time into arrays
-        if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
-        temp >= temp_high or temp <= temp_low:
-            alarm_state = True
-        else:
-            alarm_state = False
-
-        alarm_states.append(alarm_state)
-        # commit alarm state to database
-        if input_query_id.alarm_state is not alarm_state:
-            input_query_id.alarm_state = alarm_state
-
-        age = calculate_age_months(input_query_id.dob, datetime.datetime.now())
-        ages.append(age)
-
     db.session.commit()
 
     to_serial = str(age) + "," + str(int(alarm_state))
