@@ -3,21 +3,21 @@
 {% block main %}
 	<!-- This {{id}} is the one that you clicked on -->
 	<a class="top-left" href="{{ url_for('main') }}"><button>RETURN TO MAIN</button></a>
+	<center>
+		<h1> Patient {{id}}</h1>
+		<h2>{{ title1 }}</h2>
+	</center>
 	<div class="container">
-		<!-- <center>
-			<h1> Patient {{id}}</h1>
-			<h2>{{ title1 }}</h2>
-		</center> -->
 	  <div class="row">
 	  <div class="col-xs-6">
-	      <canvas id="chart1" width="200" height="200"></canvas>
+	      <canvas id="HeartRate" width="450" height="300"></canvas>
 				<script>
 					// https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
 					// bar chart data
 
 					var barData = {
 						labels : [
-							{% for item in labels %}
+							{% for item in labels1 %}
 								"{{ item}}",
 							{% endfor %}
 						],
@@ -74,7 +74,65 @@
 					Chart.defaults.global.scaleLineColor = "black";
 					Chart.defaults.global.scaleFontSize = 16;
 					// get bar chart canvas
-					var mychart = document.getElementById("chart1").getContext("2d");
+					var mychart = document.getElementById("HeartRate").getContext("2d");
+					range = {{ range1 }};
+					steps = range / 5
+					max = {{ max1 }}
+					min = {{ min1 }}
+					// draw bar chart
+					var LineChartDemo = new Chart(mychart).Line(barData, {
+						scaleOverride: true,
+						scaleSteps: steps,
+						scaleStepWidth: 10,
+						scaleStartValue: min,
+						scaleShowVerticalLines: true,
+						scaleShowGridLines : true,
+						barShowStroke : true,
+						scaleShowLabels: true,
+						bezierCurve: false,
+						// https://github.com/alanszp/Chart.js/blob/master/docs/01-Line-Chart.md
+						pointHitDetectionRadius : 1,
+					});
+				</script>
+	  </div>
+		<div class="col-xs-6">
+	      <canvas id="HeartRate2" width="450" height="300"></canvas>
+				<script>
+					// https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
+					// bar chart data
+
+					var barData = {
+						labels : [
+							{% for item in labels %}
+								"{{ item}}",
+							{% endfor %}
+						],
+						datasets : [{
+							fillColor: "rgba(255,255,255,0)",
+							strokeColor: "rgba(151,187,205,1)",
+							pointColor: "rgba(151,187,205,1)",
+							pointStrokeColor: "#fff",
+							pointHighlightFill: "#fff",
+							pointHighlightStroke: "rgba(151,187,205,1)",
+							bezierCurve : false,
+							data : [
+								{% for item in values1 %}
+									{{ item | round(1) }},
+								{% endfor %}]
+							}
+							]
+					}
+					Chart.defaults.global.animationSteps = 1;
+					Chart.defaults.global.tooltipYPadding = 1;
+					Chart.defaults.global.tooltipCornerRadius = 0;
+					Chart.defaults.global.tooltipTitleFontStyle = "normal";
+					Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+					Chart.defaults.global.animationEasing = "easeOutBounce";
+					Chart.defaults.global.responsive = false;
+					Chart.defaults.global.scaleLineColor = "black";
+					Chart.defaults.global.scaleFontSize = 16;
+					// get bar chart canvas
+					var mychart = document.getElementById("HeartRate2").getContext("2d");
 					range = {{ range1 }};
 					steps = range / 5
 					max = {{ max1 }}
@@ -96,19 +154,19 @@
 				</script>
 	  </div>
 	  </div>
-		<!-- <center>
+		<center>
 			<h2>{{ title2 }}</h2>
-		</center> -->
+		</center>
 		<div class="row">
 		<div class="col-xs-6">
-	      <canvas id="chart2" width="200" height="200"></canvas>
+	      <canvas id="Temperature" width="450" height="300"></canvas>
 				<script>
 					// https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
 					// bar chart data
 
 					var barData = {
 						labels : [
-							{% for item in labels %}
+							{% for item in labels1 %}
 								"{{ item}}",
 							{% endfor %}
 						],
@@ -165,16 +223,16 @@
 					Chart.defaults.global.scaleLineColor = "black";
 					Chart.defaults.global.scaleFontSize = 16;
 					// get bar chart canvas
-					var mychart = document.getElementById("chart1").getContext("2d");
+					var mychart = document.getElementById("Temperature").getContext("2d");
 					range = {{ range2 }};
-					steps = range / 5
+					steps = range
 					max = {{ max2 }}
 					min = {{ min2 }}
 					// draw bar chart
 					var LineChartDemo = new Chart(mychart).Line(barData, {
 						scaleOverride: true,
 						scaleSteps: steps,
-						scaleStepWidth: 10,
+						scaleStepWidth: 2,
 						scaleStartValue: min,
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
@@ -196,7 +254,7 @@
 	      // bar chart data
 	      var barData = {
 	        labels : [
-	          {% for item in labels %}
+	          {% for item in labels1 %}
 	            "{{ item}}",
 	          {% endfor %}
 	        ],
