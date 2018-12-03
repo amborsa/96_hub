@@ -305,8 +305,8 @@ def input(id):
                 input_query_id.temp_thresh_low = temp_low
             if input_query_id.temp_thresh_high is not temp_high:
                 input_query_id.temp_thresh_high = temp_high
-            if input_query_id.dob is not datetime.strptime(dob, '%Y-%m-%d'):
-                input_query_id.dob = datetime.strptime(dob, '%Y-%m-%d')
+            if input_query_id.dob is not datetime.datetime.strptime(dob, '%Y-%m-%d'):
+                input_query_id.dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
 
