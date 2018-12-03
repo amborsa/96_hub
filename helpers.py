@@ -24,7 +24,13 @@ def store_vitals(id, ms, hr, rr, temp):
 
 	add_vital = Vital(id=id, time=ms, hr=hr, rr=rr, temp=temp)
 
-def vthresh(age, hr, rr, temp):
+# function that takes age, and calculates lower and upper bounds for RR, HR, and temp
+def vitalthresh (age)
+    if 
+    return(upperRR, lowerRR, upperHR, lowerRR, upperTemp, lowerTemp)
+
+
+def vitalalarm(age, hr, rr, temp):
     # set alarm state to be false 
     alarm_state = False
 
