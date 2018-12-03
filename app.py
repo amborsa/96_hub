@@ -209,21 +209,6 @@ def serial_listen():
     if input_query.alarm_state is not alarm_state:
         input_query.alarm_state = alarm_state
 
-        # vitals and time into arrays
-        if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
-        temp >= temp_high or temp <= temp_low:
-            alarm_state = True
-        else:
-            alarm_state = False
-
-        alarm_states.append(alarm_state)
-        # commit alarm state to database
-        if input_query_id.alarm_state is not alarm_state:
-            input_query_id.alarm_state = alarm_state
-
-        age = calculate_age_months(input_query_id.dob, datetime.datetime.now())
-        ages.append(age)
-
     db.session.commit()
 
     to_serial = str(age) + "," + str(int(alarm_state))
@@ -250,25 +235,23 @@ def input(id):
         temp_low = input_query_id.temp_thresh_low
         temp_high = input_query_id.temp_thresh_high
         name = input_query_id.name
-
         dob = input_query_id.dob
         loc = input_query_id.loc
 
         # current date
-
         current_date = datetime.datetime.today().strftime('%Y-%m-%d')
 
         # difference between birthdate (year, month, day) to current date
-        age_year = int(datetime.datetime.today().strftime('%Y')) - int(dob[0:4])
-        age_month = int(datetime.datetime.today().strftime('%m')) - int(dob[5:7])
-        age_day = int(datetime.datetime.today().strftime('%d')) - int(dob[8:10])
+        age_year = int(datetime.datetime.today().strftime('%Y')) - int(dob.strftime('%Y'))
+        age_month = int(datetime.datetime.today().strftime('%m')) - int(dob.strftime('%m'))
+        age_day = int(datetime.datetime.today().strftime('%d')) - int(dob.strftime('%d'))
 
         # calculate age
         age = age_year + age_month/12 + age_day/365
 
         return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low,
-            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, age_year=age_year, age_month=age_month,
-            age_day=age_day, current_date = current_date, dob=dob, loc=loc, age=age)
+            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, current_date = current_date, 
+            dob=dob.strftime('%Y-%m-%d'), loc=loc, age=age)
 
     if request.method == "POST":
 
@@ -287,13 +270,14 @@ def input(id):
             temp_high = float(request.form['inputTempupper'])
             temp_low = float(request.form['inputTemplower'])
             dob = request.form['inputDOB']
+
+            # dob = datetime.strptime(strdob, '%Y-%m-%d')
             loc = request.form['inputloc']
 
             # updating changed fields in input database
             input_query_id = Input.query.filter(Input.id==id).first()
             if input_query_id.name is not request.form['inputName']:
                 input_query_id.name = request.form['inputName']
-            # input_query_id.age = request.form['inputAge']
             if input_query_id.rr_thresh_low is not rr_low:
                 input_query_id.rr_thresh_low = rr_low
             if input_query_id.rr_thresh_high is not rr_high:
@@ -306,10 +290,12 @@ def input(id):
                 input_query_id.temp_thresh_low = temp_low
             if input_query_id.temp_thresh_high is not temp_high:
                 input_query_id.temp_thresh_high = temp_high
-            if input_query_id.dob is not dob:
-                input_query_id.dob = dob
+            if input_query_id.dob is not datetime.datetime.strptime(dob, '%Y-%m-%d'):
+                input_query_id.dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
+
+            # 
 
             # calculating and updating alarm state
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
