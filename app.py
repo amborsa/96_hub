@@ -346,8 +346,11 @@ def patient(id):
     temp_all = []
     hr_all = []
     rr_all = []
-    time_all = []
+    datetime_all = []
+    date_all = []
+    time_daily = []
     time_longitudinal = []
+    index_list = []
     # Acesses the entire table, each row is an Objects
     # ex: full_query(0) = the title of categories row
 
@@ -359,27 +362,69 @@ def patient(id):
         hr_all.append(query.hr)
         temp_all.append(query.temp)
         rr_all.append(query.rr)
-        time_all.append(query.datetime)
+        datetime_all.append(query.datetime)
 
-    # Get only hour and minute for daily graphs (only hour, minute)
-    # STILL NEED TO FIGURE OUT
-    # https://stackoverflow.com/questions/5476065/how-to-truncate-the-time-on-a-datetime-object-in-python
-    # for i in range(len(time)):
-    #     time[i] = time[i].replace(hour=0, minute=0, second=0, microsecond=0)
-    # print(time)
+    # Get current date and time (year-month-day) (hour-minute-second-microsecond)
+    # https://stackoverflow.com/questions/415511/how-to-get-the-current-time-in-python
+    datenow = datetime.datetime.now()
+    datenow = datetime.date(datenow.year, datenow.month, datenow.day)
+    timenow = datetime.datetime.now().time()
 
     # Get only the date for time stamps for longitudinal graphs (only year, month, day)
-    for i in range(len(time_all)):
-        time_all[i] = datetime.date(time_all[i].year, time_all[i].month, time_all[i].day)
-    print(time_all)
+    for i in range(len(datetime_all)):
+        date_all.append(datetime.date(datetime_all[i].year, datetime_all[i].month, datetime_all[i].day))
 
     # Get only the last day's worth of data for the first graph
-    # Can I assume that the last 8 hours is the last x amount of data points?
-    # Assume that data is taken every 30 minutes, last 8 hours = 16 data points
-    hr_graph1 = hr_all[-16:]
-    rr_graph1 = rr_all[-16:]
-    temp_graph1 = temp_all[-16:]
-    time_graph1 = time_all[-16:]
+    # https://stackoverflow.com/questions/415511/how-to-get-the-current-time-in-python
+    for index in range(len(date_all)):
+        difference = datenow - date_all[index]
+        if difference.days == 0:
+            time_daily.append(datetime_all[index].strftime('%H:%M:%S'))
+            index_list.append(index)
+
+
+    # Get the vital data from the last day for first graph
+    hr_graph1 = []
+    rr_graph1 = []
+    temp_graph1 = []
+    for i in range(len(index_list)):
+        hr_graph1.append(hr_all[index_list[i]])
+        rr_graph1.append(rr_all[index_list[i]])
+        temp_graph1.append(temp_all[index_list[i]])
+
+    # Now get the mean value for the last 5 days in the past
+    days_ago = 5
+    # Start by getting a list of each day
+    hr_long = []
+    rr_long = []
+    temp_long = []
+    # Set these lists to store the mean values
+    hr_graph2 = []
+    rr_graph2 = []
+    temp_graph2 = []
+    time_graph2 = []
+    for i in range(days_ago):
+        # Go through each previous day
+        past_date = datenow - datetime.timedelta(days=i)
+        # Get the index for data on that day
+        for index in range(len(date_all)):
+            difference = past_date - date_all[index]
+            if difference.days == 0:
+                index_list.append(index)
+        # Make a list of vital data for that day
+        for i in range(len(index_list)):
+            hr_long.append(hr_all[index_list[i]])
+            rr_long.append(rr_all[index_list[i]])
+            temp_long.append(temp_all[index_list[i]])
+        # Find the mean of each vital for that day
+        hr_mean = sum(hr_long)/len(hr_long)
+        rr_mean = sum(rr_long)/len(rr_long)
+        temp_mean = sum(temp_long)/len(temp_long)
+        # Store the mean value into a the 2nd graph data list
+        hr_graph2.append(hr_mean)
+        rr_graph2.append(rr_mean)
+        temp_graph2.append(temp_mean)
+        time_graph2.append(past_date)
 
     # Make a repeated list of the thresholds for the plotted line
     hr_high = []
@@ -388,6 +433,7 @@ def patient(id):
     rr_low = []
     temp_high = []
     temp_low = []
+    name = []
     for query2 in full_query_thresholds:
         hr_high.append(query2.hr_thresh_high)
         hr_low.append(query2.hr_thresh_low)
@@ -395,12 +441,14 @@ def patient(id):
         rr_low.append(query2.rr_thresh_low)
         temp_high.append(query2.temp_thresh_high)
         temp_low.append(query2.temp_thresh_low)
-    hr_high = hr_high*len(hr_graph1)
-    hr_low = hr_low*len(hr_graph1)
-    rr_high = rr_high*len(rr_graph1)
-    rr_low = rr_low*len(rr_graph1)
-    temp_high = temp_high*len(temp_graph1)
-    temp_low = temp_low*len(temp_graph1)
+        name.append(query2.name)
+    name = name[0]
+    hr_high = hr_high*len(index_list)
+    hr_low = hr_low*len(index_list)
+    rr_high = rr_high*len(index_list)
+    rr_low = rr_low*len(index_list)
+    temp_high = temp_high*len(index_list)
+    temp_low = temp_low*len(index_list)
 
     # Set max and min values for graph axes ranges
     # If the threshold value is less than the lowest data point, then use the threshold value as the lower axis
@@ -447,8 +495,20 @@ def patient(id):
     temp_range = round(temp_max) - round(temp_min)
     rr_range = round(rr_max) - round(rr_min)
 
+    # Create axes ranges for longitudinal graphs
+    print(min(temp_graph2))
+    if min(hr_graph2) == 0:
+        hr_min_long = hr_lower
+        rr_min_long = rr_lower
+        temp_min_long = temp_lower
+    else:
+        hr_min_long = min(hr_graph2) - 1
+        rr_min_long = min(rr_graph2) - 1
+        temp_min_long = min(temp_graph2) - 1
+
+
     # Send all values to html file to graph
-    return render_template("patient.html",id=id, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", labels1 = time_graph1,labels = time_all, values1 = hr_graph1, max1 = hr_upper, min1 = hr_lower, range1 = hr_range, high1 = hr_high, low1 = hr_low, values2 = temp_graph1, max2 = temp_upper, min2 = temp_lower, range2 = temp_range, high2 = temp_high, low2 = temp_low, values3 = rr_graph1, max3 = rr_upper, min3 = rr_lower, range3 = rr_range, high3 = rr_high, low3 = rr_low)
+    return render_template("patient.html",id=name, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", labels1 = time_daily,labels2 = time_graph2, values1day = hr_graph1,values1long = hr_graph2, max1 = hr_upper, min1 = hr_lower, range1 = hr_range, high1 = hr_high, low1 = hr_low, min1long = hr_min_long, values2day = temp_graph1,values2long = temp_graph2, max2 = temp_upper, min2 = temp_lower, range2 = temp_range, high2 = temp_high, low2 = temp_low,min2long = temp_min_long, values3day = rr_graph1,values3long = rr_graph2, max3 = rr_upper, min3 = rr_lower, range3 = rr_range, high3 = rr_high, low3 = rr_low,min3long = rr_min_long,)
 
 
 if __name__ == "__main__":

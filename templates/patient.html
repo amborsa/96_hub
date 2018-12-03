@@ -4,8 +4,8 @@
 	<!-- This {{id}} is the one that you clicked on -->
 	<a class="top-left" href="{{ url_for('main') }}"><button>RETURN TO MAIN</button></a>
 	<center>
-		<h1> Patient {{id}}</h1>
-		<h2>{{ title1 }}</h2>
+		<h1> {{id}} </h1>
+		<h2>{{title1}}</h2>
 	</center>
 	<div class="container">
 	  <div class="row">
@@ -30,7 +30,7 @@
 							pointHighlightStroke: "rgba(151,187,205,1)",
 							bezierCurve : false,
 							data : [
-								{% for item in values1 %}
+								{% for item in values1day %}
 									{{ item | round(1) }},
 								{% endfor %}]
 							},
@@ -96,14 +96,14 @@
 				</script>
 	  </div>
 		<div class="col-xs-6">
-	      <canvas id="HeartRate2" width="450" height="300"></canvas>
+	      <canvas id="HeartRate2" width="450" height="220"></canvas>
 				<script>
 					// https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
 					// bar chart data
 
 					var barData = {
 						labels : [
-							{% for item in labels %}
+							{% for item in labels2 %}
 								"{{ item}}",
 							{% endfor %}
 						],
@@ -116,7 +116,7 @@
 							pointHighlightStroke: "rgba(151,187,205,1)",
 							bezierCurve : false,
 							data : [
-								{% for item in values1 %}
+								{% for item in values1long %}
 									{{ item | round(1) }},
 								{% endfor %}]
 							}
@@ -136,12 +136,12 @@
 					range = {{ range1 }};
 					steps = range / 5
 					max = {{ max1 }}
-					min = {{ min1 }}
+					min = {{ min1long }}
 					// draw bar chart
 					var LineChartDemo = new Chart(mychart).Line(barData, {
 						scaleOverride: true,
 						scaleSteps: steps,
-						scaleStepWidth: 10,
+						scaleStepWidth: 1,
 						scaleStartValue: min,
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
@@ -155,7 +155,7 @@
 	  </div>
 	  </div>
 		<center>
-			<h2>{{ title2 }}</h2>
+			<h2>{{title2}}</h2>
 		</center>
 		<div class="row">
 		<div class="col-xs-6">
@@ -179,7 +179,7 @@
 							pointHighlightStroke: "rgba(151,187,205,1)",
 							bezierCurve : false,
 							data : [
-								{% for item in values2 %}
+								{% for item in values2day %}
 									{{ item | round(1) }},
 								{% endfor %}]
 							},
@@ -244,94 +244,214 @@
 					});
 				</script>
 	  </div>
+		<div class="col-xs-6">
+	      <canvas id="Temperature2" width="450" height="220"></canvas>
+				<script>
+					// https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
+					// bar chart data
+
+					var barData = {
+						labels : [
+							{% for item in labels2 %}
+								"{{ item}}",
+							{% endfor %}
+						],
+						datasets : [{
+							fillColor: "rgba(255,255,255,0)",
+							strokeColor: "rgba(151,187,205,1)",
+							pointColor: "rgba(151,187,205,1)",
+							pointStrokeColor: "#fff",
+							pointHighlightFill: "#fff",
+							pointHighlightStroke: "rgba(151,187,205,1)",
+							bezierCurve : false,
+							data : [
+								{% for item in values2long %}
+									{{ item | round(1) }},
+								{% endfor %}]
+							}
+							]
+					}
+					Chart.defaults.global.animationSteps = 1;
+					Chart.defaults.global.tooltipYPadding = 1;
+					Chart.defaults.global.tooltipCornerRadius = 0;
+					Chart.defaults.global.tooltipTitleFontStyle = "normal";
+					Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+					Chart.defaults.global.animationEasing = "easeOutBounce";
+					Chart.defaults.global.responsive = false;
+					Chart.defaults.global.scaleLineColor = "black";
+					Chart.defaults.global.scaleFontSize = 16;
+					// get bar chart canvas
+					var mychart = document.getElementById("Temperature2").getContext("2d");
+					range = {{ range2 }};
+					steps = range
+					max = {{ max2 }}
+					min = {{ min2long }}
+					// draw bar chart
+					var LineChartDemo = new Chart(mychart).Line(barData, {
+						scaleOverride: true,
+						scaleSteps: steps,
+						scaleStepWidth: 1,
+						scaleStartValue: min,
+						scaleShowVerticalLines: true,
+						scaleShowGridLines : true,
+						barShowStroke : true,
+						scaleShowLabels: true,
+						bezierCurve: false,
+						// https://github.com/alanszp/Chart.js/blob/master/docs/01-Line-Chart.md
+						pointHitDetectionRadius : 1,
+					});
+				</script>
+	  </div>
+		</div>
+		<center>
+			<h2>{{title3}}</h2>
+		</center>
+		<div class="row">
+		<div class="col-xs-6">
+	      <canvas id="Respiratory" width="450" height="300"></canvas>
+				<script>
+					// https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
+					// bar chart data
+
+					var barData = {
+						labels : [
+							{% for item in labels1 %}
+								"{{ item}}",
+							{% endfor %}
+						],
+						datasets : [{
+							fillColor: "rgba(255,255,255,0)",
+							strokeColor: "rgba(151,187,205,1)",
+							pointColor: "rgba(151,187,205,1)",
+							pointStrokeColor: "#fff",
+							pointHighlightFill: "#fff",
+							pointHighlightStroke: "rgba(151,187,205,1)",
+							bezierCurve : false,
+							data : [
+								{% for item in values3day %}
+									{{ item | round(1) }},
+								{% endfor %}]
+							},
+							{
+								fillColor: "rgba(255,0,0,0)",
+								pointDot : false,
+								strokeColor: "rgba(255,0,0,1)",
+								pointStrokeColor: "rgba(255,0,0,1)",
+								pointHighlightFill: "rgba(255,0,0,1)",
+								pointHighlightStroke: "rgba(255,0,0,0)",
+								bezierCurve : false,
+								data: [
+									{% for item in high3 %}
+										{{ item | round(1) }},
+									{% endfor %}
+								]
+							},
+							{
+								fillColor: "rgba(255,0,0,0)",
+								pointDot : false,
+								strokeColor: "rgba(0,0,255,1)",
+								pointStrokeColor: "rgba(0,0,255,1)",
+								pointHighlightFill: "rgba(0,0,255,1)",
+								pointHighlightStroke: "rgba(0,0,255,1)",
+								bezierCurve : false,
+								data: [
+									{% for item in low3 %}
+										{{ item | round(1) }},
+									{% endfor %}
+								]
+							}
+							]
+					}
+					Chart.defaults.global.animationSteps = 1;
+					Chart.defaults.global.tooltipYPadding = 1;
+					Chart.defaults.global.tooltipCornerRadius = 0;
+					Chart.defaults.global.tooltipTitleFontStyle = "normal";
+					Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+					Chart.defaults.global.animationEasing = "easeOutBounce";
+					Chart.defaults.global.responsive = false;
+					Chart.defaults.global.scaleLineColor = "black";
+					Chart.defaults.global.scaleFontSize = 16;
+					// get bar chart canvas
+					var mychart = document.getElementById("Respiratory").getContext("2d");
+					range = {{ range3 }};
+					steps = range
+					max = {{ max3 }}
+					min = {{ min3 }}
+					// draw bar chart
+					var LineChartDemo = new Chart(mychart).Line(barData, {
+						scaleOverride: true,
+						scaleSteps: steps,
+						scaleStepWidth: 2,
+						scaleStartValue: min,
+						scaleShowVerticalLines: true,
+						scaleShowGridLines : true,
+						barShowStroke : true,
+						scaleShowLabels: true,
+						bezierCurve: false,
+						// https://github.com/alanszp/Chart.js/blob/master/docs/01-Line-Chart.md
+						pointHitDetectionRadius : 1,
+					});
+				</script>
+	  </div>
+		<div class="col-xs-6">
+	      <canvas id="Respiratory2" width="450" height="220"></canvas>
+				<script>
+					// https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
+					// bar chart data
+
+					var barData = {
+						labels : [
+							{% for item in labels2 %}
+								"{{ item}}",
+							{% endfor %}
+						],
+						datasets : [{
+							fillColor: "rgba(255,255,255,0)",
+							strokeColor: "rgba(151,187,205,1)",
+							pointColor: "rgba(151,187,205,1)",
+							pointStrokeColor: "#fff",
+							pointHighlightFill: "#fff",
+							pointHighlightStroke: "rgba(151,187,205,1)",
+							bezierCurve : false,
+							data : [
+								{% for item in values3long %}
+									{{ item | round(1) }},
+								{% endfor %}]
+							}
+							]
+					}
+					Chart.defaults.global.animationSteps = 1;
+					Chart.defaults.global.tooltipYPadding = 1;
+					Chart.defaults.global.tooltipCornerRadius = 0;
+					Chart.defaults.global.tooltipTitleFontStyle = "normal";
+					Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+					Chart.defaults.global.animationEasing = "easeOutBounce";
+					Chart.defaults.global.responsive = false;
+					Chart.defaults.global.scaleLineColor = "black";
+					Chart.defaults.global.scaleFontSize = 16;
+					// get bar chart canvas
+					var mychart = document.getElementById("Respiratory2").getContext("2d");
+					range = {{ range3 }};
+					steps = range/2
+					max = {{ max3 }}
+					min = {{ min3long }}
+					// draw bar chart
+					var LineChartDemo = new Chart(mychart).Line(barData, {
+						scaleOverride: true,
+						scaleSteps: steps,
+						scaleStepWidth: 1,
+						scaleStartValue: min,
+						scaleShowVerticalLines: true,
+						scaleShowGridLines : true,
+						barShowStroke : true,
+						scaleShowLabels: true,
+						bezierCurve: false,
+						// https://github.com/alanszp/Chart.js/blob/master/docs/01-Line-Chart.md
+						pointHitDetectionRadius : 1,
+					});
+				</script>
+	  </div>
 		</div>
 	</div>
-		<center>
-	    <h2>{{ title3 }}</h2>
-
-	    <canvas id="chart3" width="1000" height="500"></canvas>
-	    <script>
-	      // bar chart data
-	      var barData = {
-	        labels : [
-	          {% for item in labels1 %}
-	            "{{ item}}",
-	          {% endfor %}
-	        ],
-	        datasets : [{
-						// pointHoverRadius: 1,
-						// pointRadius: 100,
-	          fillColor: "rgba(255,255,255,0)",
-	          strokeColor: "rgba(151,187,205,1)",
-	          pointColor: "rgba(151,187,205,1)",
-	          pointStrokeColor: "#fff",
-	          pointHighlightFill: "#fff",
-	          pointHighlightStroke: "rgba(151,187,205,1)",
-	          bezierCurve : false,
-	          data : [
-		    		{% for item in values3 %}
-	          	{{ item | round(1)}},
-	          {% endfor %}]
-					},
-					{
-						fillColor: "rgba(255,0,0,0)",
-						pointDot : false,
-						strokeColor: "rgba(255,0,0,1)",
-						pointStrokeColor: "rgba(255,0,0,1)",
-						pointHighlightFill: "rgba(255,0,0,1)",
-						pointHighlightStroke: "rgba(255,0,0,0)",
-						bezierCurve : false,
-						data: [
-							{% for item in high3 %}
-								{{ item | round(1) }},
-							{% endfor %}
-						]
-					},
-					{
-						fillColor: "rgba(255,0,0,0)",
-						pointDot : false,
-						strokeColor: "rgba(0,0,255,1)",
-						pointStrokeColor: "rgba(0,0,255,1)",
-						pointHighlightFill: "rgba(0,0,255,1)",
-						pointHighlightStroke: "rgba(0,0,255,1)",
-						bezierCurve : false,
-						data: [
-							{% for item in low3 %}
-								{{ item | round(1) }},
-							{% endfor %}
-						]
-					}
-		]
-	      }
-	      Chart.defaults.global.animationSteps = 1;
-	      Chart.defaults.global.tooltipYPadding = 1;
-	      Chart.defaults.global.tooltipCornerRadius = 0;
-	      Chart.defaults.global.tooltipTitleFontStyle = "normal";
-	      Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
-	      Chart.defaults.global.animationEasing = "easeOutBounce";
-	      Chart.defaults.global.responsive = false;
-	      Chart.defaults.global.scaleLineColor = "black";
-	      Chart.defaults.global.scaleFontSize = 16;
-	      // get bar chart canvas
-	      var mychart = document.getElementById("chart3").getContext("2d");
-				range = {{ range3 }};
-				steps = range
-	      max = {{ max3 }}
-				min = {{ min3 }}
-	      // draw bar chart
-	      var LineChartDemo = new Chart(mychart).Line(barData, {
-	        scaleOverride: true,
-	        scaleSteps: steps,
-	        scaleStepWidth: 2,
-	        scaleStartValue: min,
-	        scaleShowVerticalLines: true,
-	        scaleShowGridLines : true,
-	        barShowStroke : true,
-	        scaleShowLabels: true,
-	        bezierCurve: false,
-					pointHitDetectionRadius : 1,
-	      });
-	    </script>
-	  </center>
 	</body>
 {% endblock %}
