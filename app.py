@@ -265,6 +265,7 @@ def input(id):
 
         # populate database with form data
         if request.form['btn_identifier']=="set":
+            print('HULLO')
             # querying vitals to immediately update alarm state
             vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
             hr = vital_query.hr
@@ -278,14 +279,16 @@ def input(id):
             temp_high = float(request.form['inputTempupper'])
             temp_low = float(request.form['inputTemplower'])
             dob = request.form['inputDOB']
-
-            # dob = datetime.strptime(strdob, '%Y-%m-%d')
             loc = request.form['inputloc']
 
             # updating changed fields in input database
             input_query_id = Input.query.filter(Input.id==id).first()
             if input_query_id.name is not request.form['inputName']:
                 input_query_id.name = request.form['inputName']
+            if input_query_id.surname is not request.form['inputSurname']:
+                input_query_id.surname = request.form['inputSurname']
+            if input_query_id.diagnosis is not request.form['inputDiagnosis']:
+                input_query_id.diagnosis = request.form['inputDiagnosis']
             if input_query_id.rr_thresh_low is not rr_low:
                 input_query_id.rr_thresh_low = rr_low
             if input_query_id.rr_thresh_high is not rr_high:
@@ -302,19 +305,16 @@ def input(id):
                 input_query_id.dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
-            #
-            # #  returns upper/lower vital thresholds for specific age
-            # vitalthresh(input_query_id.age)
-            # if hr >= upperHR or hr <= lowerHR
-            #
-            # if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
-            # temp >= temp_high or temp <= temp_low:
-            #     alarm_state = True
-            # else:
-            #     alarm_state = False
-            # if input_query_id.alarm_state is not alarm_state:
-            #     input_query_id.alarm_state = alarm_state
-            # db.session.commit()
+            
+            #  returns upper/lower vital thresholds for specific age
+            if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
+            temp >= temp_high or temp <= temp_low:
+                alarm_state = True
+            else:
+                alarm_state = False
+            if input_query_id.alarm_state is not alarm_state:
+                input_query_id.alarm_state = alarm_state
+            db.session.commit()
 
         # populate database with "standard values" -- these values should be researched and updated
         elif request.form['btn_identifier']=="reset":
