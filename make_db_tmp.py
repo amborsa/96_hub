@@ -49,8 +49,11 @@ class Input(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     node = db.Column('node', db.Integer, unique=False)
     name = db.Column('name', db.String(30), unique=False)
+    surname = db.Column('surname', db.String(30), unique=False)
     loc = db.Column('loc', db.String(30), unique=False)
     dob = db.Column('dob', db.DateTime, unique=False)
+    med_id = db.Column('med_id', db.String(15), unique=False)
+    diagnosis = db.Column('diagnosis', db.String(30), unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
@@ -69,6 +72,9 @@ ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 nodes = [2, 4, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 names = ["Daniel", "Anisha", "Allegra", "Adriano", "Michelle", "Simone", "Jesse", "Tatheer", "Olivia", "Jazmin", "Jason", \
 "Andrew", "Joel", "Nic", "Aileen", "Cathy", "Awnit", "Colin", "Anisha", "Nathan"]
+surnames = []
+med_ids = []
+diagnosis = []
 ages = []
 locs = []
 dobs = []
@@ -88,7 +94,10 @@ for i in range(20):
     temp_threshes_low.append(random.uniform(34.0, 35.5))
     ages.append(random.uniform(6, 8))
     locs.append("B" + str(i+1))
-    dobs.append(datetime.datetime(2008, 11, 30, hour=0, minute=0, second=0, microsecond=0)) 
+    dobs.append(datetime.datetime(2008, 11, 30, hour=0, minute=0, second=0, microsecond=0))
+    surnames.append("Doe")
+    med_ids.append(random.randint(1000, 9999))
+    diagnosis.append("ALL")
     if random.randint(0,1)==0:
         alarm_states.append(True)
     else:
@@ -97,7 +106,8 @@ for i in range(20):
 for i in range(len(ids)):
     add_input = Input(id=ids[i], name=names[i], hr_thresh_high=hr_threshes_high[i], rr_thresh_high=rr_threshes_high[i], \
         temp_thresh_high=temp_threshes_high[i], hr_thresh_low=hr_threshes_low[i], rr_thresh_low=rr_threshes_low[i], \
-        temp_thresh_low=temp_threshes_low[i], alarm_state=alarm_states[i], dob=dobs[i], loc=locs[i], node=nodes[i])
+        temp_thresh_low=temp_threshes_low[i], alarm_state=alarm_states[i], dob=dobs[i], loc=locs[i], node=nodes[i], \
+        surname=surnames[i], med_id=med_ids[i], diagnosis=diagnosis[i])
     db.session.add(add_input)
 db.session.commit()
 

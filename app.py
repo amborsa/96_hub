@@ -55,8 +55,11 @@ class Input(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     node = db.Column('node', db.Integer, unique=False)
     name = db.Column('name', db.String(30), unique=False)
+    surname = db.Column('surname', db.String(30), unique=False)
     loc = db.Column('loc', db.String(30), unique=False)
     dob = db.Column('dob', db.DateTime, unique=False)
+    med_id = db.Column('med_id', db.String(15), unique=False)
+    diagnosis = db.Column('diagnosis', db.String(30), unique=False)
     hr_thresh_high = db.Column('hr_thresh_high', db.Float, unique=False)
     rr_thresh_high = db.Column('rr_thresh_high', db.Float, unique=False)
     temp_thresh_high = db.Column('temp_thresh_high', db.Float, unique=False)
@@ -297,9 +300,16 @@ def input(id):
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
 
+<<<<<<< HEAD
             #
+=======
+        
+            #  returns upper/lower vital thresholds for specific age
+            vitalthresh(input_query_id.age)
+            if hr >= upperHR or hr <= lowerHR
 
-            # calculating and updating alarm state
+>>>>>>> a8c1125954c35689663351b8498dad438bac0603
+
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
             temp >= temp_high or temp <= temp_low:
                 alarm_state = True
