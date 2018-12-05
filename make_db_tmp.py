@@ -118,7 +118,7 @@ datetimes = []
 ticker = 0.0
 for i in range(72):
     times.append(ticker)
-    datetimes.append(datetime.datetime.now()+datetime.timedelta(hours=i, minutes=0))
+    datetimes.append(datetime.datetime.now()-datetime.timedelta(hours=i, minutes=0))
     ticker += 1.0
 e_id_ticker = 0
 for i in range(len(times)):
