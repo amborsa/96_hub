@@ -375,9 +375,12 @@ def patient(id):
         seconds = difference.seconds
         hours = seconds/3600
         print(hours)
-        if difference.days == 0:
+        if hours <= 24:
             time_daily.append(datetime_all[index].strftime('%H:%M:%S'))
             index_list.append(index)
+        if len(time_daily) >=24:
+            break
+        print("hello")
 
     # Get the vital data from the last day for first graph
     hr_graph1 = []
@@ -401,7 +404,7 @@ def patient(id):
     time_graph2 = []
     for i in range(days_ago):
         # Go through each previous day
-        past_date = datenow - datetime.timedelta(days=(days_ago-i))
+        past_date = datenow - datetime.timedelta(days=(days_ago-i-1))
         # Get the index for data on that day
         for index in range(len(date_all)):
             difference = past_date - date_all[index]
