@@ -115,3 +115,7 @@ a:active {
 	border-width: 1px;
 	margin-left: -1px;
 }
+
+canvas {
+	padding: 5px 5px 5px;
+}
