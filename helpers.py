@@ -34,7 +34,7 @@ def vitalthresh (age):
         upperHR = 180
     if age >= 30/365 and age < 1:
         lowerRR = 30
-        upperRR = 45 
+        upperRR = 45
         lowerHR = 90
         upperHR = 180
     #  lower HR threshold estimated
@@ -60,7 +60,7 @@ def vitalthresh (age):
 
 
 def vitalalarm(age, hr, rr, temp):
-    # set alarm state to be false 
+    # set alarm state to be false
     alarm_state = False
 
     # HEART RATE ONLY
@@ -112,4 +112,3 @@ def vitalalarm(age, hr, rr, temp):
             alarm_state = True
 
     return alarm_state
-    

@@ -252,7 +252,7 @@ def input(id):
         age = age_year + age_month/12 + age_day/365
 
         return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low,
-            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, current_date = current_date, 
+            rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, current_date = current_date,
             dob=dob.strftime('%Y-%m-%d'), loc=loc, age=age)
 
     if request.method == "POST":
@@ -297,7 +297,7 @@ def input(id):
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
 
-            # 
+            #
 
             # calculating and updating alarm state
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
@@ -393,7 +393,7 @@ def patient(id):
     time_graph2 = []
     for i in range(days_ago):
         # Go through each previous day
-        past_date = datenow - datetime.timedelta(days=i)
+        past_date = datenow - datetime.timedelta(days=(days_ago-i))
         # Get the index for data on that day
         for index in range(len(date_all)):
             difference = past_date - date_all[index]
@@ -422,15 +422,28 @@ def patient(id):
     temp_high = []
     temp_low = []
     name = []
+    dob = []
     for query2 in full_query_thresholds:
-        hr_high.append(query2.hr_thresh_high)
-        hr_low.append(query2.hr_thresh_low)
-        rr_high.append(query2.rr_thresh_high)
-        rr_low.append(query2.rr_thresh_low)
-        temp_high.append(query2.temp_thresh_high)
-        temp_low.append(query2.temp_thresh_low)
         name.append(query2.name)
+        dob.append(query2.dob)
     name = name[0]
+    dob = dob[0]
+    dob = datetime.date(dob.year, dob.month, dob.day)
+
+    # Calculate patient's age for standardized thresholds
+    age_months = calculate_age_months(dob,datenow)
+    age = age_months/12
+    standard_thresholds = vitalthresh(age)
+
+    # return(upperRR, lowerRR, upperHR, lowerHR, upperTemp, lowerTemp)
+    rr_high.append(standard_thresholds[0])
+    rr_low.append(standard_thresholds[1])
+    hr_high.append(standard_thresholds[2])
+    hr_low.append(standard_thresholds[3])
+    temp_high.append(standard_thresholds[4])
+    temp_low.append(standard_thresholds[5])
+
+    # Make these values a list for the graph
     hr_high = hr_high*len(index_list)
     hr_low = hr_low*len(index_list)
     rr_high = rr_high*len(index_list)
@@ -484,7 +497,6 @@ def patient(id):
     rr_range = round(rr_max) - round(rr_min)
 
     # Create axes ranges for longitudinal graphs
-    print(min(temp_graph2))
     if min(hr_graph2) == 0:
         hr_min_long = hr_lower
         rr_min_long = rr_lower
