@@ -299,15 +299,19 @@ def input(id):
                 input_query_id.dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
-
-            if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
-            temp >= temp_high or temp <= temp_low:
-                alarm_state = True
-            else:
-                alarm_state = False
-            if input_query_id.alarm_state is not alarm_state:
-                input_query_id.alarm_state = alarm_state
-            db.session.commit()
+            #
+            # #  returns upper/lower vital thresholds for specific age
+            # vitalthresh(input_query_id.age)
+            # if hr >= upperHR or hr <= lowerHR
+            #
+            # if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
+            # temp >= temp_high or temp <= temp_low:
+            #     alarm_state = True
+            # else:
+            #     alarm_state = False
+            # if input_query_id.alarm_state is not alarm_state:
+            #     input_query_id.alarm_state = alarm_state
+            # db.session.commit()
 
         # populate database with "standard values" -- these values should be researched and updated
         elif request.form['btn_identifier']=="reset":
@@ -336,6 +340,7 @@ def patient(id):
     rr_all = []
     datetime_all = []
     date_all = []
+    time_all = []
     time_daily = []
     time_longitudinal = []
     index_list = []
@@ -354,8 +359,9 @@ def patient(id):
 
     # Get current date and time (year-month-day) (hour-minute-second-microsecond)
     # https://stackoverflow.com/questions/415511/how-to-get-the-current-time-in-python
-    datenow = datetime.datetime.now()
-    datenow = datetime.date(datenow.year, datenow.month, datenow.day)
+    datetime_now = datetime.datetime.now()
+    print(datetime_now)
+    datenow = datetime.date(datetime_now.year, datetime_now.month, datetime_now.day)
     timenow = datetime.datetime.now().time()
 
     # Get only the date for time stamps for longitudinal graphs (only year, month, day)
@@ -365,11 +371,16 @@ def patient(id):
     # Get only the last day's worth of data for the first graph
     # https://stackoverflow.com/questions/415511/how-to-get-the-current-time-in-python
     for index in range(len(date_all)):
-        difference = datenow - date_all[index]
-        if difference.days == 0:
+        difference = datetime_now - datetime_all[index]
+        seconds = difference.seconds
+        hours = seconds/3600
+        print(hours)
+        if hours <= 24:
             time_daily.append(datetime_all[index].strftime('%H:%M:%S'))
             index_list.append(index)
-
+        if len(time_daily) >=24:
+            break
+        print("hello")
 
     # Get the vital data from the last day for first graph
     hr_graph1 = []
@@ -393,7 +404,7 @@ def patient(id):
     time_graph2 = []
     for i in range(days_ago):
         # Go through each previous day
-        past_date = datenow - datetime.timedelta(days=(days_ago-i))
+        past_date = datenow - datetime.timedelta(days=(days_ago-i-1))
         # Get the index for data on that day
         for index in range(len(date_all)):
             difference = past_date - date_all[index]
