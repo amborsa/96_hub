@@ -25,38 +25,38 @@ def store_vitals(id, ms, hr, rr, temp):
 	add_vital = Vital(id=id, time=ms, hr=hr, rr=rr, temp=temp)
 
 # function that takes age, and calculates lower and upper bounds for RR, HR, and temp
-# def vitalthresh (age)
-#     if age < 30/365 and age > 0:
-#         # rough estimate for respiratory rate
-#         lowerRR = 40 
-#         upperRR = 40
-#         lowerHR = 100
-#         upperHR = 180
-#     if age >= 30/365 and age < 1
-#         lowerRR = 34
-#         upperRR = 34
-#         lowerHR = 90
-#         upperHR = 180
-#     #  lower HR threshold estimated
-#     if age >= 1 and age < 5
-#         lowerRR = 22
-#         upperRR = 22
-#         lowerHR = 90
-#         upperHR = 140
-#     # lower HR threshold estimated
-#     if age>=5 and age<12
-#         lowerRR = 18
-#         upperRR = 18
-#         lowerHR = 90
-#         upperHR = 130
-#     if age >=12 and age<18
-#         lowerRR = 14
-#         upperRR = 14
-#         lowerHR = 90
-#         upperHR = 130
-#     upperTemp = 38.5
-#     lowerTemp = 36
-#     return(upperRR, lowerRR, upperHR, lowerRR, upperTemp, lowerTemp)
+def vitalthresh (age):
+    if age < 30/365 and age > 0:
+        # rough estimate for respiratory rate
+        lowerRR = 30
+        upperRR = 50
+        lowerHR = 100
+        upperHR = 180
+    if age >= 30/365 and age < 1:
+        lowerRR = 30
+        upperRR = 45 
+        lowerHR = 90
+        upperHR = 180
+    #  lower HR threshold estimated
+    if age >= 1 and age < 5:
+        lowerRR = 20
+        upperRR = 27
+        lowerHR = 90
+        upperHR = 140
+    # lower HR threshold estimated
+    if age>=5 and age < 12:
+        lowerRR = 16
+        upperRR = 24
+        lowerHR = 90
+        upperHR = 130
+    if age >= 12 and age < 18:
+        lowerRR = 14
+        upperRR = 20
+        lowerHR = 90
+        upperHR = 110
+    upperTemp = 38.5
+    lowerTemp = 36
+    return(upperRR, lowerRR, upperHR, lowerRR, upperTemp, lowerTemp)
 
 
 def vitalalarm(age, hr, rr, temp):
