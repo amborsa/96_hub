@@ -240,6 +240,9 @@ def input(id):
         temp_low = input_query_id.temp_thresh_low
         temp_high = input_query_id.temp_thresh_high
         name = input_query_id.name
+        surname = input_query_id.surname
+        med_id = input_query_id.med_id
+        diagnosis = input_query_id.diagnosis
         dob = input_query_id.dob
         loc = input_query_id.loc
 
@@ -256,7 +259,7 @@ def input(id):
 
         return render_template("input.html", id=id, name=name, hr_low=hr_low, hr_high=hr_high, rr_low=rr_low,
             rr_high=rr_high, temp_low=temp_low, temp_high=temp_high, current_date = current_date,
-            dob=dob.strftime('%Y-%m-%d'), loc=loc, age=age)
+            dob=dob.strftime('%Y-%m-%d'), loc=loc, age=age, surname=surname, med_id=med_id, diagnosis=diagnosis)
 
     if request.method == "POST":
 
