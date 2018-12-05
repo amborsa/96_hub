@@ -300,16 +300,6 @@ def input(id):
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
 
-<<<<<<< HEAD
-            #
-=======
-        
-            #  returns upper/lower vital thresholds for specific age
-            vitalthresh(input_query_id.age)
-            if hr >= upperHR or hr <= lowerHR
-
->>>>>>> a8c1125954c35689663351b8498dad438bac0603
-
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
             temp >= temp_high or temp <= temp_low:
                 alarm_state = True
