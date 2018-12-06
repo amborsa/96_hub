@@ -2,7 +2,10 @@
 
 {% block main %}
 	<!-- This {{id}} is the one that you clicked on -->
-	<a class="top-left" href="{{ url_for('main') }}"><button>RETURN TO MAIN</button></a>
+	<a class="top-left" href="{{ url_for('main') }}">
+      <!-- <button>RETURN TO MAIN</button></a> -->
+    <button type="button" class="btn btn-outline-primary">RETURN TO MAIN</button>
+  </a>
 	<center>
 		<h1> {{id}} </h1>
 		<h2>{{title1}}</h2>
