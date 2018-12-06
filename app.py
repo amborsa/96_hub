@@ -373,17 +373,18 @@ def patient(id):
 
     # Get only the last day's worth of data for the first graph
     # https://stackoverflow.com/questions/415511/how-to-get-the-current-time-in-python
-    for index in range(len(date_all)):
-        difference = datetime_now - datetime_all[index]
-        seconds = difference.seconds
+    # len(datetime_all)-index-1 is so that we get the latest datapoints if there are more than 24 in the last 24 hours
+    for index in range(len(datetime_all)):
+        difference = datetime_now - datetime_all[len(datetime_all)-index-1]
+        seconds = difference.total_seconds()
         hours = seconds/3600
-        print(hours)
         if hours <= 24:
-            time_daily.append(datetime_all[index].strftime('%H:%M:%S'))
-            index_list.append(index)
-        if len(time_daily) >=24:
+            time_daily.append(datetime_all[len(datetime_all)-index-1].strftime('%H:%M:%S'))
+            index_list.append(len(datetime_all)-index-1)
+        if len(time_daily) >= 24:
             break
-        print("hello")
+    index_list = index_list[::-1]
+    time_daily = time_daily[::-1]
 
     # Get the vital data from the last day for first graph
     hr_graph1 = []
@@ -522,7 +523,13 @@ def patient(id):
 
 
     # Send all values to html file to graph
-    return render_template("patient.html",id=name, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", labels1 = time_daily,labels2 = time_graph2, values1day = hr_graph1,values1long = hr_graph2, max1 = hr_upper, min1 = hr_lower, range1 = hr_range, high1 = hr_high, low1 = hr_low, min1long = hr_min_long, values2day = temp_graph1,values2long = temp_graph2, max2 = temp_upper, min2 = temp_lower, range2 = temp_range, high2 = temp_high, low2 = temp_low,min2long = temp_min_long, values3day = rr_graph1,values3long = rr_graph2, max3 = rr_upper, min3 = rr_lower, range3 = rr_range, high3 = rr_high, low3 = rr_low,min3long = rr_min_long,)
+    return render_template("patient.html",id=name, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", \
+        labels1 = time_daily,labels2 = time_graph2, values1day = hr_graph1,values1long = hr_graph2, max1 = hr_upper, \
+        min1 = hr_lower, range1 = hr_range, high1 = hr_high, low1 = hr_low, min1long = hr_min_long, \
+        values2day = temp_graph1,values2long = temp_graph2, max2 = temp_upper, min2 = temp_lower, \
+        range2 = temp_range, high2 = temp_high, low2 = temp_low,min2long = temp_min_long, \
+        values3day = rr_graph1,values3long = rr_graph2, max3 = rr_upper, min3 = rr_lower, \
+        range3 = rr_range, high3 = rr_high, low3 = rr_low,min3long = rr_min_long,)
 
 
 if __name__ == "__main__":
