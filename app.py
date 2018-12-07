@@ -242,7 +242,6 @@ def input(id):
 
         # populate database with form data
         if request.form['btn_identifier']=="set":
-            print('HULLO')
             # querying vitals to immediately update alarm state
             vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
             hr = vital_query.hr
@@ -283,6 +282,11 @@ def input(id):
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
 
+
+            hr_near = (hr_high-hr_low)*.1
+            rr_near = (rr_high-rr_low)*.1
+            temp_near = (temp_high-temp_low)*.1
+            
             #  returns upper/lower vital thresholds for specific age
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
             temp >= temp_high or temp <= temp_low:
