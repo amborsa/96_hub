@@ -20,11 +20,14 @@ def main():
 			ser.flushInput()
 			serial_data = ser.readline()
 			serial_string = serial_data.decode("utf-8")
-		elif int(sys.argv[1]) ==1:
+			print(serial_data)
+		elif int(sys.argv[1]) == 1:
 			# serial simulation
 			serial_array = [random.randint(1,4), random.uniform(1000,10000), random.uniform(50,100), random.uniform(12,15), \
 			random.uniform(36, 39)]
 			serial = ",".join(str(round(e,1)) for e in serial_array)
+		elif int(sys.argv[1]) == 2:
+			return 0
 		else:
 			return 1
 
