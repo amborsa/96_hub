@@ -43,7 +43,6 @@ class Vital(db.Model):
     __bind_key__ = "vitals"
     e_id = db.Column('e_id', db.Integer, primary_key=True)
     id = db.Column('id', db.Integer, unique=False)
-    time = db.Column('time', db.Float, unique=False)
     datetime = db.Column('datetime', db.DateTime, unique=False)
     hr = db.Column('hr', db.Float, unique=False)
     rr = db.Column('rr', db.Float, unique=False)
@@ -66,7 +65,8 @@ class Input(db.Model):
     hr_thresh_low = db.Column('hr_thresh_low', db.Float, unique=False)
     rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
     temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
-    alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
+    # 0=no alarm, 1=alarm, 2=near alarm state
+    alarm_state = db.Column('alarm_state', db.Integer, unique=False)
 
 ''' Done Defining Database Objects '''
 
@@ -77,24 +77,28 @@ def main():
     """Show main page"""
 
     ''' grabs and organizes database:input data --> let's make this a function later '''
-    ids = ["Device ID"]
+    ids = ["Patient ID"]
     names = ["Name"]
     alarm_states = [0]
     locs = ["Location"]
     dobs = ["Birth Date"]
-    full_query = Input.query.all()
+    med_ids = ["Medical ID"]
+    node_ids = ["Device ID"]
+    full_query = Input.query.filter(Input.node > 0).order_by(Input.node)
     for query in full_query:
         ids.append(query.id)
-        names.append(query.name)
+        node_ids.append(query.node)
+        names.append(query.name + " " + query.surname)
         locs.append(query.loc)
         dob = query.dob
+        med_ids.append(query.med_id)
         str_dob = dob.strftime('%m-%d-%Y')
         dobs.append(str_dob)
         alarm_states.append(query.alarm_state)
     devices = []
     for i in range(len(ids)):
         new_dict = {'id': ids[i], 'name': names[i], 'alarm_state': \
-            alarm_states[i], 'loc': locs[i], 'dob': dobs[i]}
+            alarm_states[i], 'loc': locs[i], 'dob': dobs[i], 'med_id': med_ids[i], 'node_id': node_ids[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
 
@@ -103,41 +107,10 @@ def main():
 @app.route('/update_main', methods=["POST"])
 def update_main():
 
-    input_query_all = Input.query.all()
-
-    ids = []
-    for query in input_query_all:
-        ids.append(query.id)
-
-    for id in ids:
-        # id specific queries
-        vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.time)
-        input_query_id = Input.query.filter(Input.id==id).first()
-
-        # thresholds
-        hr_low = input_query_id.hr_thresh_low
-        hr_high = input_query_id.hr_thresh_high
-        rr_low = input_query_id.rr_thresh_low
-        rr_high = input_query_id.rr_thresh_high
-        temp_low = input_query_id.temp_thresh_low
-        temp_high = input_query_id.temp_thresh_high
-
-        # vitals and time into arrays
-        hrs = []
-        rrs = []
-        temps = []
-        time = []
-        for row in vital_query:
-            hrs.append(row.hr)
-            rrs.append(row.rr)
-            temps.append(row.temp)
-            time.append(row.time)
-
-
     ''' grabs and organizes input.db data '''
     ids = []
     alarm_states = []
-    full_query = Input.query.all()
+    full_query = Input.query.filter(Input.node > 0)
     for query in full_query:
         ids.append(query.id)
         alarm_states.append(query.alarm_state)
@@ -147,9 +120,6 @@ def update_main():
             alarm_states[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
-
-    # sending alarm states to serialreader
-    # socket.send_string(' '.join(str(int(e)) for e in alarm_states))
 
     return jsonify(devices)
 
@@ -191,11 +161,11 @@ def serial_listen():
 
     age = calculate_age_months(input_query.dob, now)
 
-    add_vital = Vital(id=patient_id, time=0, datetime=timestamp, hr=hr, rr=rr, temp=temp)
+    add_vital = Vital(id=patient_id, datetime=timestamp, hr=hr, rr=rr, temp=temp)
     db.session.add(add_vital)
 
     vital_query = Vital.query.filter(Vital.id==patient_id).order_by(Vital.e_id) # first index is earliest vital
-    if vital_query.count() >= 72:
+    if vital_query.count() >= num_vitals:
         db.session.delete(vital_query.first())
 
     hr_low = input_query.hr_thresh_low
@@ -205,18 +175,25 @@ def serial_listen():
     temp_low = input_query.temp_thresh_low
     temp_high = input_query.temp_thresh_high
 
+    hr_near = (hr_high-hr_low)*.1
+    rr_near = (rr_high-rr_low)*.1
+    temp_near = (temp_high-temp_low)*.1
+
     if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
     temp >= temp_high or temp <= temp_low:
-        alarm_state = True
+        alarm_state = 1
+    elif abs(hr - hr_high) <= hr_near or abs(hr - hr_low) <= hr_near or abs(rr - rr_high) <= rr_near \
+    or abs(rr - rr_low) <= rr_near or abs(temp - temp_high) <= temp_near or abs(temp - temp_low) <= temp_near:
+        alarm_state = 2
     else:
-        alarm_state = False
+        alarm_state = 0
 
     if input_query.alarm_state is not alarm_state:
         input_query.alarm_state = alarm_state
 
     db.session.commit()
 
-    to_serial = str(age) + "," + str(int(alarm_state))
+    to_serial = str(age) + "," + str(alarm_state)
 
     socket.send_string(to_serial)
     socket.close()
@@ -265,7 +242,6 @@ def input(id):
 
         # populate database with form data
         if request.form['btn_identifier']=="set":
-            print('HULLO')
             # querying vitals to immediately update alarm state
             vital_query = Vital.query.filter(Vital.id==id).order_by(Vital.e_id.desc()).first()
             hr = vital_query.hr
@@ -306,14 +282,20 @@ def input(id):
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
 
+
+            hr_near = (hr_high-hr_low)*.1
+            rr_near = (rr_high-rr_low)*.1
+            temp_near = (temp_high-temp_low)*.1
+
             #  returns upper/lower vital thresholds for specific age
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
             temp >= temp_high or temp <= temp_low:
-                alarm_state = True
+                alarm_state = 1
+            elif abs(hr - hr_high) <= hr_near or abs(hr - hr_low) <= hr_near or abs(rr - rr_high) <= rr_near \
+            or abs(rr - rr_low) <= rr_near or abs(temp - temp_high) <= temp_near or abs(temp - temp_low) <= temp_near:
+                alarm_state = 2
             else:
-                alarm_state = False
-            if input_query_id.alarm_state is not alarm_state:
-                input_query_id.alarm_state = alarm_state
+                alarm_state = 0
             db.session.commit()
 
         return redirect(url_for("main"))

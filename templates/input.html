@@ -2,28 +2,31 @@
 
 {% block main %}
 
-<html>
-
 <form action="{{ url_for('input', id=id) }}" method="post">
 
 <div class="row"> 
-  <div class="col">
+  <div class="col" style="margin-left:15px">
     <!--  button to return to home page -->
   <a class="top-left" href="{{ url_for('main') }}"> 
     <button type="button" class="btn btn-outline-primary">Return to Main</button>
   </a>
  </div>
 
+ <div class="col">
+  </div>
+
 <!-- location -->
-  <div class="form-group col-md-4">
-    <label for="loc">Location</label>
-    <input type="text" class="form-control" name="inputloc" value="{{loc}}">
+  <div class="col right-most">
+    <div class="form-group">
+      <label for="loc">Location</label>
+      <input type="text" class="form-control" name="inputloc" value="{{loc}}">
+    </div>
   </div>
 </div>
 
 <!-- Medical ID -->
 <div class="row"> 
-  <div class="col">
+  <div class="col left-most">
     <div class="form-group">
       <label for="medID">Medical ID</label>
       <input type="text" class="form-control" name="inputmedID" value="{{med_id}}", readonly="readonly">
@@ -40,7 +43,7 @@
   </div>
 
 <!-- age -->
-  <div class="col">
+  <div class="col right-most">
     <div class="form-group">
       <label for="loc">Age</label>
       <input type="number" class="form-control" name="inputAge" value="{{age | round(1)}}"
@@ -51,14 +54,14 @@
 
 <!-- first name -->
 <div class="row"> 
-  <div class="col">
+  <div class="col left-most">
     <div class="form-group"> 
       <label for="Name">First Name</label>
       <input type="text" class="form-control" name="inputName" value="{{name}}">
     </div>
   </div>
   <!-- Last name -->
-  <div class="col">
+  <div class="col right-most">
     <div class="form-group">
       <label for="Surname">Last Name</label>
       <input type="text" class="form-control" name="inputSurname" value="{{surname}}">
@@ -68,23 +71,23 @@
 
 <!-- Alert me if... -->
 <div class="row"> 
-  <div class="col">
+  <div class="col left-most">
     <p><font color="red"><i>Alert me if {vitals} < {lower threshold}</i></font></p>
   </div>  
-  <div class= "col">
+  <div class="col right-most">
     <p> <font color="red"><i>Alert me if {vitals} > {upper threshold}</i></font></p>
   </div>
 </div>
 
 <!-- Respiratory Rate Thresholds -->
 <div class="row"> 
-<div class="col">
+<div class="col left-most">
   <div class="form-group">
     <label for="RRlower">Respiratory Rate Lower Threshold <i>(breaths per minute)</i></label>
     <input type="number" class="form-control" name="inputRRlower" value="{{rr_low|round(1)}}" step="0.1">
   </div>
 </div>
-<div class="col">
+<div class="col right-most">
   <div class="form-group">
     <label for="RRhigher">Respiratory Rate Upper Threshold <i>(breaths per minute)</i></label>
     <input type="number" class="form-control" name="inputRRupper" value="{{rr_high| round(1)}}" step="0.1">
@@ -94,13 +97,13 @@
 
 <!-- Heart rate thresholds -->
 <div class="row"> 
-  <div class="col">
+  <div class="col left-most">
     <div class="form-group">
       <label for="HRlower">Heart Rate Lower Threshold <i>(beats per minute)</i></label>
       <input type="number" class="form-control" name="inputHRlower" value="{{hr_low |round(1)}}" step="0.1">
     </div>
   </div>
-  <div class="col">
+  <div class="col right-most">
     <div class="form-group">
       <label for="HRupper">Heart Rate Upper Threshold <i>(beats per minute)</i></label>
       <input type="number" class="form-control" name="inputHRupper" value="{{hr_high| round(1)}}" step="0.1">
@@ -110,35 +113,37 @@
 
 <!-- Temperature Thresholds -->
 <div class="row"> 
-  <div class="col">
+  <div class="col left-most">
     <div class="form-group">
       <label for="Temp">Temperature Lower Threshold <i>(&#8451)</i></label>
       <input type="number" class="form-control" name="inputTemplower" value="{{temp_low|round(1)}}" step="0.1">
     </div>
   </div>
-  <div class="col">
+  <div class="col right-most">
     <div class="form-group">
       <label for="Temp">Temperature Upper Threshold <i>(&#8451)</i></label>
       <input type="number" class="form-control" name="inputTempupper" value="{{temp_high|round(1)}}" step="0.1">
     </div>
   </div>
 </div>
-
 <!--Diagnosis Type -->
-<div class="form-group">
-  <label for="diagnosis">Diagnosis</label>
-  <input type="text" class="form-control" name="inputDiagnosis" value="{{diagnosis}}">
-</div>
+<div class="row">
+  <div class="col left-most">
+    <div class="form-group">
+      <label for="diagnosis">Diagnosis</label>
+      <input type="text" class="form-control" name="inputDiagnosis" value="{{diagnosis}}">
+    </div>
+  </div>
+  <div class="col right-most">
+  </div>
 
+</div>
 
   <div class="form-group">
     <input type="hidden" name="btn_identifier" value="set">
       <button type="submit"class="btn btn-outline-primary">Set</button>
   </div>
 </form>
-
-
 <!--  create top margin -->
 <div class="m-5 bg-success"></div>
-
 {% endblock %}

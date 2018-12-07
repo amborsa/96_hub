@@ -8,37 +8,41 @@
 
             {% if loop.index == 1 %}
               <div class="col solid left-most gray" align="center">
-                <div class="top-left"> {{device.id}} </div><br>
+                <div class="top-left"> {{device.node_id}} </div><br>
                 <div>{{ device.name }}</div>
                 <div>{{ device.loc }}</div>
-                <div>{{ device.dob }}</div><br>
+                <div>{{ device.dob }}</div>
+                <div>{{ device.med_id }}</div><br>
                 <a class="bottom-left">edit</a>
                 <a class="bottom-right">data</a>
               </div>
             {% elif loop.index % col_num == 1%}
               <div id="alarm_state{{ device.id }}" class="col solid left-most" align="center">
-                <div id="{{ device.id }}" class="top-left">ID: {{device.id}}</div><br>
+                <div id="{{ device.id }}" class="top-left">ID: {{device.node_id}}</div><br>
                 <div id="name{{ device.id }}">{{ device.name }}</div>
                 <div id="loc{{ device.id }}">{{ device.loc }}</div>
-                <div id="dob{{ device. id}}">{{ device.dob }}</div><br>
+                <div id="dob{{ device.id}}">{{ device.dob }}</div>
+                <div id="med_id{{ device.id}}">{{ device.med_id }}</div><br>
                 <a class="bottom-left" href="{{ url_for('input', id=device.id) }}">edit</a>
                 <a class="bottom-right" href="{{ url_for('patient', id=device.id) }}">data</a>
               </div>
             {% elif loop.index % col_num == 0 %}
               <div id="alarm_state{{ device.id }}" class="col solid right-most" align="center">
-                <div id="{{ device.id }}" class="top-left">ID: {{device.id}}</div><br>
+                <div id="{{ device.id }}" class="top-left">ID: {{device.node_id}}</div><br>
                 <div id="name{{ device.id }}">{{ device.name }}</div>
                 <div id="loc{{ device.id }}">{{ device.loc }}</div>
-                <div id="dob{{ device. id}}">{{ device.dob }}</div><br>
+                <div id="dob{{ device. id}}">{{ device.dob }}</div>
+                <div id="med_id{{ device.id}}">{{ device.med_id }}</div><br>
                 <a class="bottom-left" href="{{ url_for('input', id=device.id) }}">edit</a>
                 <a class="bottom-right" href="{{ url_for('patient', id=device.id) }}">data</a>
               </div>
             {% else %}
               <div id="alarm_state{{ device.id }}"  class="col solid" align="center">
-                <div id="{{ device.id }}" class="top-left">ID: {{device.id}}</div><br>
+                <div id="{{ device.id }}" class="top-left">ID: {{device.node_id}}</div><br>
                 <div id="name{{ device.id }}">{{ device.name }}</div>
                 <div id="loc{{ device.id }}">{{ device.loc }}</div>
-                <div id="dob{{ device. id}}">{{ device.dob }}</div><br>
+                <div id="dob{{ device. id}}">{{ device.dob }}</div>
+                <div id="med_id{{ device.id}}">{{ device.med_id }}</div><br>
                 <a class="bottom-left" href="{{ url_for('input', id=device.id) }}">edit</a>
                 <a class="bottom-right" href="{{ url_for('patient', id=device.id) }}">data</a>
               </div>
@@ -62,14 +66,6 @@
                 {% endif %}
 
             {% endfor %}
-        </div>
-        <div class="row buffer">
-          <div class="col solid left-most gray" align="center">
-            <p>commission</p>
-          </div>
-          <div class="col solid left-most gray" align="center">
-            <p>decomission</p>
-          </div>
         </div>
     </div>
 {% endblock %}

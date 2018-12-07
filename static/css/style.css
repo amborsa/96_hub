@@ -15,6 +15,14 @@ header .welcomeheader
 }
 
 /*https://www.w3schools.com/css/css_border.asp*/
+.col.left-most {
+	margin-left: 25px;
+	margin-right: 0px;
+}
+.col.right-most {
+	margin-left: 0px;
+	margin-right: -5px;
+}
 .col.solid {
 	background-color: white;
 	border-style: solid;
@@ -115,19 +123,10 @@ a:active {
 	border-width: 1px;
 	margin-left: -1px;
 }
-.top-left-return {
-	left: 5px;
-	top: 0;
-	position: absolute;
-	border-style: none none none none;
-	border-width: 1px;
-	margin-left: -1px;
-}
+
+.classWithPad { margin:10px; padding:10px; }
+
 
 canvas {
 	padding: 5px 5px 5px;
-}
-
-col-md-6 {
-	font-size: 50px
 }
