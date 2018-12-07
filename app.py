@@ -161,7 +161,7 @@ def serial_listen():
 
     age = calculate_age_months(input_query.dob, now)
 
-    add_vital = Vital(id=patient_id, time=0, datetime=timestamp, hr=hr, rr=rr, temp=temp)
+    add_vital = Vital(id=patient_id, datetime=timestamp, hr=hr, rr=rr, temp=temp)
     db.session.add(add_vital)
 
     vital_query = Vital.query.filter(Vital.id==patient_id).order_by(Vital.e_id) # first index is earliest vital
@@ -286,7 +286,7 @@ def input(id):
             hr_near = (hr_high-hr_low)*.1
             rr_near = (rr_high-rr_low)*.1
             temp_near = (temp_high-temp_low)*.1
-            
+
             #  returns upper/lower vital thresholds for specific age
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
             temp >= temp_high or temp <= temp_low:
