@@ -37,7 +37,6 @@ class Vital(db.Model):
     __bind_key__ = "vitals"
     e_id = db.Column('e_id', db.Integer, primary_key=True)
     id = db.Column('id', db.Integer, unique=False)
-    time = db.Column('time', db.Float, unique=False)
     datetime = db.Column('datetime', db.DateTime, unique=False)
     hr = db.Column('hr', db.Float, unique=False)
     rr = db.Column('rr', db.Float, unique=False)
@@ -60,7 +59,8 @@ class Input(db.Model):
     hr_thresh_low = db.Column('hr_thresh_low', db.Float, unique=False)
     rr_thresh_low = db.Column('rr_thresh_low', db.Float, unique=False)
     temp_thresh_low = db.Column('temp_thresh_low', db.Float, unique=False)
-    alarm_state = db.Column('alarm_state', db.Boolean, unique=False)
+    # 0=no alarm, 1=alarm, 2=near alarm state
+    alarm_state = db.Column('alarm_state', db.Integer, unique=False)
 
 ''' Done Defining Database Objects '''
 
@@ -98,10 +98,7 @@ for i in range(20):
     surnames.append("Doe")
     med_ids.append(random.randint(1000, 9999))
     diagnosis.append("ALL")
-    if random.randint(0,1)==0:
-        alarm_states.append(True)
-    else:
-        alarm_states.append(False)
+    alarm_states.append(random.randint(0,2))
 
 for i in range(len(ids)):
     add_input = Input(id=ids[i], name=names[i], hr_thresh_high=hr_threshes_high[i], rr_thresh_high=rr_threshes_high[i], \
@@ -115,11 +112,8 @@ db.session.commit()
 ids = ids
 times = []
 datetimes = []
-ticker = 0.0
 for i in range(72):
-    times.append(ticker)
     datetimes.append(datetime.datetime.now()+datetime.timedelta(hours=(i-72), minutes=0))
-    ticker += 1.0
 e_id_ticker = 0
 for i in range(len(times)):
 	for n_id in ids:
