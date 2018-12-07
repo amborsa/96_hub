@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block main %}
+	<!-- This {{id}} is the one that you clicked on -->
+	<a class="top-left" href="{{ url_for('main') }}">
+      <!-- <button>RETURN TO MAIN</button></a> -->
+    <button type="button" class="btn btn-outline-primary">RETURN TO MAIN</button>
+  </a>
+{% endblock %}
