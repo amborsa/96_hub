@@ -316,22 +316,6 @@ def input(id):
                 input_query_id.alarm_state = alarm_state
             db.session.commit()
 
-        # populate database with "standard values" -- these values should be researched and updated
-        elif request.form['btn_identifier']=="reset":
-            input_query_id = Input.query.filter(Input.id==id).first()
-            input_query_id.name = ""
-            # input_query_id.age = ""
-            input_query_id.rr_thresh_low = 20.0
-            input_query_id.rr_thresh_high = 50.0
-            input_query_id.hr_thresh_low = 45.0
-            input_query_id.hr_thresh_high = 110.0
-            input_query_id.temp_thresh_low = 35.0
-            input_query_id.temp_thresh_high = 38.5
-            input_query_id.dob = ""
-            input_query_id.loc = ""
-            db.session.commit()
-
-
         return redirect(url_for("main"))
 
 @app.route('/patient/<id>', methods=["GET"])
@@ -410,24 +394,28 @@ def patient(id):
         # Go through each previous day
         past_date = datenow - datetime.timedelta(days=(days_ago-i-1))
         # Get the index for data on that day
+        index_list_long=[]
         for index in range(len(date_all)):
             difference = past_date - date_all[index]
             if difference.days == 0:
-                index_list.append(index)
-        # Make a list of vital data for that day
-        for i in range(len(index_list)):
-            hr_long.append(hr_all[index_list[i]])
-            rr_long.append(rr_all[index_list[i]])
-            temp_long.append(temp_all[index_list[i]])
-        # Find the mean of each vital for that day
-        hr_mean = sum(hr_long)/len(hr_long)
-        rr_mean = sum(rr_long)/len(rr_long)
-        temp_mean = sum(temp_long)/len(temp_long)
-        # Store the mean value into a the 2nd graph data list
-        hr_graph2.append(hr_mean)
-        rr_graph2.append(rr_mean)
-        temp_graph2.append(temp_mean)
-        time_graph2.append(past_date)
+                index_list_long.append(index)
+
+        if len(index_list_long)>=1:
+            # Make a list of vital data for that day
+            for i in range(len(index_list_long)):
+                hr_long.append(hr_all[index_list_long[i]])
+                rr_long.append(rr_all[index_list_long[i]])
+                temp_long.append(temp_all[index_list_long[i]])
+
+            # Find the mean of each vital for that day
+            hr_mean = sum(hr_long)/len(hr_long)
+            rr_mean = sum(rr_long)/len(rr_long)
+            temp_mean = sum(temp_long)/len(temp_long)
+            # Store the mean value into a the 2nd graph data list
+            hr_graph2.append(hr_mean)
+            rr_graph2.append(rr_mean)
+            temp_graph2.append(temp_mean)
+            time_graph2.append(past_date)
 
     # Make a repeated list of the thresholds for the plotted line
     hr_high = []
@@ -459,12 +447,20 @@ def patient(id):
     temp_low.append(standard_thresholds[5])
 
     # Make these values a list for the graph
-    hr_high = hr_high*len(index_list)
-    hr_low = hr_low*len(index_list)
-    rr_high = rr_high*len(index_list)
-    rr_low = rr_low*len(index_list)
-    temp_high = temp_high*len(index_list)
-    temp_low = temp_low*len(index_list)
+    if len(index_list)>=1:
+        hr_high = hr_high*len(index_list)
+        hr_low = hr_low*len(index_list)
+        rr_high = rr_high*len(index_list)
+        rr_low = rr_low*len(index_list)
+        temp_high = temp_high*len(index_list)
+        temp_low = temp_low*len(index_list)
+    else:
+        hr_high = hr_high*2
+        hr_low = hr_low*2
+        rr_high = rr_high*2
+        rr_low = rr_low*2
+        temp_high = temp_high*2
+        temp_low = temp_low*2
 
     # Set max and min values for graph axes ranges
     # If the threshold value is less than the lowest data point, then use the threshold value as the lower axis
