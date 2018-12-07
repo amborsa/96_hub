@@ -2,143 +2,148 @@
 
 {% block main %}
 
-<a class="top-left" href="{{ url_for('main') }}"> 
-<!-- <button>RETURN TO MAIN</button></a> -->
-  <button type="button" class="btn btn-outline-primary">RETURN TO MAIN</button>
-</a><br>
-
 <form action="{{ url_for('input', id=id) }}" method="post">
 
-<div class="container.fluid">
-  <div class="row"> 
-    <div class="col">
-      <!--  button to return to home page -->
-   </div>
+<div class="row"> 
+  <div class="col" style="margin-left:15px">
+    <!--  button to return to home page -->
+  <a class="top-left" href="{{ url_for('main') }}"> 
+    <button type="button" class="btn btn-outline-primary">Return to Main</button>
+  </a>
+ </div>
 
-  <!-- location -->
-    <div class="form-group col-md-4">
+ <div class="col">
+  </div>
+
+<!-- location -->
+  <div class="col right-most">
+    <div class="form-group">
       <label for="loc">Location</label>
       <input type="text" class="form-control" name="inputloc" value="{{loc}}">
     </div>
   </div>
+</div>
 
-  <!-- Medical ID -->
-  <div class="row"> 
-    <div class="col"> 
-      <div class="form-group">
-        <label for="medID">Medical ID</label>
-        <input type="text" class="form-control" name="inputmedID" value="{{med_id}}", readonly="readonly">
-      </div>
-    </div>
-
-  <!-- date of birth -->
-    <div class="col">
-      <div class="form-group">
-        <label for="dob">Date of Birth (MM-DD-YYYY)</label>
-        <div class="col-sm-6"></div>
-        <input type="date" class="form-control" name="inputDOB" value="{{dob}}" readonly="readonly">
-      </div>
-    </div>
-
-  <!-- age -->
-    <div class="col">
-      <div class="form-group">
-        <label for="loc">Age</label>
-        <input type="number" class="form-control" name="inputAge" value="{{age | round(1)}}"
-        readonly="readonly">
-      </div>
+<!-- Medical ID -->
+<div class="row"> 
+  <div class="col left-most">
+    <div class="form-group">
+      <label for="medID">Medical ID</label>
+      <input type="text" class="form-control" name="inputmedID" value="{{med_id}}", readonly="readonly">
     </div>
   </div>
 
-
-  <!-- first name -->
-  <div class="row"> 
-    <div class="col">
-      <div class="form-group"> 
-        <label for="Name">First Name</label>
-        <input type="text" class="form-control" name="inputName" value="{{name}}">
-      </div>
-    </div>
-    <!-- Last name -->
-    <div class="col">
-      <div class="form-group">
-        <label for="Surname">Last Name</label>
-        <input type="text" class="form-control" name="inputSurname" value="{{surname}}">
-      </div>
-    </div>
-  </div>
-
-  <!-- Respiratory Rate Thresholds -->
-  <div class="row"> 
+<!-- date of birth -->
   <div class="col">
     <div class="form-group">
-      <label for="RRlower">Respiratory Rate Lower (breaths per minute)</label>
-      <input type="number" class="form-control" name="inputRRlower" value="{{rr_low|round(1)}}" step="0.1">
+      <label for="dob">Date of Birth (MM-DD-YYYY)</label>
+      <div class="col-sm-6"></div>
+      <input type="date" class="form-control" name="inputDOB" value="{{dob}}">
     </div>
   </div>
-  <div class="col">
+
+<!-- age -->
+  <div class="col right-most">
     <div class="form-group">
-      <label for="RRhigher">Respiratory Rate Upper (breaths per minute)</label>
-      <input type="number" class="form-control" name="inputRRupper" value="{{rr_high| round(1)}}" step="0.1">
+      <label for="loc">Age</label>
+      <input type="number" class="form-control" name="inputAge" value="{{age | round(1)}}"
+      readonly="readonly">
     </div>
   </div>
-  </div>
+</div>
 
-  <!-- Heart rate thresholds -->
-  <div class="row"> 
-    <div class="col">
-      <div class="form-group">
-        <label for="HRlower">Heart Rate Lower (beats per minute)</label>
-        <input type="number" class="form-control" name="inputHRlower" value="{{hr_low |round(1)}}" step="0.1">
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="HRupper">Heart Rate Upper (beats per minute)</label>
-        <input type="number" class="form-control" name="inputHRupper" value="{{hr_high| round(1)}}" step="0.1">
-      </div>
+<!-- first name -->
+<div class="row"> 
+  <div class="col left-most">
+    <div class="form-group"> 
+      <label for="Name">First Name</label>
+      <input type="text" class="form-control" name="inputName" value="{{name}}">
     </div>
   </div>
-
-  <!-- Temperature Thresholds -->
-  <div class="row"> 
-    <div class="col">
-      <div class="form-group">
-        <label for="Temp">Temperature Lower (&#8451)</label>
-        <input type="number" class="form-control" name="inputTemplower" value="{{temp_low|round(1)}}" step="0.1">
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="Temp">Temperature Upper (&#8451)</label>
-        <input type="number" class="form-control" name="inputTempupper" value="{{temp_high|round(1)}}" step="0.1">
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-    <!--Diagnosis Type -->
-      <div class="form-group">
-        <label for="diagnosis">Diagnosis</label>
-        <input type="text" class="form-control" name="inputDiagnosis" value="{{diagnosis}}">
-      </div>
-    </div>
-
-    <div class="col">
-    </div>
-  </div>
-
-
+  <!-- Last name -->
+  <div class="col right-most">
     <div class="form-group">
-      <input type="hidden" name="btn_identifier" value="set">
-        <button type="submit"class="btn btn-outline-primary">SET</button>
+      <label for="Surname">Last Name</label>
+      <input type="text" class="form-control" name="inputSurname" value="{{surname}}">
     </div>
+  </div>
+</div>
+
+<!-- Alert me if... -->
+<div class="row"> 
+  <div class="col left-most">
+    <p><font color="red"><i>Alert me if {vitals} < {lower threshold}</i></font></p>
+  </div>  
+  <div class="col right-most">
+    <p> <font color="red"><i>Alert me if {vitals} > {upper threshold}</i></font></p>
+  </div>
+</div>
+
+<!-- Respiratory Rate Thresholds -->
+<div class="row"> 
+<div class="col left-most">
+  <div class="form-group">
+    <label for="RRlower">Respiratory Rate Lower Threshold <i>(breaths per minute)</i></label>
+    <input type="number" class="form-control" name="inputRRlower" value="{{rr_low|round(1)}}" step="0.1">
+  </div>
+</div>
+<div class="col right-most">
+  <div class="form-group">
+    <label for="RRhigher">Respiratory Rate Upper Threshold <i>(breaths per minute)</i></label>
+    <input type="number" class="form-control" name="inputRRupper" value="{{rr_high| round(1)}}" step="0.1">
+  </div>
+</div>
+</div>
+
+<!-- Heart rate thresholds -->
+<div class="row"> 
+  <div class="col left-most">
+    <div class="form-group">
+      <label for="HRlower">Heart Rate Lower Threshold <i>(beats per minute)</i></label>
+      <input type="number" class="form-control" name="inputHRlower" value="{{hr_low |round(1)}}" step="0.1">
+    </div>
+  </div>
+  <div class="col right-most">
+    <div class="form-group">
+      <label for="HRupper">Heart Rate Upper Threshold <i>(beats per minute)</i></label>
+      <input type="number" class="form-control" name="inputHRupper" value="{{hr_high| round(1)}}" step="0.1">
+    </div>
+  </div>
+</div>
+
+<!-- Temperature Thresholds -->
+<div class="row"> 
+  <div class="col left-most">
+    <div class="form-group">
+      <label for="Temp">Temperature Lower Threshold <i>(&#8451)</i></label>
+      <input type="number" class="form-control" name="inputTemplower" value="{{temp_low|round(1)}}" step="0.1">
+    </div>
+  </div>
+  <div class="col right-most">
+    <div class="form-group">
+      <label for="Temp">Temperature Upper Threshold <i>(&#8451)</i></label>
+      <input type="number" class="form-control" name="inputTempupper" value="{{temp_high|round(1)}}" step="0.1">
+    </div>
+  </div>
+</div>
+<!--Diagnosis Type -->
+<div class="row">
+  <div class="col left-most">
+    <div class="form-group">
+      <label for="diagnosis">Diagnosis</label>
+      <input type="text" class="form-control" name="inputDiagnosis" value="{{diagnosis}}">
+    </div>
+  </div>
+  <div class="col right-most">
+  </div>
+
+</div>
+
+  <div class="form-group">
+    <input type="hidden" name="btn_identifier" value="set">
+      <button type="submit"class="btn btn-outline-primary">Set</button>
   </div>
 </form>
-
-
 <!--  create top margin -->
 <div class="m-5 bg-success"></div>
-
 {% endblock %}

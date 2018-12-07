@@ -15,9 +15,13 @@ header .welcomeheader
 }
 
 /*https://www.w3schools.com/css/css_border.asp*/
-.col {
-	margin-left: 0px;
+.col.left-most {
+	margin-left: 25px;
 	margin-right: 0px;
+}
+.col.right-most {
+	margin-left: 0px;
+	margin-right: -5px;
 }
 .col.solid {
 	background-color: white;
