@@ -8,7 +8,11 @@
   </a>
 	<center>
 		<h1> {{id}} </h1>
+		<h3 style="text-align:left;float:left;" class="titleleft">Last 24 hours</h3>
+		<h3 style="text-align:right;float:right;" class="titleright">Last 5 day averages</h3>
+		<hr style="clear:both;"/>
 		<h2>{{title1}}</h2>
+		<!-- https://stackoverflow.com/questions/4736067/how-to-write-both-h1-and-h2-in-the-same-line -->
 	</center>
 	<div class="container">
 	  <div class="row" align="right">
@@ -78,16 +82,8 @@
 					Chart.defaults.global.scaleFontSize = 12;
 					// get bar chart canvas
 					var mychart = document.getElementById("HeartRate").getContext("2d");
-					range = {{ range1 }};
-					steps = range / 5
-					max = {{ max1 }}
-					min = {{ min1 }}
 					// draw bar chart
 					var LineChartDemo = new Chart(mychart).Line(barData, {
-						scaleOverride: true,
-						scaleSteps: steps,
-						scaleStepWidth: 10,
-						scaleStartValue: min,
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
 						barShowStroke : true,
@@ -112,11 +108,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "rgba(151,187,205,1)",
-							pointColor: "rgba(151,187,205,1)",
+							strokeColor: "#B6D638",
+							pointColor: "#B6D638",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "rgba(151,187,205,1)",
+							pointHighlightStroke: "#B6D638",
 							bezierCurve : false,
 							data : [
 								{% for item in values1long %}
@@ -136,16 +132,8 @@
 					Chart.defaults.global.scaleFontSize = 12;
 					// get bar chart canvas
 					var mychart = document.getElementById("HeartRate2").getContext("2d");
-					range = {{ range1 }};
-					steps = range / 5
-					max = {{ max1 }}
-					min = {{ min1long }}
 					// draw bar chart
 					var LineChartDemo = new Chart(mychart).Line(barData, {
-						scaleOverride: true,
-						scaleSteps: steps,
-						scaleStepWidth: 1,
-						scaleStartValue: min,
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
 						barShowStroke : true,
@@ -227,16 +215,8 @@
 					Chart.defaults.global.scaleFontSize = 12;
 					// get bar chart canvas
 					var mychart = document.getElementById("Temperature").getContext("2d");
-					range = {{ range2 }};
-					steps = range
-					max = {{ max2 }}
-					min = {{ min2 }}
 					// draw bar chart
 					var LineChartDemo = new Chart(mychart).Line(barData, {
-						scaleOverride: true,
-						scaleSteps: steps,
-						scaleStepWidth: 2,
-						scaleStartValue: min,
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
 						barShowStroke : true,
@@ -261,11 +241,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "rgba(151,187,205,1)",
-							pointColor: "rgba(151,187,205,1)",
+							strokeColor: "#B6D638",
+							pointColor: "#B6D638",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "rgba(151,187,205,1)",
+							pointHighlightStroke: "#B6D638",
 							bezierCurve : false,
 							data : [
 								{% for item in values2long %}
@@ -285,16 +265,8 @@
 					Chart.defaults.global.scaleFontSize = 12;
 					// get bar chart canvas
 					var mychart = document.getElementById("Temperature2").getContext("2d");
-					range = {{ range2 }};
-					steps = range
-					max = {{ max2 }}
-					min = {{ min2long }}
 					// draw bar chart
 					var LineChartDemo = new Chart(mychart).Line(barData, {
-						scaleOverride: true,
-						scaleSteps: steps,
-						scaleStepWidth: 1,
-						scaleStartValue: min,
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
 						barShowStroke : true,
@@ -376,16 +348,11 @@
 					Chart.defaults.global.scaleFontSize = 12;
 					// get bar chart canvas
 					var mychart = document.getElementById("Respiratory").getContext("2d");
-					range = {{ range3 }};
-					steps = range
-					max = {{ max3 }}
-					min = {{ min3 }}
-					// draw bar chart
-					var LineChartDemo = new Chart(mychart).Line(barData, {
-						scaleOverride: true,
-						scaleSteps: steps,
-						scaleStepWidth: 2,
-						scaleStartValue: min,
+					options = {
+						title:{
+							display: true,
+							text: "Title"
+						},
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
 						barShowStroke : true,
@@ -393,7 +360,9 @@
 						bezierCurve: false,
 						// https://github.com/alanszp/Chart.js/blob/master/docs/01-Line-Chart.md
 						pointHitDetectionRadius : 1,
-					});
+					};
+					// draw bar chart
+					var LineChartDemo = new Chart(mychart).Line(barData, options);
 				</script>
 	  </div>
 		<div class="col-sm-6">
@@ -410,11 +379,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "rgba(151,187,205,1)",
-							pointColor: "rgba(151,187,205,1)",
+							strokeColor: "#B6D638",
+							pointColor: "#B6D638",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "rgba(151,187,205,1)",
+							pointHighlightStroke: "#B6D638",
 							bezierCurve : false,
 							data : [
 								{% for item in values3long %}
@@ -434,16 +403,8 @@
 					Chart.defaults.global.scaleFontSize = 12;
 					// get bar chart canvas
 					var mychart = document.getElementById("Respiratory2").getContext("2d");
-					range = {{ range3 }};
-					steps = range/2
-					max = {{ max3 }}
-					min = {{ min3long }}
 					// draw bar chart
 					var LineChartDemo = new Chart(mychart).Line(barData, {
-						scaleOverride: true,
-						scaleSteps: steps,
-						scaleStepWidth: 1,
-						scaleStartValue: min,
 						scaleShowVerticalLines: true,
 						scaleShowGridLines : true,
 						barShowStroke : true,

@@ -305,7 +305,7 @@ def input(id):
                 input_query_id.dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
             if input_query_id.loc is not loc:
                 input_query_id.loc = loc
-            
+
             #  returns upper/lower vital thresholds for specific age
             if hr >= hr_high or hr <= hr_low or rr >= rr_high or rr <= rr_low or \
             temp >= temp_high or temp <= temp_low:
@@ -462,70 +462,12 @@ def patient(id):
         temp_high = temp_high*2
         temp_low = temp_low*2
 
-    # Set max and min values for graph axes ranges
-    # If the threshold value is less than the lowest data point, then use the threshold value as the lower axis
-    hr_max = max(hr_all)
-    hr_min = min(hr_all)
-    rr_max = max(rr_all)
-    rr_min = min(rr_all)
-    temp_max = max(temp_all)
-    temp_min = min(temp_all)
-    # Compare hr min and maxes to threshold values
-    # hr_upper
-    if hr_max > hr_high[0]:
-        hr_upper = hr_max + 10
-    else:
-        hr_upper = hr_high[0] + 10
-    # hr_lower
-    if hr_min < hr_low[0]:
-        hr_lower = hr_min - 10
-    else:
-        hr_lower = hr_low[0] - 10
-    # Do the same for respiratory rate
-    # rr_upper
-    if rr_max > rr_high[0]:
-        rr_upper = rr_max + 1
-    else:
-        rr_upper = rr_high[0] + 1
-    # rr_lower
-    if rr_min < rr_low[0]:
-        rr_lower = rr_min - 1
-    else:
-        rr_lower = rr_low[0] - 1
-    # Do the same for temperature
-    # temp_upper
-    if temp_max > temp_high[0]:
-        temp_upper = temp_max + 1
-    else:
-        temp_upper = temp_high[0] + 1
-    # temp_lower
-    if temp_min < temp_low[0]:
-        temp_lower = temp_min - 1
-    else:
-        temp_lower = temp_low[0] - 1
-    hr_range = round(hr_max) - round(hr_min)
-    temp_range = round(temp_max) - round(temp_min)
-    rr_range = round(rr_max) - round(rr_min)
-
-    # Create axes ranges for longitudinal graphs
-    if min(hr_graph2) == 0:
-        hr_min_long = hr_lower
-        rr_min_long = rr_lower
-        temp_min_long = temp_lower
-    else:
-        hr_min_long = min(hr_graph2) - 1
-        rr_min_long = min(rr_graph2) - 1
-        temp_min_long = min(temp_graph2) - 1
-
 
     # Send all values to html file to graph
     return render_template("patient.html",id=name, title1="Heart Rate",title2="Temperature",title3="Respiratory Rate", \
-        labels1 = time_daily,labels2 = time_graph2, values1day = hr_graph1,values1long = hr_graph2, max1 = hr_upper, \
-        min1 = hr_lower, range1 = hr_range, high1 = hr_high, low1 = hr_low, min1long = hr_min_long, \
-        values2day = temp_graph1,values2long = temp_graph2, max2 = temp_upper, min2 = temp_lower, \
-        range2 = temp_range, high2 = temp_high, low2 = temp_low,min2long = temp_min_long, \
-        values3day = rr_graph1,values3long = rr_graph2, max3 = rr_upper, min3 = rr_lower, \
-        range3 = rr_range, high3 = rr_high, low3 = rr_low,min3long = rr_min_long,)
+        labels1 = time_daily,labels2 = time_graph2, values1day = hr_graph1,values1long = hr_graph2,high1 = hr_high, low1 = hr_low, \
+        values2day = temp_graph1,values2long = temp_graph2, high2 = temp_high, low2 = temp_low, \
+        values3day = rr_graph1,values3long = rr_graph2, high3 = rr_high, low3 = rr_low)
 
 
 if __name__ == "__main__":

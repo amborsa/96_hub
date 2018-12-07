@@ -127,3 +127,12 @@ a:active {
 canvas {
 	padding: 5px 5px 5px;
 }
+
+.titleleft {
+	padding-left: 200px;
+	color: rgba(151,187,205,1);
+}
+.titleright {
+	padding-right: 200px;
+	color: #B6D638;
+}
