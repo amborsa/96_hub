@@ -115,12 +115,12 @@ datetimes = []
 for i in range(72):
     datetimes.append(datetime.datetime.now()+datetime.timedelta(hours=(i-72), minutes=0))
 e_id_ticker = 0
-for i in range(len(times)):
+for i in range(len(datetimes)):
 	for n_id in ids:
 		hr = random.uniform(50.0, 150.0)
 		rr = random.uniform(8.0, 30.0)
 		temp = random.uniform(34.0, 39.0)
-		add_vital = Vital(e_id=e_id_ticker, id=n_id, time=times[i], datetime=datetimes[i], hr=hr, rr=rr, temp=temp)
+		add_vital = Vital(e_id=e_id_ticker, id=n_id, datetime=datetimes[i], hr=hr, rr=rr, temp=temp)
 		db.session.add(add_vital)
 		e_id_ticker += 1
 db.session.commit()

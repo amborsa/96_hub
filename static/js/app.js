@@ -21,10 +21,14 @@ function js_update() {
 	req.done(function(data) {
 		  var i;
       for (i=0; i < data.length; i++) {
-        if (data[i].alarm_state == true) {
+        if (data[i].alarm_state == 0) {
           $('#alarm_state' + data[i].id).css({
             backgroundColor: '#d62728'
           });
+        } else if (data[i].alarm_state == 2) {
+          $('#alarm_state' + data[i].id).css({
+            backgroundColor: '#FFFF00'
+          })
         } else {
           $('#alarm_state' + data[i].id).css({
             backgroundColor: 'white'
