@@ -10,8 +10,7 @@
   <div class="col">
     <!--  button to return to home page -->
   <a class="top-left" href="{{ url_for('main') }}"> 
-      <!-- <button>RETURN TO MAIN</button></a> -->
-    <button type="button" class="btn btn-outline-primary">RETURN TO MAIN</button>
+    <button type="button" class="btn btn-outline-primary">Return to Main</button>
   </a>
  </div>
 
@@ -50,7 +49,6 @@
   </div>
 </div>
 
-
 <!-- first name -->
 <div class="row"> 
   <div class="col">
@@ -68,17 +66,27 @@
   </div>
 </div>
 
+<!-- Alert me if... -->
+<div class="row"> 
+  <div class="col">
+    <p><font color="red"><i>Alert me if {vitals} < {lower threshold}</i></font></p>
+  </div>  
+  <div class= "col">
+    <p> <font color="red"><i>Alert me if {vitals} > {upper threshold}</i></font></p>
+  </div>
+</div>
+
 <!-- Respiratory Rate Thresholds -->
 <div class="row"> 
 <div class="col">
   <div class="form-group">
-    <label for="RRlower">Respiratory Rate Lower (breaths per minute)</label>
+    <label for="RRlower">Respiratory Rate Lower Threshold <i>(breaths per minute)</i></label>
     <input type="number" class="form-control" name="inputRRlower" value="{{rr_low|round(1)}}" step="0.1">
   </div>
 </div>
 <div class="col">
   <div class="form-group">
-    <label for="RRhigher">Respiratory Rate Upper (breaths per minute)</label>
+    <label for="RRhigher">Respiratory Rate Upper Threshold <i>(breaths per minute)</i></label>
     <input type="number" class="form-control" name="inputRRupper" value="{{rr_high| round(1)}}" step="0.1">
   </div>
 </div>
@@ -88,13 +96,13 @@
 <div class="row"> 
   <div class="col">
     <div class="form-group">
-      <label for="HRlower">Heart Rate Lower (beats per minute)</label>
+      <label for="HRlower">Heart Rate Lower Threshold <i>(beats per minute)</i></label>
       <input type="number" class="form-control" name="inputHRlower" value="{{hr_low |round(1)}}" step="0.1">
     </div>
   </div>
   <div class="col">
     <div class="form-group">
-      <label for="HRupper">Heart Rate Upper (beats per minute)</label>
+      <label for="HRupper">Heart Rate Upper Threshold <i>(beats per minute)</i></label>
       <input type="number" class="form-control" name="inputHRupper" value="{{hr_high| round(1)}}" step="0.1">
     </div>
   </div>
@@ -104,13 +112,13 @@
 <div class="row"> 
   <div class="col">
     <div class="form-group">
-      <label for="Temp">Temperature Lower (&#8451)</label>
+      <label for="Temp">Temperature Lower Threshold <i>(&#8451)</i></label>
       <input type="number" class="form-control" name="inputTemplower" value="{{temp_low|round(1)}}" step="0.1">
     </div>
   </div>
   <div class="col">
     <div class="form-group">
-      <label for="Temp">Temperature Upper (&#8451)</label>
+      <label for="Temp">Temperature Upper Threshold <i>(&#8451)</i></label>
       <input type="number" class="form-control" name="inputTempupper" value="{{temp_high|round(1)}}" step="0.1">
     </div>
   </div>
@@ -125,7 +133,7 @@
 
   <div class="form-group">
     <input type="hidden" name="btn_identifier" value="set">
-      <button type="submit"class="btn btn-outline-primary">SET</button>
+      <button type="submit"class="btn btn-outline-primary">Set</button>
   </div>
 </form>
 
