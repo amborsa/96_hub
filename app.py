@@ -77,24 +77,28 @@ def main():
     """Show main page"""
 
     ''' grabs and organizes database:input data --> let's make this a function later '''
-    ids = ["Device ID"]
+    ids = ["Patient ID"]
     names = ["Name"]
     alarm_states = [0]
     locs = ["Location"]
     dobs = ["Birth Date"]
-    full_query = Input.query.all()
+    med_ids = ["Medical ID"]
+    node_ids = ["Device ID"]
+    full_query = Input.query.filter(Input.node > 0).order_by(Input.node)
     for query in full_query:
         ids.append(query.id)
-        names.append(query.name)
+        node_ids.append(query.node)
+        names.append(query.name + " " + query.surname)
         locs.append(query.loc)
         dob = query.dob
+        med_ids.append(query.med_id)
         str_dob = dob.strftime('%m-%d-%Y')
         dobs.append(str_dob)
         alarm_states.append(query.alarm_state)
     devices = []
     for i in range(len(ids)):
         new_dict = {'id': ids[i], 'name': names[i], 'alarm_state': \
-            alarm_states[i], 'loc': locs[i], 'dob': dobs[i]}
+            alarm_states[i], 'loc': locs[i], 'dob': dobs[i], 'med_id': med_ids[i], 'node_id': node_ids[i]}
         devices.append(new_dict)
     ''' done grabbing and organizing database:input data '''
 
@@ -106,7 +110,7 @@ def update_main():
     ''' grabs and organizes input.db data '''
     ids = []
     alarm_states = []
-    full_query = Input.query.all()
+    full_query = Input.query.filter(Input.node > 0)
     for query in full_query:
         ids.append(query.id)
         alarm_states.append(query.alarm_state)
