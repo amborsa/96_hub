@@ -55,9 +55,18 @@ def main():
 		socket.send_string(sent_data)
 		received_data = socket.recv_string()
 		print(received_data)
+		received_data = received_data.split(",")
+		received_data = [int(e) for e in received_data]
 
-		# if int(sys.argv[1]) == 0:
-		# 	ser.write(received_data)
+		to_serial = struct.pack('h?', received_data[0], received_data[1])
+
+		read_to_serial = struct.unpack('h?', to_serial)
+
+		print(to_serial)
+		print(read_to_serial)
+
+		if int(sys.argv[1]) == 0:
+			ser.write(to_serial)
 
 		time.sleep(10)
 

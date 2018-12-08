@@ -193,6 +193,8 @@ def serial_listen():
 
     db.session.commit()
 
+    # for transmission to Arduino
+    alarm_state = alarm_state % 2
     to_serial = str(age) + "," + str(alarm_state)
 
     socket.send_string(to_serial)
