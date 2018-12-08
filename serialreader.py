@@ -58,9 +58,9 @@ def main():
 		received_data = received_data.split(",")
 		received_data = [int(e) for e in received_data]
 
-		to_serial = struct.pack('h?', received_data[0], received_data[1])
+		to_serial = struct.pack('l?', received_data[0], received_data[1])
 
-		read_to_serial = struct.unpack('h?', to_serial)
+		read_to_serial = struct.unpack('l?', to_serial)
 
 		print(to_serial)
 		print(read_to_serial)
