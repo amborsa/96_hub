@@ -6,15 +6,14 @@
       <!-- <button>RETURN TO MAIN</button></a> -->
     <button type="button" class="btn btn-outline-primary">RETURN TO MAIN</button>
   </a>
+	<br><br>
 	<center>
 		<div id="rcorners1" style="font-size:32px">{{id}}</div>
 		<div class="row">
-			<div class="col left-most" style="background-color:rgba(151,187,205,1);font-size:32px">Last 24 Hours</div>
-			<div class="col right-most" style="background-color:#B6D638;font-size:32px">Last 5 day average</div>
+			<div class="col left-most" style="background-color:#97cdc4;font-size:32px">Last 24 Hours</div>
+			<div class="col right-most" style="background-color:#97a0cd;font-size:32px">Last 5 day average</div>
 		</div>
-		<h2>{{title1}}</h2>
-		<!-- https://stackoverflow.com/questions/4736067/how-to-write-both-h1-and-h2-in-the-same-line -->
-	</center>
+	<h2>{{title1}}</h2>
 	<div class="container">
 	  <div class="row" align="right">
 	  <div class="col-sm-6">
@@ -31,11 +30,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "rgba(151,187,205,1)",
-							pointColor: "rgba(151,187,205,1)",
+							strokeColor: "#97cdc4",
+							pointColor: "#97cdc4",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "rgba(151,187,205,1)",
+							pointHighlightStroke: "#97cdc4",
 							bezierCurve : false,
 							data : [
 								{% for item in values1day %}
@@ -109,11 +108,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "#B6D638",
-							pointColor: "#B6D638",
+							strokeColor: "#97a0cd",
+							pointColor: "#97a0cd",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "#B6D638",
+							pointHighlightStroke: "#97a0cd",
 							bezierCurve : false,
 							data : [
 								{% for item in values1long %}
@@ -164,11 +163,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "rgba(151,187,205,1)",
-							pointColor: "rgba(151,187,205,1)",
+							strokeColor: "#97cdc4",
+							pointColor: "#97cdc4",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "rgba(151,187,205,1)",
+							pointHighlightStroke: "#97cdc4",
 							bezierCurve : false,
 							data : [
 								{% for item in values2day %}
@@ -242,11 +241,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "#B6D638",
-							pointColor: "#B6D638",
+							strokeColor: "#97a0cd",
+							pointColor: "#97a0cd",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "#B6D638",
+							pointHighlightStroke: "#97a0cd",
 							bezierCurve : false,
 							data : [
 								{% for item in values2long %}
@@ -297,11 +296,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "rgba(151,187,205,1)",
-							pointColor: "rgba(151,187,205,1)",
+							strokeColor: "#97cdc4",
+							pointColor: "#97cdc4",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "rgba(151,187,205,1)",
+							pointHighlightStroke: "#97cdc4",
 							bezierCurve : false,
 							data : [
 								{% for item in values3day %}
@@ -380,11 +379,11 @@
 						],
 						datasets : [{
 							fillColor: "rgba(255,255,255,0)",
-							strokeColor: "#B6D638",
-							pointColor: "#B6D638",
+							strokeColor: "#97a0cd",
+							pointColor: "#97a0cd",
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
-							pointHighlightStroke: "#B6D638",
+							pointHighlightStroke: "#97a0cd",
 							bezierCurve : false,
 							data : [
 								{% for item in values3long %}

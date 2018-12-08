@@ -20,13 +20,14 @@ header .welcomeheader
 /*https://www.w3schools.com/css/css_border.asp*/
 .col.left-most {
 	margin-left: 25px;
-	margin-right: 0px;
-	border-radius: 10px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
 }
 .col.right-most {
 	margin-left: 0px;
 	margin-right: -5px;
-	border-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 .col.solid {
 	background-color: white;
@@ -239,8 +240,8 @@ https://www.sanwebe.com/2014/08/css-html-forms-designs */
 
 #rcorners1 {
   border-radius: 15px;
-  background: rgb(225,244,197);
+  background: #97bbcd;
   padding: 0px;
-  width: 200px;
+  width: 100%;
   height: 50px;
 }
