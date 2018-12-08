@@ -24,9 +24,10 @@ def main():
 				serial_string = serial_data.decode("utf-8")
 				exp_str = serial_string.replace("\n", "")
 				exp_str = exp_str.replace("\r", "")
-				print(exp_str)
+				exp_array = exp_str.split(",")
 				# we need to further ensure we have what we want --> specify the length of this string
-				if len(exp_str) == 26:
+				if len(exp_array[0]) <= 2 and (len(exp_array[2]) == 5 or len(exp_array[2]) == 6) and \
+				(len(exp_array[3]) == 4 or len(exp_array[3]) == 5) and len(exp_array[4]) == 5:
 					print(len(exp_str))
 					break
 		elif int(sys.argv[1]) == 1:
