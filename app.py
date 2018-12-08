@@ -188,7 +188,7 @@ def serial_listen():
         specific_query.alarm_state = alarm_state
 
     # committing now then accessing later potentially leading to problems with locked database
-    # db.session.commit()
+    db.session.commit()
 
     ## THIS IS CHANGING FOR COMMUNICATION ##
     ages = []
@@ -208,7 +208,6 @@ def serial_listen():
         alarm_states.append(alarm_state)
         ages.append(age)
 
-    db.session.commit()
     ### THESE ARE SOME MAGIC BOOLS/INTS FOR NOW ###
     ### WE ARE HARD CODING A MAXIMUM NUMBER OF NODES HANDLED AT 40 ###
     commission = 0

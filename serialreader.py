@@ -53,6 +53,7 @@ def main():
 		sent_data = exp_str
 		socket.send_string(sent_data)
 		received_data = socket.recv_string()
+		print("string received")
 
 		received_data_split = received_data.split(";")
 		ages_string = received_data_split[0]
@@ -66,13 +67,8 @@ def main():
 		decommission_string = received_data_split[3]
 		decommission = int(decommission_string)
 
-		print(ages)
-		print(alarms)
-		print(commission)
-		print(decommission)
-
-		# if int(sys.argv[1]) == 0:
-		# 	ser.write(received_data)
+		if int(sys.argv[1]) == 0:
+			ser.write(received_data)
 
 		time.sleep(10)
 
