@@ -8,7 +8,7 @@ import sys
 def main():
 	if int(sys.argv[1]) == 0:
 		ser = Serial('/dev/ttyACM0', 9600, timeout=1)
-		print(ser)
+		ser.Begin()
 		ser.flushInput()
 		serial_data = ser.readline()
 		serial_string = serial_data.decode("utf-8")
