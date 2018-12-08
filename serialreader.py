@@ -34,8 +34,8 @@ def main():
 					elif len(exp_array[0]) <= 2 and len(exp_array[0]) > 0 and (len(exp_array[2]) == 5 or len(exp_array[2]) == 6) and \
 					(len(exp_array[3]) == 4 or len(exp_array[3]) == 5) and len(exp_array[4]) == 5:
 						break
-				except SerialException:
-					print("SerialException")
+				except:
+					print("Some Exception")
 		elif int(sys.argv[1]) == 1:
 			# serial simulation
 			serial_array = [random.randint(1,4), random.uniform(1000,10000), random.uniform(50,100), random.uniform(12,15), \
@@ -55,15 +55,6 @@ def main():
 		socket.send_string(sent_data)
 		received_data = socket.recv_string()
 		print(received_data)
-		received_data = received_data.split(",")
-		received_data = [int(e) for e in received_data]
-
-		to_serial = struct.pack('l?', received_data[0], received_data[1])
-
-		read_to_serial = struct.unpack('l?', to_serial)
-
-		print(to_serial)
-		print(read_to_serial)
 
 		if int(sys.argv[1]) == 0:
 			ser.write(to_serial)

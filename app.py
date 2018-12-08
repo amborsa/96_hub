@@ -160,6 +160,7 @@ def serial_listen():
     patient_id = input_query.id
 
     age = calculate_age_months(input_query.dob, now)
+    age = str(age)
 
     add_vital = Vital(id=patient_id, datetime=timestamp, hr=hr, rr=rr, temp=temp)
     db.session.add(add_vital)
@@ -194,8 +195,13 @@ def serial_listen():
     db.session.commit()
 
     # for transmission to Arduino
-    alarm_state = alarm_state % 2
-    to_serial = str(age) + "," + str(alarm_state)
+    while len(age) < 8:
+        age = "0" + age
+    if alarm_state % 2 == 0:
+        alarm_state = "F"
+    elif alarm_state % 2 ==1:
+        alarm_state = "T"
+    to_serial = str(age) + str(alarm_state)
 
     socket.send_string(to_serial)
     socket.close()
