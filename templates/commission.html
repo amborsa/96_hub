@@ -2,5 +2,19 @@
 
 {% block main %}
 	<!-- This {{id}} is the one that you clicked on -->
-	<p>IDKKKKK</p>
+	<a class="top-left" href="{{ url_for('main') }}">
+			<!-- <button>RETURN TO MAIN</button></a> -->
+		<button type="button" class="btn btn-outline-primary">RETURN TO MAIN</button>
+	</a>
+	<div class="form-style-3">
+		<form action="/commission" method="post">
+			<fieldset><legend>Commission a new device</legend>
+				<label for="name"><span>Name <span class="required">*</span></span><input type="text" class="input-field" name="name" value="" /></label>
+				<label for="age"><span>Age <span class="required">*</span></span><input type="number" class="input-field" name="age" value="" /></label>
+			</fieldset>
+			<label align="center"><span></span><input type="submit" value="Submit""/></label>
+		</form>
+	</div>
+		<p>WHEN THIS LINK IS CLICKED, IT NEEDS TO SEND A SIGNAL TO THE </p>
+		<p>THIS WILL TAKE THEM TO AN NEW FORM TO TAKE IN THE NAME AGE, SUBMIT AND THIS WILL ACTIVATE THE COMMISSION FUNCTION</p>
 {% endblock %}

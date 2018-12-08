@@ -451,13 +451,29 @@ def patient(id):
         values2day = temp_graph1,values2long = temp_graph2, high2 = temp_high, low2 = temp_low, \
         values3day = rr_graph1,values3long = rr_graph2, high3 = rr_high, low3 = rr_low)
 
-@app.route('/commission', methods=["GET"])
+@app.route('/commission', methods=["GET","POST"])
 def commission():
-    return render_template("commission.html")
+    # Fill out form to commission a new devices
+    if request.method == "GET":
+        return render_template("commission.html")
+    if request.method == "POST":
+        # TODO Adriano halp
+        # Need to send the age, and then we will be returned a device Id
+        # This ID will most likely go into the input database?
+        return redirect("/")
 
-@app.route('/decommission', methods=["GET"])
+
+@app.route('/decommission', methods=["GET","POST"])
 def decommission():
-    return render_template("decommission.html")
+    if request.method == "GET":
+        full_query = Input.query.filter(Input.node > 0)
+        name_list =[]
+        for query in full_query:
+            name_list.append(query.name)
+        return render_template("decommission.html",name_list=name_list)
+    if request.method == "POST":
+        # TODO Adriano halp
+        return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

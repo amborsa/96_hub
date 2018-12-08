@@ -2,5 +2,23 @@
 
 {% block main %}
 	<!-- This {{id}} is the one that you clicked on -->
-	<p>IDKKKKK</p>
+	<a class="top-left" href="{{ url_for('main') }}">
+			<!-- <button>RETURN TO MAIN</button></a> -->
+		<button type="button" class="btn btn-outline-primary">RETURN TO MAIN</button>
+	</a>
+	<div class="form-style-3">
+		<form action="/decommission" method="post">
+			<fieldset><legend>Select device to decomission</legend>
+				<label for="field4"><span>Patient</span><select name="field4" class="select-field">
+					<option disabled selected value="">Select Patient</option>
+					{% for name in name_list %}
+					<option value="{{stock}}" type="text">{{name}}</option>
+					{% endfor %}
+				</select></label>
+				</fieldset>
+			<label align="center"><span> </span><input type="submit" value="Decommission""/></label>
+		</form>
+	</div>
 {% endblock %}
+
+	<p>NEED A DROPBOX WITH ALL THE PATIENTS NAMES TO SELECT IN ORDER TO DECOMMISION</p>
