@@ -297,8 +297,8 @@ def input(id):
             else:
                 alarm_state = 0
 
-            if input_query.alarm_state is not alarm_state:
-                input_query.alarm_state = alarm_state            
+            if input_query_id.alarm_state is not alarm_state:
+                input_query_id.alarm_state = alarm_state            
 
             db.session.commit()
 
