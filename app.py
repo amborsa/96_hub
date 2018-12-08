@@ -451,6 +451,13 @@ def patient(id):
         values2day = temp_graph1,values2long = temp_graph2, high2 = temp_high, low2 = temp_low, \
         values3day = rr_graph1,values3long = rr_graph2, high3 = rr_high, low3 = rr_low)
 
+@app.route('/commission', methods=["GET"])
+def commission():
+    return render_template("commission.html")
+
+@app.route('/decommission', methods=["GET"])
+def decommission():
+    return render_template("decommission.html")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

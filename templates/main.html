@@ -67,5 +67,13 @@
 
             {% endfor %}
         </div>
+        <div class="row buffer">
+        <div class="col solid left-most gray" align="center">
+          <a href="{{url_for('commission')}}">Commission device</a>
+        </div>
+        <div class="col solid left-most gray" align="center">
+          <a href="{{url_for('decommission')}}">Decommission device</a>
+        </div>
+      </div>
     </div>
 {% endblock %}
