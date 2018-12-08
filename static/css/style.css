@@ -29,6 +29,21 @@ header .welcomeheader
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 }
+.col.left-header {
+	border-style: solid;
+	border-color: #97cdc4;
+	border-radius: 15px;
+	border-width: 10px;
+	margin-left: 25px;
+	width: 100%;
+}
+.col.right-header {
+	border-style: solid;
+	border-color: #97a0cd;
+	border-radius: 15px;
+	border-width: 10px;
+	width: 100%;
+}
 .col.solid {
 	background-color: white;
 	border-style: solid;
@@ -239,9 +254,16 @@ https://www.sanwebe.com/2014/08/css-html-forms-designs */
 }
 
 #rcorners1 {
+	border-style: solid;
+	border-color: rgba(151,187,205,1);
   border-radius: 15px;
-  background: #97bbcd;
-  padding: 0px;
-  width: 100%;
+	border-width: 10px;
+  padding: 0px 0px 50px 0px;
+  width: 30%;
   height: 50px;
+}
+
+h2 {
+    font-weight: bold;
+		text-decoration: underline;
 }
