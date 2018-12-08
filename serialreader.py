@@ -18,21 +18,23 @@ def main():
 		if int(sys.argv[1]) == 0:
 			exp_str = ""
 			while True:
-				ser = Serial('/dev/ttyACM0', 9600, timeout=1)
-				ser.flushInput()
-				serial_data = ser.readline()
-				serial_string = serial_data.decode("utf-8")
-				exp_str = serial_string.replace("\n", "")
-				exp_str = exp_str.replace("\r", "")
-				exp_array = exp_str.split(",")
-				# we need to further ensure we have what we want --> specify the length of this string
-				print(exp_array)
-				if len(exp_array) != 5:
-					go_on = False
-				elif len(exp_array[0]) <= 2 and len(exp_array[0]) > 0 and (len(exp_array[2]) == 5 or len(exp_array[2]) == 6) and \
-				(len(exp_array[3]) == 4 or len(exp_array[3]) == 5) and len(exp_array[4]) == 5:
-					print(len(exp_str))
-					break
+				try:
+					ser = Serial('/dev/ttyACM0', 9600, timeout=1)
+					ser.flushInput()
+					serial_data = ser.readline()
+					serial_string = serial_data.decode("utf-8")
+					exp_str = serial_string.replace("\n", "")
+					exp_str = exp_str.replace("\r", "")
+					exp_array = exp_str.split(",")
+					# we need to further ensure we have what we want --> specify the length of this string
+					print(exp_array)
+					if len(exp_array) != 5:
+						go_on = False
+					elif len(exp_array[0]) <= 2 and len(exp_array[0]) > 0 and (len(exp_array[2]) == 5 or len(exp_array[2]) == 6) and \
+					(len(exp_array[3]) == 4 or len(exp_array[3]) == 5) and len(exp_array[4]) == 5:
+						break
+				except SerialException:
+					print("SerialException")
 		elif int(sys.argv[1]) == 1:
 			# serial simulation
 			serial_array = [random.randint(1,4), random.uniform(1000,10000), random.uniform(50,100), random.uniform(12,15), \
