@@ -159,12 +159,10 @@ def serial_listen():
     specific_query = Input.query.filter(Input.node==node).first()
     patient_id = specific_query.id
     add_vital = Vital(id=patient_id, datetime=timestamp, hr=hr, rr=rr, temp=temp)
-    vital_query = Vital.query.filter(Vital.id==patient_id).order_by(Vital.e_id) # first index is earliest vital
     db.session.add(add_vital)
+    vital_query = Vital.query.filter(Vital.id==patient_id).order_by(Vital.e_id) # first index is earliest vital
     if vital_query.count() >= num_vitals:
         db.session.delete(vital_query.first())
-    # SQL ERRORS
-    db.session.commit()
 
     hr_low = specific_query.hr_thresh_low
     hr_high = specific_query.hr_thresh_high
@@ -189,7 +187,8 @@ def serial_listen():
     if specific_query.alarm_state is not alarm_state:
         specific_query.alarm_state = alarm_state
 
-    db.session.commit()
+    # committing now then accessing later potentially leading to problems with locked database
+    # db.session.commit()
 
     ## THIS IS CHANGING FOR COMMUNICATION ##
     ages = []
@@ -209,6 +208,7 @@ def serial_listen():
         alarm_states.append(alarm_state)
         ages.append(age)
 
+    db.session.commit()
     ### THESE ARE SOME MAGIC BOOLS/INTS FOR NOW ###
     ### WE ARE HARD CODING A MAXIMUM NUMBER OF NODES HANDLED AT 40 ###
     commission = 0
@@ -327,6 +327,10 @@ def input(id):
                 alarm_state = 2
             else:
                 alarm_state = 0
+
+            if input_query_id.alarm_state is not alarm_state:
+                input_query_id.alarm_state = alarm_state
+
             db.session.commit()
 
         return redirect(url_for("main"))
