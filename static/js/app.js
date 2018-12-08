@@ -21,7 +21,7 @@ function js_update() {
 	req.done(function(data) {
 		  var i;
       for (i=0; i < data.length; i++) {
-        if (data[i].alarm_state == 0) {
+        if (data[i].alarm_state == 1) {
           $('#alarm_state' + data[i].id).css({
             backgroundColor: '#d62728'
           });

@@ -110,7 +110,7 @@ def update_main():
     ''' grabs and organizes input.db data '''
     ids = []
     alarm_states = []
-    full_query = Input.query.filter(Input.node > 0)
+    full_query = Input.query.filter(Input.node > 0).order_by(Input.node)
     for query in full_query:
         ids.append(query.id)
         alarm_states.append(query.alarm_state)
@@ -156,24 +156,22 @@ def serial_listen():
     now = datetime.datetime.now()
     timestamp = now - datetime.timedelta(minutes=minute_delay)
 
-    input_query = Input.query.filter(Input.node==node).first()
-    patient_id = input_query.id
-
-    age = calculate_age_months(input_query.dob, now)
-
+    specific_query = Input.query.filter(Input.node==node).first()
+    patient_id = specific_query.id
     add_vital = Vital(id=patient_id, datetime=timestamp, hr=hr, rr=rr, temp=temp)
-    db.session.add(add_vital)
-
     vital_query = Vital.query.filter(Vital.id==patient_id).order_by(Vital.e_id) # first index is earliest vital
+    db.session.add(add_vital)
     if vital_query.count() >= num_vitals:
         db.session.delete(vital_query.first())
+    # SQL ERRORS
+    db.session.commit()
 
-    hr_low = input_query.hr_thresh_low
-    hr_high = input_query.hr_thresh_high
-    rr_low = input_query.rr_thresh_low
-    rr_high = input_query.rr_thresh_high
-    temp_low = input_query.temp_thresh_low
-    temp_high = input_query.temp_thresh_high
+    hr_low = specific_query.hr_thresh_low
+    hr_high = specific_query.hr_thresh_high
+    rr_low = specific_query.rr_thresh_low
+    rr_high = specific_query.rr_thresh_high
+    temp_low = specific_query.temp_thresh_low
+    temp_high = specific_query.temp_thresh_high
 
     hr_near = (hr_high-hr_low)*.1
     rr_near = (rr_high-rr_low)*.1
@@ -188,12 +186,45 @@ def serial_listen():
     else:
         alarm_state = 0
 
-    if input_query.alarm_state is not alarm_state:
-        input_query.alarm_state = alarm_state
+    if specific_query.alarm_state is not alarm_state:
+        specific_query.alarm_state = alarm_state
 
     db.session.commit()
 
-    to_serial = str(age) + "," + str(alarm_state)
+    ## THIS IS CHANGING FOR COMMUNICATION ##
+    ages = []
+    alarm_states = []
+
+    input_query  = Input.query.filter(Input.node > 0).order_by(Input.node)
+    for query in input_query:
+        patient_id = query.id
+        print(query.node)
+        alarm_state = query.alarm_state
+        age = calculate_age_months(query.dob, now)
+
+        # prepping data to be sent to serial
+        if alarm_state % 2 == 0:
+            alarm_state = 0
+        age = calculate_age_months(query.dob, now)
+        alarm_states.append(alarm_state)
+        ages.append(age)
+
+    ### THESE ARE SOME MAGIC BOOLS/INTS FOR NOW ###
+    ### WE ARE HARD CODING A MAXIMUM NUMBER OF NODES HANDLED AT 40 ###
+    commission = 0
+    decommission = 0
+
+    while len(ages) < 40:
+        ages.append(0)
+    while len(alarm_states) < 40:
+        # these should be inactive since the ages are zero
+        alarm_states.append(0)
+
+    to_serial_ages = ','.join(str(e) for e in ages)
+    to_serial_alarms = ','.join(str(e) for e in alarm_states)
+    to_serial_commission = str(commission)
+    to_serial_decommission = str(decommission)
+    to_serial = to_serial_ages + ";" + to_serial_alarms + ";" + to_serial_commission + ";" + to_serial_decommission
 
     socket.send_string(to_serial)
     socket.close()

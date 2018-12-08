@@ -33,13 +33,13 @@ def main():
 					elif len(exp_array[0]) <= 2 and len(exp_array[0]) > 0 and (len(exp_array[2]) == 5 or len(exp_array[2]) == 6) and \
 					(len(exp_array[3]) == 4 or len(exp_array[3]) == 5) and len(exp_array[4]) == 5:
 						break
-				except SerialException:
-					print("SerialException")
+				except:
+					print("Some Exception")
 		elif int(sys.argv[1]) == 1:
 			# serial simulation
 			serial_array = [random.randint(1,4), random.uniform(1000,10000), random.uniform(50,100), random.uniform(12,15), \
 			random.uniform(36, 39)]
-			serial = ",".join(str(round(e,1)) for e in serial_array)
+			exp_str = ",".join(str(round(e,1)) for e in serial_array)
 		elif int(sys.argv[1]) == 2:
 			return 0
 		else:
@@ -53,7 +53,23 @@ def main():
 		sent_data = exp_str
 		socket.send_string(sent_data)
 		received_data = socket.recv_string()
-		print(received_data)
+
+		received_data_split = received_data.split(";")
+		ages_string = received_data_split[0]
+		ages = ages_string.split(",")
+		ages = list(map(int, ages))
+		alarms_string = received_data_split[1]
+		alarms = alarms_string.split(",")
+		alarms = list(map(int, alarms))
+		commission_string = received_data_split[2]
+		commission = int(commission_string)
+		decommission_string = received_data_split[3]
+		decommission = int(decommission_string)
+
+		print(ages)
+		print(alarms)
+		print(commission)
+		print(decommission)
 
 		# if int(sys.argv[1]) == 0:
 		# 	ser.write(received_data)
