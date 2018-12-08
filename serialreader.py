@@ -56,6 +56,9 @@ def main():
 		received_data = socket.recv_string()
 		print(received_data)
 
+		to_serial = struct.pack('c'*9, received_data[0], received_data[1], received_data[2], received_data[3], \
+			received_data[4], received_data[5], received_data[6], received_data[7], received_data[8])
+
 		if int(sys.argv[1]) == 0:
 			ser.write(received_data)
 
