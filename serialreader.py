@@ -57,7 +57,7 @@ def main():
 		print(received_data)
 
 		if int(sys.argv[1]) == 0:
-			ser.write(to_serial)
+			ser.write(received_data)
 
 		time.sleep(10)
 
