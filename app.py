@@ -432,7 +432,6 @@ def patient(id):
     age = age_months/12
     standard_thresholds = vitalthresh(age)
 
-    # return(upperRR, lowerRR, upperHR, lowerHR, upperTemp, lowerTemp)
     rr_high.append(standard_thresholds[0])
     rr_low.append(standard_thresholds[1])
     hr_high.append(standard_thresholds[2])

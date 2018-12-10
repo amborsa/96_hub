@@ -20,7 +20,8 @@ def main():
 			exp_str = ""
 			while True:
 				try:
-					ser = Serial('/dev/ttyACM0', 9600, timeout=1)
+					# ser = Serial('/dev/ttyACM0', 9600, timeout=1)
+					ser = Serial('/dev/ttyS3', 9600, timeout=1)
 					ser.flushInput()
 					serial_data = ser.readline()
 					serial_string = serial_data.decode("utf-8")
@@ -62,7 +63,7 @@ def main():
 		if int(sys.argv[1]) == 0:
 			ser.write(to_serial)
 
-		time.sleep(10)
+		time.sleep(1)
 
 if __name__ == "__main__":
 	main()
