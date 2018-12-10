@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=monitor
+Comment=monitor
+Icon=/home/pi/96_hub/static/images/desktopicon.png
+Exec=/home/pi/96_hub/startup.sh
+Type=Application
+Encoding=UTF-8
+Terminal=false
+Categories=None;
