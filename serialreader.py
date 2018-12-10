@@ -27,6 +27,7 @@ def main():
 					exp_str = serial_string.replace("\n", "")
 					exp_str = exp_str.replace("\r", "")
 					exp_array = exp_str.split(",")
+					print(exp_str);
 					# we need to further ensure we have what we want --> specify the length of this string
 					if len(exp_array) != 5:
 						go_on = False
