@@ -8,10 +8,11 @@ from flask_sqlalchemy import SQLAlchemy
 from tempfile import gettempdir
 import random
 import datetime
+from helpers import *
 
 ''' Initializing App and Database '''
 app = Flask(__name__)
-
+    
 # tries to ensure that caches aren't stored
 if app.config["DEBUG"]:
     @app.after_request
@@ -70,12 +71,11 @@ db.create_all()
 # this adds test data to the input database
 ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 nodes = [2, 4, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-names = ["Daniel", "Anisha", "Allegra", "Adriano", "Michelle", "Simone", "Jesse", "Tatheer", "Olivia", "Jazmin", "Jason", \
-"Andrew", "Joel", "Nic", "Aileen", "Cathy", "Awnit", "Colin", "Anisha", "Nathan"]
+names = ["John", "Jane", "John", "Jane", "John", "Jane", "John", "Jane", "John", "Jane", "John", "Jane", \
+"John", "Jane", "John", "Jane", "John", "Jane", "John", "Jane"]
 surnames = []
 med_ids = []
 diagnosis = []
-ages = []
 locs = []
 dobs = []
 hr_threshes_high = []
@@ -86,19 +86,24 @@ rr_threshes_low = []
 temp_threshes_low = []
 alarm_states = []
 for i in range(20):
-    hr_threshes_high.append(random.uniform(100.0, 150.0))
-    rr_threshes_high.append(random.uniform(20.0, 40.0))
-    temp_threshes_high.append(random.uniform(37.0, 40.0))
-    hr_threshes_low.append(random.uniform(20.0, 30.0))
-    rr_threshes_low.append(random.uniform(1.0, 5.0))
-    temp_threshes_low.append(random.uniform(34.0, 35.5))
-    ages.append(random.uniform(6, 8))
     locs.append("B" + str(i+1))
-    dobs.append(datetime.datetime(2008, 11, 30, hour=0, minute=0, second=0, microsecond=0))
+    dob = datetime.datetime(random.randint(2008, 2015), random.randint(1,12), random.randint(1,28), \
+        hour=0, minute=0, second=0, microsecond=0)
+    now = datetime.datetime.now()
+    age_months = calculate_age_months(dob, now)
+    age = age_months/12
+    rr_high, rr_low, hr_high, hr_low, temp_high, temp_low = vitalthresh(age)
+    dobs.append(dob)
     surnames.append("Doe")
     med_ids.append(random.randint(1000, 9999))
     diagnosis.append("ALL")
-    alarm_states.append(random.randint(0,2))
+    alarm_states.append(0)
+    hr_threshes_high.append(hr_high)
+    rr_threshes_high.append(rr_high)
+    temp_threshes_high.append(temp_high)
+    hr_threshes_low.append(hr_low)
+    rr_threshes_low.append(rr_low)
+    temp_threshes_low.append(temp_low)
 
 for i in range(len(ids)):
     add_input = Input(id=ids[i], name=names[i], hr_thresh_high=hr_threshes_high[i], rr_thresh_high=rr_threshes_high[i], \
@@ -117,9 +122,9 @@ for i in range(72):
 e_id_ticker = 0
 for i in range(len(datetimes)):
 	for n_id in ids:
-		hr = random.uniform(50.0, 150.0)
-		rr = random.uniform(8.0, 30.0)
-		temp = random.uniform(34.0, 39.0)
+		hr = random.uniform(70.0, 75.0)
+		rr = random.uniform(10.0, 12.0)
+		temp = random.uniform(36.5, 37.0)
 		add_vital = Vital(e_id=e_id_ticker, id=n_id, datetime=datetimes[i], hr=hr, rr=rr, temp=temp)
 		db.session.add(add_vital)
 		e_id_ticker += 1
